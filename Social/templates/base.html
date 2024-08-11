@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <link rel="stylesheet" href= "{% static '/style.css' %}" >
+    <!-- The javascricpt file has been loaded just before the body ends or it will give DOM error -->
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <h2 class="log">
+                Social
+            </h2>
+            <!-- <div class="search-bar">
+                <i class="uil uil-search"></i>
+                <input type="search" placeholder="Search for user">
+            </div> -->
+            <div class="create">
+                <label class="btn btn-primary" for="create-post">Create</label>
+                <div class="profile-photo" >
+                    <img src="{% static './images/profile-8.jpg'%}" alt="profile pic">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!------------------------Main------------------------->
+    <main>
+        <div class="container">
+            <!--*****************Left*************************-->
+            <div class="left">
+                <a  class="profile">
+                    <div class="profile-photo">
+                        <img src="{% static '/images/profile-8.jpg'%}">
+                    </div>
+                    <div class="handle">
+                        <h4>Dev Gaykar</h4>
+                        <p class="text-muted">
+                            @dev
+                        </p>
+                    </div>
+                </a>
+
+                <!--*****************Sidebar*************************-->
+                <div class="sidebar">
+                    <a  class="menu-item active">
+                        <span><i class="uil uil-home"></i></span><h3>Home</h3>
+                    </a>
+                    <a  class="menu-item">
+                        <span><i class="uil uil-search"></i></span><h3>Search</h3>
+                    </a>
+                    <a  class="menu-item">
+                        <span><i class="uil uil-compass"></i></span><h3>Explore</h3>
+                    </a>
+                    <a  class="menu-item" id="notifications">
+                        <span><i class="uil uil-bell"><small class="notification-count">9+</small></i></span><h3>Notifications</h3>
+                        <!-----Notification Popup-->
+                        <div class="notification-popup">
+                            <div>
+                                <div class="profile-photo">
+                                    <img src="{% static '/images/profile-2.jpg'%}" >
+                                </div>
+                                <div class="notification-body">
+                                    <b>Keke Ben</b> accepted your friend request
+                                    <small class="text-muted">2 DAYS AGO</small>
+                                </div>
+
+                                <div class="profile-photo">
+                                    <img src="{% static 'images/profile-3.jpg'%}" >
+                                </div>
+                                <div class="notification-body">
+                                    <b>Keke Ben</b> commented on your post
+                                    <small class="text-muted">2 DAYS AGO</small>
+                                </div>
+
+                                <div class="profile-photo">
+                                    <img src="{% static 'images/profile-4.jpg'%}" >
+                                </div>
+                                <div class="notification-body">
+                                    <b>Keke Ben</b> accepted your friend request
+                                    <small class="text-muted">2 DAYS AGO</small>
+                                </div>
+
+                                <div class="profile-photo">
+                                    <img src="{% static 'images/profile-5.jpg'%}" >
+                                </div>
+                                <div class="notification-body">
+                                    <b>Keke Ben</b> accepted your friend request
+                                    <small class="text-muted">2 DAYS AGO</small>
+                                </div>
+
+                                <div class="profile-photo">
+                                    <img src="{% static 'images/profile-2.jpg'%}" >
+                                </div>
+                                <div class="notification-body">
+                                    <b>Keke Ben</b> accepted your friend request
+                                    <small class="text-muted">2 DAYS AGO</small>
+                                </div>
+
+                                <div class="profile-photo">
+                                    <img src="{% static 'images/profile-6.jpg'%}" >
+                                </div>
+                                <div class="notification-body">
+                                    <b>Keke Ben</b> accepted your friend request
+                                    <small class="text-muted">2 DAYS AGO</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a  class="menu-item " id="messages-notification">
+                        <span><i class="uil uil-envelope"><small class="notification-count">6</small></i></span><h3>Messages</h3>
+                    </a>
+                    <a  class="menu-item ">
+                        <span><i class="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
+                    </a>
+                    <a  class="menu-item " id="theme">
+                        <span><i class="uil uil-palette"></i></span><h3>Theme</h3>
+                    </a>
+                    <a  class="menu-item ">
+                        <span><i class="uil uil-setting"></i></span><h3>Settings</h3>
+                    </a>
+                </div>
+                <!-------------------Button---------------->
+                <label for="create-post" class="btn btn-primary">Create Post</label>
+            </div>
+            <!---- ====================End of left=============================-->
+
+{% block content %}
+
+{% endblock content %}
