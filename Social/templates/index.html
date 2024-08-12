@@ -54,15 +54,16 @@
                 <!-------------------------FEEDS------------------------->
                 <div class="feeds">
                     <!-------------------------FEED1------------------------->
+                    {% for post in post_items %}
                     <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
-                                    <img src="{% static 'images/profile-13.jpg'%}">
+                                    <!-- <img src="{% static 'images/profile-13.jpg'%}"> -->
                                 </div>
                                 <div class="ingo">
-                                    <h3>Lina Rose</h3>
-                                    <small>Dubai, 15 MINUTES AGO</small>
+                                    <h3>{{post.user.username}}</h3>
+                                    <small>{{post.posted|date:"d M Y"}}</small>
                                 </div>
                             </div>
                             <span class="edit">
@@ -70,7 +71,7 @@
                             </span>
                         </div>
                         <div class="photo">
-                            <img src="{% static 'images/feed-1.jpg'%}">
+                            <img src="{{post.picture.url}}">
                         </div>
                         <div class="action-buttons">
                             <div class="interaction-buttons">
@@ -83,21 +84,23 @@
                             </div>
                         </div>
                         <div class="liked-by">
-                            <span><img src="{% static 'images/profile-10.jpg'%}"></span>
+                            <!-- <span><img src="{% static 'images/profile-10.jpg'%}"></span>
                             <span><img src="{% static 'images/profile-11.jpg'%}"></span>
-                            <span><img src="{% static 'images/profile-12.jpg'%}"></span>
-                            <p>Liked by <b>Gin </b> and <b>2,332 others</b>
+                            <span><img src="{% static 'images/profile-12.jpg'%}"></span> -->
+                            <!-- <p>Liked by <b>Gin </b> and <b>2,332 others</b> -->
+                            <p><b>{{post.likes}}</b> Likes
                         </div>
                         <div class="caption">
-                            <p><b>James Bond</b> Lorem ipsum dolor sit amet
-                                consectetur. <span class="harsh-tag">#lifestyle</span></p>
+                            <p><b>{{post.user.username}}</b> {{post.caption}}
+                                 <span class="harsh-tag">{% for tag in post.tag.all%}<a href ="{{tags.get_absolute_url}}">#{{tag}}</a>{% endfor %}</span></p>
                         </div>
                         <div>
                             <div class="comments text-muted">View all 269 commments</div>
                         </div>
                     </div>
+                    {% endfor %}
                      <!-------------------------FEED2------------------------->
-                     <div class="feed">
+                     <!-- <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
@@ -138,9 +141,9 @@
                         <div>
                             <div class="comments text-muted">View all 269 commments</div>
                         </div>
-                    </div>
+                    </div> -->
                      <!-------------------------FEED3------------------------->
-                     <div class="feed">
+                     <!-- <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
@@ -181,9 +184,9 @@
                         <div>
                             <div class="comments text-muted">View all 29 commments</div>
                         </div>
-                    </div>
+                    </div> -->
                      <!-------------------------FEED4------------------------->
-                     <div class="feed">
+                     <!-- <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
@@ -224,9 +227,9 @@
                         <div>
                             <div class="comments text-muted">View all 2 commments</div>
                         </div>
-                    </div>
+                    </div> -->
                      <!-------------------------FEED5------------------------->
-                     <div class="feed">
+                     <!-- <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
@@ -267,9 +270,9 @@
                         <div>
                             <div class="comments text-muted">View all 269 commments</div>
                         </div>
-                    </div>
+                    </div> -->
                      <!-------------------------FEED6------------------------->
-                     <div class="feed">
+                     <!-- <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
@@ -310,9 +313,9 @@
                         <div>
                             <div class="comments text-muted">View all 269 commments</div>
                         </div>
-                    </div>
+                    </div> -->
                      <!-------------------------FEED7------------------------->
-                     <div class="feed">
+                     <!-- <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
@@ -353,10 +356,10 @@
                         <div>
                             <div class="comments text-muted">View all 2 commments</div>
                         </div>
-                    </div>
+                    </div>  -->
                     <!----------------End of FEED----------->
                 </div>
-                <!----------------End of FEEDs----------->
+                <!----------------End of FEEDS----------->
             </div>
             <!--==================END OF MIDDLE========================-->
 
