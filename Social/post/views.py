@@ -1,6 +1,10 @@
-from django.shortcuts import render
-from post.models import Tag,Stream,Follow,Post
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import  login_required
+
+from post.models import Tag,Stream,Follow,Post
+from django.contrib.auth.models import User
+from post.forms import NewPostForm
+
 
 
 def home(request):
@@ -14,3 +18,32 @@ def home(request):
         'post_items' : post_items
     }
     return render(request,"index.html",context)
+
+def NewPost(request):
+    user = request.user
+    tags_obj = []
+    
+    if request.method == "POST":
+        form = NewPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            picture = form.cleaned_data.get('picture')
+            caption = form.cleaned_data.get('caption')
+            tag_form = form.cleaned_data.get('tags')
+            tag_list = list(tag_form.split(','))
+
+            for tag in tag_list:
+                t, created = Tag.objects.get_or_create(title=tag)
+                tags_obj.append(t)
+            p, created = Post.objects.get_or_create(picture=picture, caption=caption, user=user)
+            p.tag.set(tags_obj)
+            p.save()
+            return redirect('home')
+    else:
+        form = NewPostForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'post/newpost.html', context)
+
+
+    

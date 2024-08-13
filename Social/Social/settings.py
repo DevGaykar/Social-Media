@@ -123,6 +123,7 @@ STATIC_URL = 'static/'
 #Added manually
 STATICFILES_DIRS = [
     BASE_DIR/"static",
+    os.path.join(BASE_DIR, 'post/static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
