@@ -47,8 +47,8 @@ menuItems.forEach(item =>{
 const searchMessage = () => {
     const val = messageSearch.value.toLowerCase();
 
-    message.forEach(chat => {
-        const header = chat.querySelector('h5');
+//     message.forEach(chat => {
+//         const header = chat.querySelector('h5');
         
         if (header) {
             const name = header.textContent.toLowerCase();
