@@ -2,10 +2,10 @@
 const menuItems = document.querySelectorAll('.menu-item');
 
 //MESSAGES
-const messagesNotification = document.querySelector('#messages-notification');
-const messages = document.querySelector('.messages');
-const message = messages.querySelectorAll('.message');
-const messageSearch = document.querySelector('#message-search');
+// const messagesNotification = document.querySelector('#messages-notification');
+// const messages = document.querySelector('.messages');
+// const message = messages.querySelectorAll('.message');
+// const messageSearch = document.querySelector('#message-search');
 
 //THEME
 const theme  = document.querySelector('#theme');
@@ -44,69 +44,70 @@ menuItems.forEach(item =>{
 
 // ===============MESSAGES =================//
 //searches chats
-const searchMessage = () => {
-    const val = messageSearch.value.toLowerCase();
+// const searchMessage = () => {
+//     const val = messageSearch.value.toLowerCase();
 
 //     message.forEach(chat => {
 //         const header = chat.querySelector('h5');
         
-        if (header) {
-            const name = header.textContent.toLowerCase();
-            if (name.indexOf(val) !== -1) {
-                chat.style.display = 'flex';
-            } else {
-                chat.style.display = 'none';
-            }
-        } else {
-            chat.style.display = 'none'; // Hide chat if <h5> is not found
-        }
-    });
-}
+//         if (header) {
+//             const name = header.textContent.toLowerCase();
+//             if (name.indexOf(val) !== -1) {
+//                 chat.style.display = 'flex';
+//             } else {
+//                 chat.style.display = 'none';
+//             }
+//         } else {
+//             chat.style.display = 'none'; // Hide chat if <h5> is not found
+//         }
+//     });
+// }
 
-//search chat
-messageSearch.addEventListener('keyup',searchMessage);
+// //search chat
+// messageSearch.addEventListener('keyup',searchMessage);
 
 //highlight message box when message icon is clicked
- messagesNotification.addEventListener('click',() =>{
-    messages.style.boxShadow = '0 0 1rem var(--color-primary)';
-    messagesNotification.querySelector('.notification-count').style.display = "none";
-    setTimeout(() => {
-        messages.style.boxShadow = "none";
-    },2000);
- })
+// messagesNotification.addEventListener('click',() =>{
+//     messages.style.boxShadow = '0 0 1rem var(--color-primary)';
+//     messagesNotification.querySelector('.notification-count').style.display = "none";
+//     setTimeout(() => {
+//         messages.style.boxShadow = "none";
+//     },2000);
+// })
 
 
- //THEME CUSTOMIZATION
 
- //opens modal
- const openThemeModel = () =>{
+//THEME CUSTOMIZATION
+
+//opens modal
+const openThemeModel = () =>{
     themeModel.style.display = 'grid';
- }
+}
 
- //close modal
- const closeThemeModel = (e) =>{
+//close modal
+const closeThemeModel = (e) =>{
     if(e.target.classList.contains('customize-theme')){
         themeModel.style.display = 'none';
     }
- }
+}
 
- themeModel.addEventListener('click',closeThemeModel);
+themeModel.addEventListener('click',closeThemeModel);
 
- theme.addEventListener('click',openThemeModel);
+theme.addEventListener('click',openThemeModel);
 
 
 
  // ==============FONTS=========================
 
   //remove active class from spans or font size selectors
-  const removeSizeSelector = () =>{
+const removeSizeSelector = () =>{
     fontSizes.forEach(size =>{
         size.classList.remove('active');
     })
- }
+}
 
- fontSizes.forEach(size =>{
-   size.addEventListener('click',() =>{
+fontSizes.forEach(size =>{
+    size.addEventListener('click',() =>{
     removeSizeSelector();
     let fontSize;
     size.classList.toggle('active');

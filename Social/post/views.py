@@ -45,5 +45,20 @@ def NewPost(request):
     }
     return render(request, 'post/newpost.html', context)
 
-
+def PostDetail(request,post_id):
+    post = get_object_or_404(Post,id=post_id)
+    context ={
+        'post':post
+    }
+    return render(request,'post/post-details.html',context)
     
+
+def Tags(request,tag_slug):
+    tag=get_object_or_404(Tag,slug=tag_slug)
+    posts = Post.objects.filter(tag=tag).order_by('-posted')
+
+    context={
+        'posts' : posts,
+        'tag' : tag
+    }   
+    return render(request,'post/tag.html',context)
