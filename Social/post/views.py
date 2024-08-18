@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import  login_required
+from django.urls import reverse
+from django.http import HttpResponseRedirect,JsonResponse
 
-from post.models import Tag,Stream,Follow,Post
+from post.models import Tag,Stream,Follow,Post,Likes
 from django.contrib.auth.models import User
 from post.forms import NewPostForm
 
@@ -62,3 +64,25 @@ def Tags(request,tag_slug):
         'tag' : tag
     }   
     return render(request,'post/tag.html',context)
+
+def like(request,post_id):
+    user = request.user
+    post=Post.objects.get(id=post_id)
+    current_likes = post.likes
+    liked = Likes.objects.filter(user=user,post=post)
+
+    if not liked.exists():
+        Likes.objects.create(user=user,post=post)
+        current_likes += 1
+        
+    else:
+        liked.delete()
+        current_likes =  current_likes - 1
+       
+    post.likes =  current_likes
+    post.save()
+
+
+    return HttpResponseRedirect(reverse('post-details',args=[post_id]))
+
+  

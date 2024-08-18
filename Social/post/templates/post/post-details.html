@@ -29,8 +29,10 @@
                         </a>
                         </div>
                         <div class="action-buttons">
-                            <div class="interaction-buttons">
-                                <span><i class="uil uil-heart"></i></span>
+                            <div class="interaction-buttons">  
+                                <a href = "{% url 'like' post.id %}">
+                                    <span><i class="uil uil-heart"></i></span>
+                                </a>
                                 <span><i class="uil uil-comment-dots"></i></span>
                                 <span><i class="uil uil-share-alt"></i></span>
                             </div>
@@ -43,7 +45,7 @@
                             <span><img src="{% static 'images/profile-11.jpg'%}"></span>
                             <span><img src="{% static 'images/profile-12.jpg'%}"></span> -->
                             <!-- <p>Liked by <b>Gin </b> and <b>2,332 others</b> -->
-                            <p><b>{{post.likes}}</b> Likes
+                            <p id="like-count-{{ post.id }}"><b>{{ post.likes }}</b> Likes</p>
                         </div>
                         <div class="caption">
                             <p><b>{{post.user.username}}</b> {{post.caption}}

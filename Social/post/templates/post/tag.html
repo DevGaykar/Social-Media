@@ -1,10 +1,11 @@
 {%load static%}
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
 <link rel="stylesheet" href= "{% static '/style.css' %}" >
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <header>
     <div>
      <h1 style="font-size: 50px; margin-top: 100px; text-align:center; font-weight: bold; margin-bottom: 50px;">#{{tag.title|title}}</h1>
-    
     </div>
 </header>
 <div class="middle">
@@ -34,7 +35,9 @@
             </div>
             <div class="action-buttons">
                 <div class="interaction-buttons">
-                    <span><i class="uil uil-heart"></i></span>
+                    <a href = "{% url 'like' post.id %}">
+                      <span><i class="uil uil-heart"></i></span>
+                    </a>
                     <span><i class="uil uil-comment-dots"></i></span>
                     <span><i class="uil uil-share-alt"></i></span>
                 </div>
@@ -62,3 +65,4 @@
     </div>
     <!----------------End of FEEDS----------->
 </div>  
+

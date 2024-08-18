@@ -76,7 +76,9 @@
                         </div>
                         <div class="action-buttons">
                             <div class="interaction-buttons">
-                                <span><i class="uil uil-heart"></i></span>
+                                <a href = "{% url 'like' post.id %}">
+                                    <span><i class="uil uil-heart"></i></span>
+                                 </a>
                                 <span><i class="uil uil-comment-dots"></i></span>
                                 <span><i class="uil uil-share-alt"></i></span>
                             </div>
@@ -93,7 +95,11 @@
                         </div>
                         <div class="caption">
                             <p><b>{{post.user.username}}</b> {{post.caption}}
-                                 <span class="harsh-tag">{% for tag in post.tag.all%}<a href ="{{tag.get_absolute_url}}">#{{tag.title}}</a>{% endfor %}</span></p>
+                                 <span class="harsh-tag">
+                                    {% for tag in post.tag.all%}
+                                    <a href ="{{tag.get_absolute_url}}">#{{tag.title}}</a>
+                                    {% endfor %}
+                                </span></p>
                         </div>
                         <div>
                             <div class="comments text-muted">View all 269 commments</div>
