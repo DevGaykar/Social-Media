@@ -65,24 +65,46 @@ def Tags(request,tag_slug):
     }   
     return render(request,'post/tag.html',context)
 
-def like(request,post_id):
-    user = request.user
-    post=Post.objects.get(id=post_id)
-    current_likes = post.likes
-    liked = Likes.objects.filter(user=user,post=post)
+# def like(request,post_id):
+#     user = request.user
+#     post=Post.objects.get(id=post_id)
+#     current_likes = post.likes
+#     liked = Likes.objects.filter(user=user,post=post)
 
-    if not liked.exists():
-        Likes.objects.create(user=user,post=post)
-        current_likes += 1
+#     if not liked.exists():
+#         Likes.objects.create(user=user,post=post)
+#         current_likes += 1
         
-    else:
-        liked.delete()
-        current_likes =  current_likes - 1
+#     else:
+#         liked.delete()
+#         current_likes =  current_likes - 1
        
-    post.likes =  current_likes
+#     post.likes =  current_likes
+#     post.save()
+
+def like(request, post_id):
+    user = request.user
+    post = get_object_or_404(Post, id=post_id)
+
+    liked = Likes.objects.filter(user=user, post=post).first()
+
+    if liked:
+        liked.delete()
+        post.likes -= 1
+        liked_status = False
+    else:
+        Likes.objects.create(user=user, post=post)
+        post.likes += 1
+        liked_status = True
+
     post.save()
 
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'likes_count': post.likes, 'liked_status': liked_status})
 
-    return HttpResponseRedirect(reverse('post-details',args=[post_id]))
+    return redirect('post_detail', post_id=post_id)
+
+
+    # return HttpResponseRedirect(reverse('post-details',args=[post_id]))
 
   

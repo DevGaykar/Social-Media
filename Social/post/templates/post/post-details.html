@@ -1,7 +1,5 @@
 {%extends 'base.html'%}
 {%load static%}
-<!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
-    <link rel="stylesheet" href= "{% static '/style.css' %}" > -->
     {%block content%}
             <!--*****************Middle*************************-->
             <div class="middle">
@@ -25,14 +23,25 @@
                             </span>
                         </div>
                         <div class="photo">
-                            <a href="{%url 'post-details' post.id%}"><img src="{{post.picture.url}}" style="width: 500px; height: 381px; object-fit: cover;" >
+                            <a href="{%url 'post-details' post.id%}"><img src="{{post.picture.url}}" alt="Alternative text"  style="width: 500px; height: 381px; object-fit: cover;" >
                         </a>
                         </div>
                         <div class="action-buttons">
                             <div class="interaction-buttons">  
-                                <a href = "{% url 'like' post.id %}">
+                                {% comment %} <a href = "{% url 'like' post.id %}">
                                     <span><i class="uil uil-heart"></i></span>
-                                </a>
+                                </a>  {% endcomment %}
+                            {% comment %} <span>
+                                <button type="submit"  class="btn btn-custom btn-sm liketoggle like"  name="like">
+                                    <i class="uil uil-heart"></i>
+                                </button>
+                            </span> {% endcomment %}
+                            <a href="#" class="like-button" data-url="{% url 'like' post.id %}" data-post-id="{{ post.id }}">
+                                <span>
+                                    <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
+                                </span>
+                            </a>
+                            
                                 <span><i class="uil uil-comment-dots"></i></span>
                                 <span><i class="uil uil-share-alt"></i></span>
                             </div>

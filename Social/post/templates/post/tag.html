@@ -1,15 +1,13 @@
+{%extends 'base.html'%}
 {%load static%}
-<link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
-<link rel="stylesheet" href= "{% static '/style.css' %}" >
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<header>
-    <div>
-     <h1 style="font-size: 50px; margin-top: 100px; text-align:center; font-weight: bold; margin-bottom: 50px;">#{{tag.title|title}}</h1>
-    </div>
-</header>
+    {%block content%}
 <div class="middle">
-    
+    <header>
+        <div>
+         <h1 style="font-size: 50px; text-align:center; font-weight: bold; ">
+            #{{tag.title|title}}</h1>
+        </div>
+    </header> 
     <!-------------------------FEEDS------------------------->
     <div class="feeds">
         <!-------------------------FEED1------------------------->
@@ -35,8 +33,13 @@
             </div>
             <div class="action-buttons">
                 <div class="interaction-buttons">
-                    <a href = "{% url 'like' post.id %}">
+                      {% comment %} <a href = "{% url 'like' post.id %}">
                       <span><i class="uil uil-heart"></i></span>
+                    </a>  {% endcomment %} 
+                    <a href="#" class="like-button" data-url="{% url 'like' post.id %}" data-post-id="{{ post.id }}">
+                        <span>
+                            <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
+                        </span>
                     </a>
                     <span><i class="uil uil-comment-dots"></i></span>
                     <span><i class="uil uil-share-alt"></i></span>
@@ -65,4 +68,4 @@
     </div>
     <!----------------End of FEEDS----------->
 </div>  
-
+{% endblock content %}

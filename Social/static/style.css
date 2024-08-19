@@ -405,6 +405,23 @@ main .container .left .profile{
     color: red;
 } */
 
+/* .like .uil-heart{
+    color: red;
+  }
+  .unlike .uil-heart{
+    color: black;
+  } */
+
+.uil-heart {
+    color: gray;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.uil-heart.liked {
+    color: red;
+}
+
 .middle .liked-by{
     display: flex;
 }
