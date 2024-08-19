@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #added apps
     'post.apps.PostConfig',
+    'userauths.apps.UserauthsConfig',
 ]
 
 MIDDLEWARE = [

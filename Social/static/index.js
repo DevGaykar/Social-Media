@@ -221,40 +221,6 @@ Bg3.addEventListener('click',() =>{
 })
 
 // ==================Like================================
-// document.addEventListener('DOMContentLoaded', function() {
-//     document.querySelectorAll('.like-button').forEach(button => {
-//         button.addEventListener('click', function(e) {
-//             e.preventDefault();
-
-//             const url = this.getAttribute('data-url');
-//             const icon = this.querySelector('i');
-//             const postId = this.getAttribute('data-post-id');  // Get the post ID
-
-//             fetch(url, {
-//                 method: 'GET',
-//                 headers: {
-//                     'X-Requested-With': 'XMLHttpRequest'
-//                 }
-//             })
-//             .then(response => {
-//                 if (!response.ok) {
-//                     return response.text().then(text => { throw new Error(text); });
-//                 }
-//                 return response.json();
-//             })
-//             .then(data => {
-//                 if (data.liked_status) {
-//                     icon.classList.add('liked');
-//                 } else {
-//                     icon.classList.remove('liked');
-//                 }
-//                 document.querySelector(`#like-count-${postId}`).innerText = `${data.likes_count} Likes`;
-//             })
-//             .catch(error => console.error('Error:', error));
-//         });
-//     });
-// });
-
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.like-button').forEach(button => {
         button.addEventListener('click', function(e) {
@@ -293,5 +259,53 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
         });
     });
+});
+// ===========Bookmark=================
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.bookmark-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const url = this.getAttribute('bookmark-url');
+            const icon = this.querySelector('i');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.saved) {
+                    icon.classList.add('saved');
+                } else {
+                    icon.classList.remove('saved');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 });
 

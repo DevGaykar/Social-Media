@@ -395,22 +395,7 @@ main .container .left .profile{
     margin:0.6rem;
 }
 
-/* .uil-heart {
-    color: gray;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.uil-heart.liked {
-    color: red;
-} */
-
-/* .like .uil-heart{
-    color: red;
-  }
-  .unlike .uil-heart{
-    color: black;
-  } */
+/* Icons color change when clicked */
 
 .uil-heart {
     color: gray;
@@ -420,6 +405,14 @@ main .container .left .profile{
 
 .uil-heart.liked {
     color: red;
+}
+
+.bookmark .bookmark-button i {
+    color: gray; /* Default color */
+}
+
+.bookmark .bookmark-button i.saved {
+    color: gold; /* Color when saved */
 }
 
 .middle .liked-by{

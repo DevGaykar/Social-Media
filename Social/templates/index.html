@@ -71,14 +71,12 @@
                             </span>
                         </div>
                         <div class="photo">
-                            <a href="{%url 'post-details' post.id%}"><img src="{{post.picture.url}}" alt="Alternative text" style="height: 381px; object-fit: cover;" >
+                            <a href="{%url 'post-details' post.id%}"><img src="{{post.picture.url}}" alt="Alternative text" 
+                                style="height: 381px; object-fit: cover;" >
                         </a>
                         </div>
                         <div class="action-buttons">
                             <div class="interaction-buttons">
-                                {% comment %} <a href = "{% url 'like' post.id %}">
-                                    <span><i class="uil uil-heart"></i></span>
-                                 </a> {% endcomment %}
                                 <a href="#" class="like-button" data-url="{% url 'like' post.id %}" data-post-id="{{ post.id }}">
                                     <span>
                                         <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
@@ -88,7 +86,11 @@
                                 <span><i class="uil uil-share-alt"></i></span>
                             </div>
                             <div class="bookmark">
-                                <span><i class="uil uil-bookmark"></i></span>
+                                <a href= "#" class="bookmark-button" bookmark-url="{% url 'favourite' post.id %}" bookmark-id="{{ post.id }}">
+                                    <span>
+                                        <i class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"></i>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                         <div class="liked-by">

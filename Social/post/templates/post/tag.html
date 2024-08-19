@@ -33,9 +33,6 @@
             </div>
             <div class="action-buttons">
                 <div class="interaction-buttons">
-                      {% comment %} <a href = "{% url 'like' post.id %}">
-                      <span><i class="uil uil-heart"></i></span>
-                    </a>  {% endcomment %} 
                     <a href="#" class="like-button" data-url="{% url 'like' post.id %}" data-post-id="{{ post.id }}">
                         <span>
                             <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
@@ -45,15 +42,20 @@
                     <span><i class="uil uil-share-alt"></i></span>
                 </div>
                 <div class="bookmark">
-                    <span><i class="uil uil-bookmark"></i></span>
-                </div>
+                    <a href= "#" class="bookmark-button" bookmark-url="{% url 'favourite' post.id %}" bookmark-id="{{ post.id }}">
+                        <span>
+                            <i class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"></i>
+                        </span>
+                    </a>
+                </div>    
+                    
             </div>
             <div class="liked-by">
                 <!-- <span><img src="{% static 'images/profile-10.jpg'%}"></span>
                 <span><img src="{% static 'images/profile-11.jpg'%}"></span>
                 <span><img src="{% static 'images/profile-12.jpg'%}"></span> -->
                 <!-- <p>Liked by <b>Gin </b> and <b>2,332 others</b> -->
-                <p><b>{{post.likes}}</b> Likes
+                <p id="like-count-{{ post.id }}"><b>{{ post.likes }}</b> Likes</p>
             </div>
             <div class="caption">
                 <p><b>{{post.user.username}}</b> {{post.caption}}
