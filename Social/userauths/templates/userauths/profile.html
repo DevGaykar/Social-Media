@@ -1,1 +1,108 @@
-{%extends 'base.html'%}
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.user.username }}'s Profile</title>
+    <!-- Bootstrap CSS (optional) -->
+    <link rel="stylesheet" href="{% static 'userauths/style.css' %}">
+</head>
+<body>
+ <div class="middle">
+    <header>
+        <div class="container">
+
+            <div class="profile">
+
+                <div class="profile-image">
+
+                    <img src="{{profile.image.url}}" alt="" style="width: 100px; height: 100px;">
+
+                </div>
+
+                <div class="profile-user-settings">
+                    {% if profile.first_name %}
+                    <h6 class="profile-user-name">{{profile.first_name}} {{profile.last_name}}</h6> <br>
+                    {% endif %}
+                    <h5 style="font-size: 15px;" class="profile-user-name">@{{profile.user.username}}</h5>
+
+                    {% comment %} {% if request.user.is_authenticated and request.user == profile.user %} {% endcomment %}
+                    <a style="text-decoration: none;" href="#" class="btn profile-edit-btn">Edit Profile</a>
+                    <a style="text-decoration: none;" href="#" class="btn profile-edit-btn">Logout</a>
+                    <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+
+                    
+                    {% comment %} {% endif %} {% endcomment %}
+                    <br><br>
+                    {% comment %} {% if request.user.is_authenticated and request.user != profile.user %} {% endcomment %}
+                        {% comment %} {% if follow_status == True %} {% endcomment %}
+                            <a href="#" class="btn profile-edit-btn" style="color: red;">Unfollow</a> <br><br>
+                        {% comment %} {% else %} {% endcomment %}
+                            <a href="#" class="btn profile-edit-btn" style="color: green;">Follow</a> <br><br>
+                        {% comment %} {% endif %}
+                    {% endif %} {% endcomment %}
+
+                    {% comment %} {% if request.user.is_authenticated and request.user != profile.user %} {% endcomment %}
+                            <a href="#" class="btn profile-edit-btn">Message</a> <br><br>
+                    {% comment %} {% endif %} {% endcomment %}
+                    <br>
+
+                </div>
+                <div class="profile-bio">
+                    <br>
+                    {% if profile.bio %}
+                    <p><span class="profile-real-name"></span>◉ {{profile.bio}}</p>
+                    {% endif %}
+                    {% if profile.location %}
+                    <p><span class="profile-real-name"></span>◉ {{profile.location}}</p>
+                    {% endif %}
+                    {% if profile.url %}
+                    <p><span class="profile-real-name"></span>◉ <a href="{{profile.url}}">{{profile.url}}</a></p>
+                    {% endif %}
+                    <br>
+                    <div class="profile-user-settings">
+                        <a  href="{% url 'profile' profile.user %}"  class="btns profiele-edit-btn">Posts</a>
+                        {% if request.user == profile.user %}
+                        <a  href="{% url 'profilefavourite' profile.user %}"  class="btns profeile-edit-btn">Saved</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-stats">
+
+                        <ul>
+                            <li><span class="profile-stat-count">{{posts_count}}</span> posts</li>
+                            <li><span class="profile-stat-count">5</span> followers</li>
+                            <li><span class="profile-stat-count">9</span> following</li>
+                        </ul>
+                        <br>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>    
+    </header>
+        
+    <main>
+        <!-- Posts Section -->
+        <div class="posts-grid">
+            {% for post in posts_paginator %}
+            <a href="{%url 'post-details' post.id%}"><div class="gallery-item" tabindex="0">
+                <img src="{{ post.picture.url }}" class="gallery-image" alt="" style = "width: 100%; height: 125px; object-fit: cover;" >
+            </div></a>
+            {% endfor %}  
+        </div>
+    </div>
+</main>
+
+</div>
+</body>
+</html>
+
+
+
+{% endblock content %}
