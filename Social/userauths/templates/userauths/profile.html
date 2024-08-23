@@ -1,22 +1,12 @@
-{% comment %} {%extends 'base.html'%} {% endcomment %}
-{% load static %}
-{% comment %} {% block content %} {% endcomment %}
- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Profile Page</title>
+{%extends 'base.html'%} {% load static %} {% block content %}
+<!DOCTYPE html>
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
-    <!-- CSS -->
-    <link rel="stylesheet" href= "{% static 'userauths/style.css' %}" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{% static 'userauths/style.css' %}" />
+  </div>
     <div class="header__wrapper">
       <header></header>
       <div class="cols__container">
@@ -24,56 +14,70 @@
         <div class="left__col">
           <div class="img__container">
             <!-- Display user profile image -->
-            <img src="{{profile.image.url}}"" alt="{{ profile.user.username }}" />
+            <img
+              src="{{profile.image.url}}"
+              alt="{{ profile.user.username }}"
+            />
             <span></span>
           </div>
-          <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+          <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+          <p style="margin-bottom: 10px;"> @{{profile.user.username }}</p>
           <p>{{ profile.bio }}</p>
-          <p>{{ profile.user.email }}</p>
-  
+          <!-- <p>{{ profile.user.email }}</p> -->
+
           <ul class="about">
-            <li><span>{{ profile.user.followers.count }}</span> Followers</li>
+            <li><span>{{ 10}}</span> Followers</li>
             <li><span>{{ profile.user.following.count }}</span> Following</li>
-            {% comment %}<li><span>200,543</span> Attraction</li>{% endcomment %}
+            {% comment %}
+            <li><span>200,543</span> Attraction</li>
+            {% endcomment %}
           </ul>
-  
+
           <div class="content">
             <p>
-              {{ profile.location }} <br>
+              {{ profile.location }} <br />
               {{ profile.url }}
             </p>
-  
+
             <ul>
               <!-- Replace with actual social media links if available -->
-              <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-              <li><a href="#"><i class="fab fa-pinterest"></i></a></li>
-              <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-              <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+              <li>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-dribbble"></i></a>
+              </li>
             </ul>
           </div>
         </div>
-        
         <!-- Right Column: Photos/Content -->
-         <div class="right__col">
-          <nav>
+        <div class="right__col">
+          <div class="nav">
             <ul>
-              <li><a href="#">Photos</a></li>
-              <li><a href="#">Galleries</a></li>
-              <li><a href="#">Groups</a></li>
-              <li><a href="#">About</a></li>
+              <li><a href="{% url 'profile' profile.user %}">Posts</a></li>
+              <li>
+                <a href="{% url 'profilefavourite' profile.user %}">Saved</a>
+              </li>
             </ul>
             <button>Follow</button>
-          </nav>
-  
+          </div>
+
           <div class="photos">
             <!-- Loop through posts to display photos dynamically -->
-            {% for post in posts_paginator %}
+            {% for post in posts %}
+            <a href="{{post.get_absolute_url}}">
               <img src="{{ post.picture.url }}" alt="Photo" />
+            </a>
             {% endfor %}
           </div>
         </div>
       </div>
     </div>
-  {% comment %} </div>
-  
-{% endblock content %} {% endcomment %}
+ 
+{% endblock content %}

@@ -1,4 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+
+
+main .container .left{
+  display: none;
+}
+
 body {
   width: 100%;
   margin: 0;
@@ -22,7 +29,8 @@ a {
 
 .header__wrapper header {
   width: 100%;
-  background: url("../img/bg.jpeg") no-repeat 50% 20% / cover;
+  background: url("../userauths/bg.jpeg") no-repeat 50% 20% / cover;
+  /* background: url("{% url 'profile' profile.user %}") no-repeat 50% 20% / cover; */
   min-height: calc(100px + 15vw);
 }
 
@@ -62,7 +70,7 @@ a {
   margin-top: 60px;
   font-weight: 600;
   font-size: 22px;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 .header__wrapper .cols__container .left__col p {
   font-size: 0.9rem;
@@ -110,7 +118,7 @@ a {
 .header__wrapper .cols__container .content ul i {
   font-size: 1.3rem;
 }
-.header__wrapper .cols__container .right__col nav {
+/* .header__wrapper .cols__container .right__col nav {
   display: flex;
   align-items: center;
   padding: 30px 0;
@@ -143,6 +151,42 @@ a {
 .header__wrapper .cols__container .right__col nav button:hover {
   opacity: 0.8;
 }
+ */
+
+.header__wrapper .cols__container .right__col .nav {
+  display: flex;
+  align-items: center;
+  padding: 30px 0;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.header__wrapper .cols__container .right__col .nav ul {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+.header__wrapper .cols__container .right__col .nav ul li a {
+  text-transform: uppercase;
+  color: #818181;
+}
+.header__wrapper .cols__container .right__col .nav ul li:nth-child(1) a {
+  color: #1d1d1d;
+  font-weight: 600;
+}
+
+.header__wrapper .cols__container .right__col .nav button {
+  background: #0091ff;
+  color: #fff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.header__wrapper .cols__container .right__col .nav button:hover {
+  opacity: 0.8;
+}
+
 .header__wrapper .cols__container .right__col .photos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
@@ -157,7 +201,8 @@ a {
 
 /* Responsiveness */
 
-@media (min-width: 868px) {
+@media (min-width: 868px){
+/* @media  screen and (max-width:992px) { */
   .header__wrapper .cols__container {
     max-width: 1200px;
     margin: 0 auto;
@@ -182,6 +227,7 @@ a {
 }
 
 @media (min-width: 1017px) {
+/* @media screen and (max-width: 1200px){ */
   .header__wrapper .cols__container .left__col {
     margin: 0;
     margin-right: auto;
@@ -191,5 +237,40 @@ a {
   }
   .header__wrapper .cols__container .right__col nav button {
     margin-top: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  .header__wrapper .cols__container {
+    max-width: 1400px; /* Adjust this value as needed */
+    margin: 0 auto;
+    width: 95%; /* Slightly wider container on larger screens */
+    grid-template-columns: 1fr 2fr; /* Adjust layout if necessary */
+    gap: 60px; /* Increase gap between columns */
+  }
+
+  .header__wrapper .cols__container .left__col {
+    padding: 30px; /* Adjust padding for more space */
+    max-width: 400px; /* Allow more width for the left column */
+  }
+
+  .header__wrapper .cols__container .right__col .nav {
+    flex-direction: row; /* Ensure horizontal alignment */
+    justify-content: space-between; /* Distribute nav items */
+  }
+
+  .header__wrapper .cols__container .right__col .nav ul {
+    flex-direction: row; /* Ensure horizontal nav list items */
+    gap: 40px; /* Increase gap between nav items */
+  }
+
+  .header__wrapper .cols__container .right__col .photos {
+    height: 400px; /* Increase photo container height */
+    padding: 0 0 40px; /* Adjust padding */
+  }
+
+  .header__wrapper .cols__container .right__col .photos img {
+    object-fit: cover; /* Ensure images fit well */
+    height: auto; /* Allow images to adjust height based on content */
   }
 }

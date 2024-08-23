@@ -29,7 +29,8 @@ def UserProfile(request, username):
     
     context = {
         'posts_paginator': posts_paginator,
-        'profile': profile
+        'posts' : posts,
+        'profile': profile,
     }
     
     return render(request, "userauths/profile.html", context)
