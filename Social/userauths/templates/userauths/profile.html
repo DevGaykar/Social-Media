@@ -22,24 +22,29 @@
           </div>
           <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
           <p style="margin-bottom: 10px;"> @{{profile.user.username }}</p>
-          <p>{{ profile.bio }}</p>
+         <p> {{ profile.location }} </p><br>
+          
           <!-- <p>{{ profile.user.email }}</p> -->
 
+          {% if profile.user != request.user %}
+          <label class = "btn btn-primary" > Follow </label>
+          <label class = "btn btn-primary"> UnFollow </label>
+          {% endif %}
+
           <ul class="about">
-            <li><span>{{ 10}}</span> Followers</li>
-            <li><span>{{ profile.user.following.count }}</span> Following</li>
-            {% comment %}
-            <li><span>200,543</span> Attraction</li>
-            {% endcomment %}
+            <li><span>{{post_count}}</span> Posts</li>
+            <li><span>{{ followers_count}}</span> Followers</li>
+            <li><span>{{ following_count}}</span> Following</li>
           </ul>
+
+          
 
           <div class="content">
             <p>
-              {{ profile.location }} <br />
-              {{ profile.url }}
+              <p>{{ profile.bio }} {% lorem 1 b random %}</p>
             </p>
 
-            <ul>
+            {% comment %} <ul>
               <!-- Replace with actual social media links if available -->
               <li>
                 <a href="#"><i class="fab fa-twitter"></i></a>
@@ -53,7 +58,7 @@
               <li>
                 <a href="#"><i class="fab fa-dribbble"></i></a>
               </li>
-            </ul>
+            </ul> {% endcomment %}
           </div>
         </div>
         <!-- Right Column: Photos/Content -->
@@ -64,8 +69,13 @@
               <li>
                 <a href="{% url 'profilefavourite' profile.user %}">Saved</a>
               </li>
-            </ul>
-            <button>Follow</button>
+            </ul> <br>
+          {% if profile.user != request.user %}
+          <label class = "btn btn-primary" > Message </label>
+          {% endif %}
+          {% if profile.user == request.user%}
+          <label class = "btn btn-primary"> Edit Profile </label>
+          {%endif%}
           </div>
 
           <div class="photos">
@@ -75,7 +85,8 @@
               <img src="{{ post.picture.url }}" alt="Photo" />
             </a>
             {% endfor %}
-          </div>
+        </div>
+        </div>
         </div>
       </div>
     </div>

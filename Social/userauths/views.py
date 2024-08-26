@@ -22,6 +22,10 @@ def UserProfile(request, username):
         # Get the user's favourite posts
         posts = profile.favourite.all()
     
+    #Tracking Profile Stats
+    post_count = Post.objects.filter(user=user).count()
+    following_count = Follow.objects.filter(follower=user).count()
+    followers_count = Follow.objects.filter(following=user).count()
     # Pagination
     paginator = Paginator(posts, 8)
     page_number = request.GET.get('page')
@@ -31,6 +35,9 @@ def UserProfile(request, username):
         'posts_paginator': posts_paginator,
         'posts' : posts,
         'profile': profile,
+        'post_count' : post_count,
+        'following_count' : following_count,
+        'followers_count' : followers_count,
     }
     
     return render(request, "userauths/profile.html", context)
