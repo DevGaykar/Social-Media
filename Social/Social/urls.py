@@ -19,7 +19,8 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from userauths.views import UserProfile
+from userauths.views import UserProfile,follow
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('post/',include('post.urls')),
@@ -27,6 +28,7 @@ urlpatterns = [
     #profile
     path('<username>/',UserProfile,name='profile'),
     path('<username>/saved/',UserProfile,name='profilefavourite'),
+    path('<username>/follow/<option>/',follow,name='follow'),
 ]
 
 if settings.DEBUG:

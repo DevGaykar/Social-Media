@@ -27,8 +27,11 @@
           <!-- <p>{{ profile.user.email }}</p> -->
 
           {% if profile.user != request.user %}
-          <label class = "btn btn-primary" > Follow </label>
-          <label class = "btn btn-primary"> UnFollow </label>
+            {%if follow_status == True%}
+              <a href = "{%url 'follow' profile.user 0 %}"><label class = "btn btn-primary"> UnFollow </label></a>       
+            {%else%}
+            <a href = "{%url 'follow' profile.user 1 %}"><label class = "btn btn-primary" > Follow </label></a>
+            {%endif%}
           {% endif %}
 
           <ul class="about">

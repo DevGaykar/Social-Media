@@ -1,6 +1,8 @@
-from django.shortcuts import render,get_object_or_404
-from django.urls import resolve
+from django.shortcuts import render,redirect,get_object_or_404
+from django.urls import resolve,reverse
 from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect
+from django.db import transaction
 
 from .models import Profile
 from django.contrib.auth.models import User
@@ -26,6 +28,7 @@ def UserProfile(request, username):
     post_count = Post.objects.filter(user=user).count()
     following_count = Follow.objects.filter(follower=user).count()
     followers_count = Follow.objects.filter(following=user).count()
+    follow_status = Follow.objects.filter(following=user,follower=request.user).exists()
     # Pagination
     paginator = Paginator(posts, 8)
     page_number = request.GET.get('page')
@@ -38,6 +41,24 @@ def UserProfile(request, username):
         'post_count' : post_count,
         'following_count' : following_count,
         'followers_count' : followers_count,
+        'follow_status' : follow_status,
     }
     
     return render(request, "userauths/profile.html", context)
+
+def follow(request,username,option):
+    user = request.user
+    following = get_object_or_404(User,username=username)
+
+    f,created = Follow.objects.get_or_create(following=following,follower=request.user)
+
+    if int(option) == 0:
+        f.delete()
+        Stream.objects.filter(following=following, user=request.user).all().delete()
+    else:
+        posts = Post.objects.filter(user=following)[:25]
+        with transaction.atomic():
+            for post in posts:
+                Stream.objects.create(post=post,user=request.user,date=post.posted,following=following)
+        
+    return HttpResponseRedirect(reverse('profile',args=[username]))
