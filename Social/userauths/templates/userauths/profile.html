@@ -77,7 +77,7 @@
           <label class = "btn btn-primary" > Message </label>
           {% endif %}
           {% if profile.user == request.user%}
-          <label class = "btn btn-primary"> Edit Profile </label>
+         <a href="{%url 'editprofile'%}"> <label class = "btn btn-primary"> Edit Profile </label></a>
           {%endif%}
           </div>
 
