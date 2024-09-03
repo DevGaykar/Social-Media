@@ -42,7 +42,7 @@
                         <p class="name">Smith Mark</p>
                     </div>
                 </div>
-                <!------------------End of Stories--------------------->
+                <!------------------End of Stories---------------------->
                 <form class="create-post">
                     <div class="profile-photo">
                         <img src="{% static 'images/profile-8.jpg'%}" >
@@ -51,15 +51,18 @@
                     <input type="submit" value="Post" class="btn btn-primary">
                 </form>
 
-                <!-------------------------FEEDS------------------------->
+                <!-------------------------FEEDS-------------------------->
                 <div class="feeds">
-                    <!-------------------------FEED1------------------------->
+                    <!-------------------------FEED1-------------------------->
                     {% for post in post_items %}
                     <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
                                     <!-- <img src="{% static 'images/profile-13.jpg'%}"> -->
+                                    <img
+                                    src="{{post.user.profile.image.url}}"
+                                    />
                                 </div>
                                 <div class="ingo">
                                     <h3>{{post.user.username}}</h3>
@@ -82,7 +85,9 @@
                                         <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
                                     </span>
                                 </a>
-                                <span><i class="uil uil-comment-dots"></i></span>
+                                <a href="{%url 'post-details' post.id%}">
+                                    <span><i class="uil uil-comment-dots"></i></span>
+                                </a>
                                 <span><i class="uil uil-share-alt"></i></span>
                             </div>
                             <div class="bookmark">
@@ -109,7 +114,11 @@
                                 </span></p>
                         </div>
                         <div>
-                            <div class="comments text-muted">View all 269 commments</div>
+                            {% if post.comments.count <= 1  %}
+                             <div class="comments text-muted"> {{post.comments.count}} Comment</div>
+                            {%elif post.comments.count > 1%}
+                            <div class="comments text-muted"> {{post.comments.count}} Comments</div>
+                             {%endif%}
                         </div>
                     </div>
                     {% endfor %}                  
@@ -125,18 +134,18 @@
                     <div class="heading">
                         <h4>Messages</h4> <i class="uil uil-edit"></i>
                     </div>
-                    <!------------------Search bar----------------->
+                    <!------------------Search bar------------------>
                     <div class="search-bar">
                         <i class="uil uil-search"></i>
                         <input type="search" placeholder="Search messages" id="message-search">
                     </div>
-                    <!----------------Message Category------------------->
+                    <!----------------Message Category-------------------->
                     <div class="category">
                         <h6 class="active">Primary</h6>
                         <h6 >General</h6>
                         <h6 class="message-requests">Requests(7)</h6>
                     </div>
-                    <!----------------Message1 ------------------------->
+                    <!----------------Message1 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-17.jpg'%}">
@@ -146,7 +155,7 @@
                             <p class="text-muted">Just woke up bruh</p>
                         </div>
                     </div>
-                    <!----------------Message2 ------------------------->
+                    <!----------------Message2 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-7.jpg'%}">
@@ -156,7 +165,7 @@
                             <p class="text-muted">lol u right</p>
                         </div>
                     </div>
-                    <!----------------Message3 ------------------------->
+                    <!----------------Message3 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-1.jpg'%}">
@@ -167,7 +176,7 @@
                             <p class="text-bold">Birthday Tomorrow!</p>
                         </div>
                     </div>
-                    <!----------------Message4 ------------------------->
+                    <!----------------Message4 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-6.jpg'%}">
@@ -178,7 +187,7 @@
                             <p class="text-bold">2 new messages</p>
                         </div>
                     </div>
-                    <!----------------Message5 ------------------------->
+                    <!----------------Message5 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-5.jpg'%}">
@@ -188,7 +197,7 @@
                             <p class="text-muted">Up for  the movie</p>
                         </div>
                     </div>
-                    <!----------------Message6 ------------------------->
+                    <!----------------Message6 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-3.jpg'%}">
@@ -198,7 +207,7 @@
                             <p class="text-muted">Hii</p>
                         </div>
                     </div>
-                    <!----------------Message7 ------------------------->
+                    <!----------------Message7 -------------------------->
                     <div class="message">
                         <div class="profile-photo">
                             <img src="{% static 'images/profile-2.jpg'%}">

@@ -1,17 +1,20 @@
-{%extends 'base.html'%}
+ {%extends 'base.html'%}
 {%load static%}
-    {%block content%}
-            <!--*****************Middle*************************-->
+    {%block content%} 
+            {% comment %} *****************Middle************************* {% endcomment %}
             <div class="middle">
-                <!-------------------------FEEDS------------------------->
+                {% comment %} -------------------------FEEDS------------------------- {% endcomment %}
                 <div class="feeds">
-                    <!-------------------------FEED1------------------------->
+                    {% comment %} -------------------------FEED1------------------------- {% endcomment %}
                     
                     <div class="feed">
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
-                                    <!-- <img src="{% static 'images/profile-13.jpg'%}"> -->
+                                     {% comment %} <img src="{% static 'images/profile-13.jpg'%}"> {% endcomment %}
+                                     <img
+                                        src="{{post.user.profile.image.url}}"
+                                        />
                                 </div>
                                 <div class="ingo">
                                     <h3>{{post.user.username}}</h3>
@@ -23,8 +26,9 @@
                             </span>
                         </div>
                         <div class="photo">
-                            <a href="{%url 'post-details' post.id%}"><img src="{{post.picture.url}}" alt="Alternative text"  style="width: 500px; height: 381px; object-fit: cover;" >
-                        </a>
+                            <a href="{%url 'post-details' post.id%}">
+                                <img src="{{post.picture.url}}" alt="Alternative text"  style="width: 500px; height: 381px; object-fit: cover;" >
+                            </a>
                         </div>
                         <div class="action-buttons">
                             <div class="interaction-buttons">  
@@ -33,8 +37,9 @@
                                     <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
                                 </span>
                             </a>
-                            
+                            <a href="#" >
                                 <span><i class="uil uil-comment-dots"></i></span>
+                            </a>
                                 <span><i class="uil uil-share-alt"></i></span>
                             </div>
                             <div class="bookmark">
@@ -57,13 +62,47 @@
                                  <span class="harsh-tag">{% for tag in post.tag.all%}<a href ="{{tag.get_absolute_url}}">#{{tag}}</a>{% endfor %}</span></p>
                         </div>
                         <div>
-                            <div class="comments text-muted">View all 269 commments</div>
+                            {% if post.comments.count <= 1 %}
+                             <div class="comments text-muted"> {{post.comments.count}} Comment</div>
+                            {%elif post.comments.count > 1%}
+                            <div class="comments text-muted"> {{post.comments.count}} Comments</div>
+                             {%endif%}
                         </div>
                     </div>
                                     
-                    <!----------------End of FEED----------->
+                    <!----------------End of FEED------------>
                 </div>
-                <!----------------End of FEEDS----------->
+                {% comment %} ----------------End of FEEDS----------- {% endcomment %}
             </div>
             <!--==================END OF MIDDLE========================-->
-            {% endblock content %}
+
+        <div class="right">
+            <div class="messages">
+                <div class="heading">
+                    <h4>Comments</h4> 
+                </div>
+
+                <div class="card !pb-0 -mt-3">
+                    <form method="POST" action="{%url 'comment-sent' post.id %}" >
+                        <div class="search-bar">
+                            {% csrf_token %}
+                            {% comment %} <input type="search" placeholder="Add comment" id="message-search"> {% endcomment %}
+                            {{ commentform }}
+                        </div>
+                        <button @click="open = false" class="btn btn-primary" type="submit">Submit</button>
+                    </form>
+                </div>
+               <!--- --------------Comment Category---------------------->
+                <div class="category">
+                    <h6 class="active">Newest First</h6>
+                    <h6 >Top Comment</h6>
+                </div>
+                <!----------------Comment -------------------------->
+                {% for comment in post.comments.all %}
+                {% include 'comment/comment.html' %}
+                {% endfor %}
+            </div>
+            <!--------------------End of Messages-------------->
+        </div>  
+        
+    {% endblock content %}

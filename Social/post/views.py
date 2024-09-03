@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect,JsonResponse
 from post.models import Tag,Stream,Follow,Post,Likes
 from django.contrib.auth.models import User
 from post.forms import NewPostForm
-
+from comment.forms import CommentCreateForm
 
 
 def home(request):
@@ -50,8 +50,10 @@ def NewPost(request):
 
 def PostDetail(request,post_id):
     post = get_object_or_404(Post,id=post_id)
+    commentform = CommentCreateForm()
     context ={
-        'post':post
+        'post':post,
+        'commentform' : commentform
     }
     return render(request,'post/post-details.html',context)
     

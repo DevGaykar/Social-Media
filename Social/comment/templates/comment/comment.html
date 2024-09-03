@@ -1,0 +1,14 @@
+<div class="message">
+    <div class="profile-photo">
+        {% if comment.author %}
+            <img src="{{ comment.author.profile.image.url }}" alt="{{ comment.author.profile.first_name }} {{ comment.author.profile.last_name }}" />
+        {% else %}
+            <span class="text-gray-500">no author</span>
+        {% endif %}
+        
+    </div>
+    <div class="message-body">
+        <h5>{{ comment.author.profile.first_name }} {{ comment.author.profile.last_name }}</h5>
+        <p class="text-muted">{{ comment.body }}</p>
+    </div>
+</div>

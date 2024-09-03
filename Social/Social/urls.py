@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from userauths.views import UserProfile,follow
+from comment.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +31,9 @@ urlpatterns = [
     path('<username>/',UserProfile,name='profile'),
     path('<username>/saved/',UserProfile,name='profilefavourite'),
     path('<username>/follow/<option>/',follow,name='follow'),
+
+    #comment
+    path('commentsent/<post_id>/', comment_sent, name='comment-sent'), 
 ]
 
 if settings.DEBUG:
