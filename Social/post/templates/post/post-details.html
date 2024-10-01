@@ -86,7 +86,7 @@
                     <form method="POST" action="{%url 'comment-sent' post.id %}" >
                         <div class="search-bar">
                             {% csrf_token %}
-                            {% comment %} <input type="search" placeholder="Add comment" id="message-search"> {% endcomment %}
+                            {% comment %} <input type="search" placeholder="Add comment" id="message-search" > {% endcomment %}
                             {{ commentform }}
                         </div>
                         <button @click="open = false" class="btn btn-primary" type="submit">Submit</button>

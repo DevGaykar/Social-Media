@@ -7,7 +7,10 @@ class CommentCreateForm(ModelForm):
         model = Comment
         fields  = ['body']
         widgets = {
-            'body': forms.TextInput(attrs={'placeholder':'Add comment ...'})
+            'body': forms.TextInput(attrs=
+                                    {'placeholder':'Add comment ...', 
+                                     'style': 'background: var(--color-light);'
+                                     })
         }
         labels = {
             'body' : ''
