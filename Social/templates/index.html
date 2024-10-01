@@ -45,9 +45,9 @@
                 <!------------------End of Stories---------------------->
                 <form class="create-post">
                     <div class="profile-photo">
-                        <img src="{% static 'images/profile-8.jpg'%}" >
+                        <img src="{{request.user.profile.image.url}}" >
                     </div>
-                    <input type="text" placeholder="What's on your mind Dev?" id="create-post">
+                    <input type="text" placeholder="What's on your mind {{request.user.profile.user.username }}?" id="create-post">
                     <input type="submit" value="Post" class="btn btn-primary">
                 </form>
 
@@ -59,13 +59,12 @@
                         <div class="head">
                             <div class="user">
                                 <div class="profile-photo">
-                                    <!-- <img src="{% static 'images/profile-13.jpg'%}"> -->
-                                    <img
-                                    src="{{post.user.profile.image.url}}"
-                                    />
+                                    <a href = "{% url 'profile' post.user.profile.user %}">
+                                    <img src="{{post.user.profile.image.url}}"/>
                                 </div>
                                 <div class="ingo">
                                     <h3>{{post.user.username}}</h3>
+                                </a>
                                     <small>{{post.posted|date:"d M Y"}}</small>
                                 </div>
                             </div>

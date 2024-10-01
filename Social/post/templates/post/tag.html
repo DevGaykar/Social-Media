@@ -8,18 +8,20 @@
             #{{tag.title|title}}</h1>
         </div>
     </header> 
-    <!-------------------------FEEDS------------------------->
+    <!-------------------------FEEDS-------------------------->
     <div class="feeds">
-        <!-------------------------FEED1------------------------->
+        <!-------------------------FEED1-------------------------->
         {% for post in posts %}
         <div class="feed">
             <div class="head">
                 <div class="user">
                     <div class="profile-photo">
-                        <!-- <img src="{% static 'images/profile-13.jpg'%}"> -->
+                        <a href = "{% url 'profile' post.user.profile.user %}">
+                        <img src="{{post.user.profile.image.url}}"/>
                     </div>
                     <div class="ingo">
                         <h3>{{post.user.username}}</h3>
+                    </a>
                         <small>{{post.posted|date:"d M Y"}}</small>
                     </div>
                 </div>
@@ -38,7 +40,9 @@
                             <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
                         </span>
                     </a>
-                    <span><i class="uil uil-comment-dots"></i></span>
+                    <a href="{%url 'post-details' post.id%}">
+                        <span><i class="uil uil-comment-dots"></i></span>
+                    </a>
                     <span><i class="uil uil-share-alt"></i></span>
                 </div>
                 <div class="bookmark">
@@ -62,7 +66,11 @@
                      <span class="harsh-tag">{% for tag in post.tag.all%}<a href ="{{tag.get_absolute_url}}">#{{tag.title}}</a>{% endfor %}</span></p>
             </div>
             <div>
-                <div class="comments text-muted">View all 269 commments</div>
+                {% if post.comments.count <= 1 %}
+                 <div class="comments text-muted"> {{post.comments.count}} Comment</div>
+                {%elif post.comments.count > 1%}
+                <div class="comments text-muted"> {{post.comments.count}} Comments</div>
+                 {%endif%}
             </div>
         </div>
         {% endfor %}                  

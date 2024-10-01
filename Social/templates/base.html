@@ -14,41 +14,47 @@
     <nav>
         <div class="container">
             <h2 class="log">
+                <a href = "{% url 'home' %}">
                 Social
+                </a>
             </h2>
             <!-- <div class="search-bar">
                 <i class="uil uil-search"></i>
                 <input type="search" placeholder="Search for user">
             </div> -->
             <div class="create">
-                <label class="btn btn-primary" for="create-post">Create</label>
+                <a href="{% url 'newpost' %}" class="btn btn-primary" role="button">
+                    Create 
+                </a>
                 <div class="profile-photo" >
-                    <img src="{% static './images/profile-8.jpg'%}" alt="profile pic">
+                    <a href = "{% url 'profile' request.user.profile.user %}">
+                    <img src="{{request.user.profile.image.url}}"/>
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!------------------------Main------------------------->
+    <!------------------------Main-------------------------->
     <main>
         <div class="container">
             <!--*****************Left*************************-->
             <div class="left">
-                <a  class="profile">
+                <a  class="profile" href = "{% url 'profile' request.user.profile.user %}">
                     <div class="profile-photo">
-                        <img src="{% static '/images/profile-8.jpg'%}">
+                            <img src="{{request.user.profile.image.url}}"/>
                     </div>
                     <div class="handle">
-                        <h4>Dev Gaykar</h4>
+                        <h4>{{ request.user.profile.first_name }} {{ request.user.profile.last_name }}</h4>
                         <p class="text-muted">
-                            @dev
+                            @{{request.user.profile.user.username }}
                         </p>
                     </div>
                 </a>
 
                 <!--*****************Sidebar*************************-->
                 <div class="sidebar">
-                    <a  class="menu-item active">
+                    <a  class="menu-item active"  href = "{% url 'home' %}">
                         <span><i class="uil uil-home"></i></span><h3>Home</h3>
                     </a>
                     <a  class="menu-item">
@@ -115,7 +121,7 @@
                     <a  class="menu-item " id="messages-notification">
                         <span><i class="uil uil-envelope"><small class="notification-count">6</small></i></span><h3>Messages</h3>
                     </a>
-                    <a  class="menu-item ">
+                    <a  class="menu-item " href="{% url 'profilefavourite' request.user.profile.user %}">
                         <span><i class="uil uil-bookmark"></i></span><h3>Bookmarks</h3>
                     </a>
                     <a  class="menu-item " id="theme">
@@ -126,7 +132,9 @@
                     </a>
                 </div>
                 <!-------------------Button---------------->
-                <label for="create-post" class="btn btn-primary">Create Post</label>
+                <a href="{% url 'newpost' %}" class="btn btn-primary" role="button">
+                    Create Post
+                </a>
             </div>
             <!---- ====================End of left=============================-->
             {% block content%}
