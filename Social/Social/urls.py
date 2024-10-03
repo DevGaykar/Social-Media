@@ -34,6 +34,7 @@ urlpatterns = [
 
     #comment
     path('commentsent/<post_id>/', comment_sent, name='comment-sent'), 
+    path('comment/delete/<pk>',comment_delete_view,name="comment-delete"),
 ]
 
 if settings.DEBUG:

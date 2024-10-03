@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import Comment
 from .forms import CommentCreateForm
 from post.models import Post 
+from django.contrib import messages
 
 # def comment_sent(request,post_id):
 #     post = get_object_or_404(Post, id=post_id) 
@@ -35,7 +36,7 @@ def comment_sent(request, post_id):
             comment.parent_post = post
             comment.save()
             # Redirect to the same post detail page after saving the comment
-            return redirect(reverse('post-details', args=[post.id]))  # Replace 'post_details' with your actual URL name
+            return redirect(reverse('post-details', args=[post.id]))  
 
     else:
         form = CommentCreateForm()  # Initialize an empty form for GET requests
@@ -50,3 +51,13 @@ def comment_sent(request, post_id):
     }
 
     return render(request, 'post/post-details.html', context)
+
+def comment_delete_view(request,pk):
+    post = get_object_or_404(Comment,id=pk,author=request.user)
+
+    if request.method == "POST":
+        post.delete()
+        messages.success(request,'Comment deleted')
+        return redirect('post-details',post.parent_post.id)
+    
+    
