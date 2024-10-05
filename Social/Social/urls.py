@@ -35,6 +35,8 @@ urlpatterns = [
     #comment
     path('commentsent/<post_id>/', comment_sent, name='comment-sent'), 
     path('comment/delete/<pk>',comment_delete_view,name="comment-delete"),
+    path('reply-sent/<post_id>' , reply_sent, name='reply-sent'),
+    path('reply/delete/<pk>',reply_delete_view,name="reply-delete"),
 ]
 
 if settings.DEBUG:

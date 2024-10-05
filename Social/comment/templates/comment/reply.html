@@ -1,0 +1,25 @@
+<div class="message">
+    <div class="profile-photo">
+        {% if reply.author %}
+        <a href = "{% url 'profile' reply.author.profile.user %}">
+            <img src="{{ reply.author.profile.image.url }}" alt="{{ reply.author.profile.first_name }} {{ reply.author.profile.last_name }}" />
+        {% else %}
+            <span class="text-gray-500">no author</span>
+        {% endif %}
+    </div>
+
+    <div class="message-body">
+        <h5>{{ reply.author.profile.first_name }} {{ reply.author.profile.last_name }}</h5>
+    </a>
+        <p class="text-muted">{{ reply.body }}</p>
+          <div class="button-container">
+            <button class="like-button">Like</button>
+            {%  if user.is_authenticated and reply.author == user %} 
+                 <form action="{% url 'reply-delete' reply.id %}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this reply?');">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form> 
+            {%endif%} 
+        </div>  
+    </div>
+</div>
