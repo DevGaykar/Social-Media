@@ -220,46 +220,6 @@ Bg3.addEventListener('click',() =>{
     changeBG();
 })
 
-// ==================Like================================
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.like-button').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const url = this.getAttribute('data-url');
-            const icon = this.querySelector('i');
-            const postId = this.getAttribute('data-post-id');  // Get the post ID
-
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text); });
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Update the like icon color
-                if (data.liked_status) {
-                    icon.classList.add('liked');
-                } else {
-                    icon.classList.remove('liked');
-                }
-
-                // Update the like count
-                const likeCountElement = document.querySelector(`#like-count-${postId}`);
-                if (likeCountElement) {
-                    likeCountElement.innerText = `${data.likes_count} Likes`;
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-});
 // ===========Bookmark=================
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.bookmark-button').forEach(button => {

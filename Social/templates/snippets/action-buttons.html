@@ -1,0 +1,49 @@
+{%load static%}
+
+<div class="action-buttons">
+  <div class="interaction-buttons">
+    <a
+      class="cursor-pointer like-button"
+      hx-get="{% url 'like-post' post.id %}"
+      hx-target="#like-section-{{ post.id }}"
+      hx-swap="innerHTML"
+    >
+      <span>
+        <i
+          class="uil uil-heart {% if user in post.likes.all%} liked {% endif %}"
+        >
+        </i>
+      </span>
+    </a>
+    <a href="#">
+      <span><i class="uil uil-comment-dots"></i></span>
+    </a>
+    <span><i class="uil uil-share-alt"></i></span>
+  </div>
+  <div class="bookmark">
+    <a
+      href="#"
+      class="bookmark-button"
+      bookmark-url="{% url 'favourite' post.id %}"
+      bookmark-id="{{ post.id }}"
+    >
+      <span>
+        <i
+          class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"
+        ></i>
+      </span>
+    </a>
+  </div>
+</div>
+
+<div class="liked-by" id="like-section-{{ post.id }}">
+  <!-- <span><img src="{% static 'images/profile-10.jpg'%}"></span>
+    <span><img src="{% static 'images/profile-11.jpg'%}"></span>
+    <span><img src="{% static 'images/profile-12.jpg'%}"></span> -->
+  <!-- <p>Liked by <b>Gin </b> and <b>2,332 others</b> -->
+  {%if post.likes.count > 1%}
+  <p id="like-{{ post.id }}"><b>{{ post.likes.count }}</b> Likes</p>
+  {%else%}
+  <p id="like-{{ post.id }}"><b>{{ post.likes.count }}</b> Like</p>
+  {%endif%}
+</div>

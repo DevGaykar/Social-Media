@@ -2,7 +2,7 @@ from userauths.models import Profile
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import  login_required
 from django.urls import reverse
-from django.http import HttpResponseRedirect,JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 
 from post.models import Tag,Stream,Follow,Post,Likes
 from django.contrib.auth.models import User
@@ -70,28 +70,39 @@ def Tags(request,tag_slug):
     }   
     return render(request,'post/tag.html',context)
 
-def like(request, post_id):
-    user = request.user
-    post = get_object_or_404(Post, id=post_id)
+# def like(request, post_id):
+#     user = request.user
+#     post = get_object_or_404(Post, id=post_id)
 
-    liked = Likes.objects.filter(user=user, post=post).first()
+#     liked = Likes.objects.filter(user=user, post=post).first()
 
-    if liked:
-        liked.delete()
-        post.likes -= 1
-        liked_status = False
+#     if liked:
+#         liked.delete()
+#         # post.likes -= 1
+#         liked_status = False
+#     else:
+#         Likes.objects.create(user=user, post=post)
+#         # post.likes += 1
+#         liked_status = True
+
+#     post.likes = post.post_likes.count()
+#     post.save()
+
+#     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#         return JsonResponse({'likes_count': post.likes, 'liked_status': liked_status})
+
+#     return redirect('post_detail', post_id=post_id)
+
+def like_post(request,post_id):
+    post = get_object_or_404(Post,id=post_id)
+    user_exist = post.likes.filter(id=request.user.id).exists()
+
+    if user_exist:
+        post.likes.remove(request.user)
     else:
-        Likes.objects.create(user=user, post=post)
-        post.likes += 1
-        liked_status = True
+        post.likes.add(request.user)
 
-    post.save()
-
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'likes_count': post.likes, 'liked_status': liked_status})
-
-    return redirect('post_detail', post_id=post_id)
-
+    return render(request,'snippets/action-buttons.html', {'post': post})
 
 def favourite(request, post_id):
     user = request.user
@@ -108,6 +119,6 @@ def favourite(request, post_id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
          return JsonResponse({'saved': saved})
 
-    return redirect('post_detail', post_id=post_id)
+    return redirect('post-details', post_id=post_id)
         
   

@@ -1,0 +1,38 @@
+{%load static%}
+    <div class="feed">
+        <div class="head">
+            <div class="user">
+                <div class="profile-photo">
+                    <a href = "{% url 'profile' post.user.profile.user %}">
+                     <img src="{{post.user.profile.image.url}}"/>
+                </div>
+                <div class="ingo">
+                    <h3>{{post.user.username}}</h3>
+                </a>
+                    <small>{{post.posted|date:"d M Y"}}</small>
+                </div>
+            </div>
+            <span class="edit">
+                <i class="uil uil-ellipsis-h"></i>
+            </span>
+        </div>
+        <div class="photo">
+            <a href="{%url 'post-details' post.id%}">
+                <img src="{{post.picture.url}}" alt="Alternative text"  style="width: 500px; height: 381px; object-fit: cover;" >
+            </a>
+        </div>
+
+        {%include 'snippets/action-buttons.html' %}
+        
+        <div class="caption">
+            <p><b>{{post.user.username}}</b> {{post.caption}}
+                 <span class="harsh-tag">{% for tag in post.tag.all%}<a href ="{{tag.get_absolute_url}}">#{{tag}}</a>{% endfor %}</span></p>
+        </div>
+        <div>
+            {% if post.comments.count <= 1 %}
+             <div class="comments text-muted"> {{post.comments.count}} Comment</div>
+            {%elif post.comments.count > 1%}
+            <div class="comments text-muted"> {{post.comments.count}} Comments</div>
+             {%endif%}
+        </div>
+    </div>

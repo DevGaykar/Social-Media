@@ -53,77 +53,13 @@
 
                 <!-------------------------FEEDS-------------------------->
                 <div class="feeds">
-                    <!-------------------------FEED1-------------------------->
+                   
                     {% for post in post_items %}
-                    <div class="feed">
-                        <div class="head">
-                            <div class="user">
-                                <div class="profile-photo">
-                                    <a href = "{% url 'profile' post.user.profile.user %}">
-                                    <img src="{{post.user.profile.image.url}}"/>
-                                </div>
-                                <div class="ingo">
-                                    <h3>{{post.user.username}}</h3>
-                                </a>
-                                    <small>{{post.posted|date:"d M Y"}}</small>
-                                </div>
-                            </div>
-                            <span class="edit">
-                                <i class="uil uil-ellipsis-h"></i>
-                            </span>
-                        </div>
-                        <div class="photo">
-                            <a href="{%url 'post-details' post.id%}"><img src="{{post.picture.url}}" alt="Alternative text" 
-                                style="height: 381px; object-fit: cover;" >
-                        </a>
-                        </div>
-                        <div class="action-buttons">
-                            <div class="interaction-buttons">
-                                <a href="#" class="like-button" data-url="{% url 'like' post.id %}" data-post-id="{{ post.id }}">
-                                    <span>
-                                        <i class="uil uil-heart{% if user in post.post_likes.all %} liked{% endif %}"></i>
-                                    </span>
-                                </a>
-                                <a href="{%url 'post-details' post.id%}">
-                                    <span><i class="uil uil-comment-dots"></i></span>
-                                </a>
-                                <span><i class="uil uil-share-alt"></i></span>
-                            </div>
-                            <div class="bookmark">
-                                <a href= "#" class="bookmark-button" bookmark-url="{% url 'favourite' post.id %}" bookmark-id="{{ post.id }}">
-                                    <span>
-                                        <i class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="liked-by">
-                            <!-- <span><img src="{% static 'images/profile-10.jpg'%}"></span>
-                            <span><img src="{% static 'images/profile-11.jpg'%}"></span>
-                            <span><img src="{% static 'images/profile-12.jpg'%}"></span> -->
-                            <!-- <p>Liked by <b>Gin </b> and <b>2,332 others</b> -->
-                            <p id="like-count-{{ post.id }}"><b>{{ post.likes }}</b> Likes</p>
-                        </div>
-                        <div class="caption">
-                            <p><b>{{post.user.username}}</b> {{post.caption}}
-                                 <span class="harsh-tag">
-                                    {% for tag in post.tag.all%}
-                                    <a href ="{{tag.get_absolute_url}}">#{{tag.title}}</a>
-                                    {% endfor %}
-                                </span></p>
-                        </div>
-                        <div>
-                            {% if post.comments.count <= 1  %}
-                             <div class="comments text-muted"> {{post.comments.count}} Comment</div>
-                            {%elif post.comments.count > 1%}
-                            <div class="comments text-muted"> {{post.comments.count}} Comments</div>
-                             {%endif%}
-                        </div>
-                    </div>
+                        {%include 'post/post.html' %}
                     {% endfor %}                  
-                    <!----------------End of FEED----------->
+                    
                 </div>
-                <!----------------End of FEEDS----------->
+                <!----------------End of FEEDS------------>
             </div>
             <!--==================END OF MIDDLE========================-->
 
