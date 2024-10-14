@@ -1,6 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
+
+from post.views import like_toggle
 from .models import Comment,Reply
 from .forms import CommentCreateForm,ReplyCreateForm
 from post.models import Post 
@@ -33,6 +35,15 @@ def comment_sent(request, post_id):
     }
 
     return render(request, 'post/post-details.html', context)
+
+@like_toggle(Comment)
+def like_comment(request,post):
+    return render(request,'snippets/comment_like.html', {'comment': post})
+
+
+@like_toggle(Reply)
+def like_reply(request,post):
+    return render(request,'snippets/reply_like.html', {'reply': post})
 
 def reply_sent(request, post_id):
     comment = get_object_or_404(Comment, id=post_id)

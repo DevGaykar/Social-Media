@@ -8,6 +8,7 @@ from post.models import Tag,Stream,Follow,Post,Likes
 from django.contrib.auth.models import User
 from post.forms import NewPostForm
 from comment.forms import CommentCreateForm,ReplyCreateForm
+from comment.models import Comment
 
 
 def home(request):
@@ -93,16 +94,28 @@ def Tags(request,tag_slug):
 
 #     return redirect('post_detail', post_id=post_id)
 
-def like_post(request,post_id):
-    post = get_object_or_404(Post,id=post_id)
-    user_exist = post.likes.filter(id=request.user.id).exists()
+def like_toggle(model):
+    def inner_func(func):
+        def wrapper(request,*args,**kwargs):
+            post = get_object_or_404(model,id=kwargs.get('post_id'))
+            user_exist = post.likes.filter(id=request.user.id).exists()
 
-    if user_exist:
-        post.likes.remove(request.user)
-    else:
-        post.likes.add(request.user)
+            if user_exist:
+                post.likes.remove(request.user)
+            else:
+                post.likes.add(request.user)
+                
+            return func(request,post)
+        return wrapper
+    return inner_func
 
+@like_toggle(Post)
+def like_post(request,post):
     return render(request,'snippets/action-buttons.html', {'post': post})
+
+# @like_toggle(Comment)
+# def like_comment(request,post):
+#     return render(request,'snippets/comment_like.html', {'comment': post})
 
 def favourite(request, post_id):
     user = request.user

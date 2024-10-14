@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 from userauths.views import UserProfile,follow
 from comment.views import *
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('post.urls')),
@@ -34,9 +35,11 @@ urlpatterns = [
 
     #comment
     path('commentsent/<post_id>/', comment_sent, name='comment-sent'), 
-    path('comment/delete/<pk>',comment_delete_view,name="comment-delete"),
-    path('reply-sent/<post_id>' , reply_sent, name='reply-sent'),
-    path('reply/delete/<pk>',reply_delete_view,name="reply-delete"),
+    path('comment/delete/<pk>/',comment_delete_view,name="comment-delete"),
+    path('comment/like/<post_id>/',like_comment,name="like-comment"),
+    path('reply-sent/<post_id>/' , reply_sent, name='reply-sent'),
+    path('reply/delete/<pk>/',reply_delete_view,name="reply-delete"),
+    path('reply/like/<post_id>/',like_reply,name="like-reply"),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,20 @@
+{%load static%}
+<div style="display: flex; align-items: center;">
+  <a
+    class="cursor-pointer like-button"
+    hx-get="{% url 'like-comment' comment.id %}"
+    hx-target="closest div"
+    hx-swap="outerHTML"
+  >
+    <span>
+      <i
+        class="uil uil-heart {% if user in comment.likes.all%} liked {% endif %}"
+        style="font-size: 16px"
+      >
+      </i>
+    </span>
+  </a>
+
+  <p id="like-{{ comment.id }}"><b>{{ comment.likes.count }}</b>
+  
+</div>
