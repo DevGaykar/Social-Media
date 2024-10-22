@@ -1,0 +1,17 @@
+{%load static%}
+<div class="liked-by" id="like-section-{{ post.id }}">
+     {% comment %} <span><img src="{% static 'images/profile-10.jpg'%}"></span>
+      <span><img src="{% static 'images/profile-11.jpg'%}"></span>
+      <span><img src="{% static 'images/profile-12.jpg'%}"></span> 
+     <p>Liked by <b>{{post.likes.username}} </b> and <b>2,332 others</b>  {% endcomment %}
+    {% comment %} Only show the like count  {% endcomment %}
+    {% if post.likes.count > 1 %}
+         <p><b>{{ post.likes.count }}</b> Likes</p>
+    {% else %}
+        <p><b>{{ post.likes.count }}</b> Like</p>
+    {% endif %} 
+    
+</div>
+
+<!-- The like button with the heart icon should remain here -->
+

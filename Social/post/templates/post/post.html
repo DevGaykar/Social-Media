@@ -22,7 +22,51 @@
             </a>
         </div>
 
-        {%include 'snippets/action-buttons.html' %}
+        
+        
+<div class="action-buttons">
+    <div class="interaction-buttons" >
+     
+      {%include 'snippets/post_like.html' %}
+
+      <a href="#">
+        <span><i class="uil uil-comment-dots"></i></span>
+      </a>
+
+      <span><i class="uil uil-share-alt"></i></span>
+
+    </div>
+    <div class="bookmark">
+      <a
+        href="#"
+        class="bookmark-button"
+        bookmark-url="{% url 'favourite' post.id %}"
+        bookmark-id="{{ post.id }}"
+      >
+        <span>
+          <i
+            class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"
+          ></i>
+        </span>
+      </a>
+    </div>
+  </div>
+  
+  {% comment %} <div class="liked-by" id="like-section-{{ post.id }}">
+    <!-- <span><img src="{% static 'images/profile-10.jpg'%}"></span>
+      <span><img src="{% static 'images/profile-11.jpg'%}"></span>
+      <span><img src="{% static 'images/profile-12.jpg'%}"></span> -->
+     {% comment %} <p>Liked by <b>Gin </b> and <b>2,332 others</b>  {% endcomment %}
+     {% comment %} {% if post.likes.count > 1 %}
+        <p><b>{{ post.likes.count }}</b> Likes</p>
+    {% else %}
+        <p><b>{{ post.likes.count }}</b> Like</p>
+    {% endif %} 
+</div> {% endcomment %} 
+<div id="like-section-{{ post.id }}">
+  {% include 'snippets/like_count.html' %}
+</div>
+  
         
         <div class="caption">
             <p><b>{{post.user.username}}</b> {{post.caption}}
@@ -35,4 +79,4 @@
             <div class="comments text-muted"> {{post.comments.count}} Comments</div>
              {%endif%}
         </div>
-    </div>
+    </div> 

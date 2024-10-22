@@ -1,0 +1,15 @@
+{%load static%}
+{% comment %} <div > {% endcomment %}
+<a
+  class="cursor-pointer like-button"
+  hx-get="{% url 'like-post' post.id %}"
+  hx-target="#like-section-{{ post.id }}"
+  hx-swap="innerHTML"
+>
+  <span>
+    <i class="uil uil-heart {% if request.user in post.likes.all %} liked {% endif %}">
+    </i>
+  </span>
+</a>
+
+{% comment %} </div> {% endcomment %}

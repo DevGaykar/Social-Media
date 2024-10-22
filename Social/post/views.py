@@ -102,20 +102,22 @@ def like_toggle(model):
 
             if user_exist:
                 post.likes.remove(request.user)
+                liked = False
             else:
                 post.likes.add(request.user)
+                liked = False
                 
-            return func(request,post)
+            return func(request,post,liked)
         return wrapper
     return inner_func
 
-@like_toggle(Post)
-def like_post(request,post):
-    return render(request,'snippets/action-buttons.html', {'post': post})
+# @like_toggle(Post)
+# def like_post(request,post):
+#     return render(request,'snippets/like_count.html', {'post': post})
 
-# @like_toggle(Comment)
-# def like_comment(request,post):
-#     return render(request,'snippets/comment_like.html', {'comment': post})
+@like_toggle(Post)
+def like_post(request, post, liked):
+    return render(request, 'snippets/like_count.html', {'post': post})
 
 def favourite(request, post_id):
     user = request.user
