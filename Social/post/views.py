@@ -6,11 +6,12 @@ from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 
 from post.models import Tag,Stream,Follow,Post,Likes
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from post.forms import NewPostForm
 from comment.forms import CommentCreateForm,ReplyCreateForm
 from comment.models import Comment
 
-
+@login_required(login_url='account_login')
 def home(request):
     user = request.user
     posts = Stream.objects.filter(user=user)

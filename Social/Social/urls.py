@@ -25,6 +25,7 @@ from comment.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+     path('accounts/', include('allauth.urls')),
     path('',include('post.urls')),
     path('user/',include('userauths.urls')),
 

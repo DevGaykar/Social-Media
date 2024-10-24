@@ -37,12 +37,12 @@ def comment_sent(request, post_id):
     return render(request, 'post/post-details.html', context)
 
 @like_toggle(Comment)
-def like_comment(request,post):
+def like_comment(request,post,liked):
     return render(request,'snippets/comment_like.html', {'comment': post})
 
 
 @like_toggle(Reply)
-def like_reply(request,post):
+def like_reply(request,post,liked):
     return render(request,'snippets/reply_like.html', {'reply': post})
 
 def reply_sent(request, post_id):
