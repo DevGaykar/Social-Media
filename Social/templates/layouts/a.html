@@ -1,0 +1,34 @@
+{%extends 'base.html'%}
+{% block layout %}
+<div class="container">
+     <!--*****************Left*************************-->
+     <div class="left">
+        <a  class="profile" href = "{% url 'profile' request.user.profile.user %}">
+            <div class="profile-photo">
+                    <img src="{{request.user.profile.image.url}}"/>
+            </div>
+            <div class="handle">
+                <h4>{{ request.user.profile.first_name }} {{ request.user.profile.last_name }}</h4>
+                <p class="text-muted">
+                    @{{request.user.profile.user.username }}
+                </p>
+            </div>
+        </a>
+
+        <!--*****************Sidebar*************************-->
+
+        {%include 'snippets/sidebar.html'%}
+
+        <!-------------------Button---------------->
+        <a href="{% url 'newpost' %}" class="btn btn-primary" role="button">
+            Create Post
+        </a>
+    </div>
+    <!---- ====================End of left=============================-->
+           
+    {% block content%}
+
+    {%endblock content%}
+
+</div>
+{% endblock %}
