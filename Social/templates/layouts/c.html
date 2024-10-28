@@ -1,14 +1,16 @@
 {%extends 'base.html'%}
 {%load static%}
 
-{% block extra_css %}
-    <link rel="stylesheet" href= "{% static '/signup.css' %}" >     
-{% endblock %}
+ {% block extra_css %}
+<link rel="stylesheet" href= "{% static '/signup.css' %}" >
+{% endblock %} }
 
 {% block layout %}
-    <div align='center'>
+<div class='container' id='form'>
+        <div class = 'box'>
         {% block content%}
-        
+            
         {%endblock content%}
-    </div>   
+        </div>
+</div>
 {% endblock %}

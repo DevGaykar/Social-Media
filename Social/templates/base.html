@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/htmx.org@2.0.3"></script>
     <script src= "{% static 'post/js/actionbuttons.js' %}" ></script>
     {% block extra_css %}{% endblock %}
+    
     <!-- The javascricpt file has been loaded just before the body ends or it will give DOM error -->
 </head>
 <body>
@@ -24,6 +25,7 @@
     </main>
 
 <script src= "{% static './index.js' %}" ></script>
+{% block extra_scripts %}{% endblock %}
 </body>
 
 
