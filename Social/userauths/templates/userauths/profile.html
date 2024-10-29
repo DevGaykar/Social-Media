@@ -12,10 +12,10 @@
       <div class="cols__container">
         <!-- Left Column: User Information -->
         <div class="left__col">
-          <div class="img__container">
+          <div class="img__container ">
             <!-- Display user profile image -->
             <img
-              src="{{profile.image.url}}"
+              src="{{request.user.profile.image.url}}"
               alt="{{ profile.user.username }}"
             />
             <span></span>
@@ -35,8 +35,8 @@
           {% endif %}
 
           <ul class="about">
-            <li><span>{{post_count}}</span> Posts</li>
-            <li><span>{{ followers_count}}</span> Followers</li>
+            <li style="margin-right: 10px;" ><span>{{post_count}}</span> Posts</li>
+            <li style="margin-right: 10px;"><span>{{ followers_count}}</span> Followers</li>
             <li><span>{{ following_count}}</span> Following</li>
           </ul>
 
@@ -44,7 +44,7 @@
 
           <div class="content">
             <p>
-              <p>{{ profile.bio }} {% lorem 1 b random %}</p>
+              <p>{{ profile.bio }} </p>
             </p>
 
             {% comment %} <ul>

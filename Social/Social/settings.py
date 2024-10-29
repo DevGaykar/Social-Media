@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'userauths.apps.UserauthsConfig',
     'comment.apps.CommentConfig',
 
+    #django-cleanup
+    'django_cleanup.apps.CleanupConfig',
+
     #`django-allauth`
     'allauth',
     'allauth.account',
@@ -154,6 +157,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'userauths/static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Increase the maximum allowed file size
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5 MB 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5 MB 
+#  Increase the maximum allowed file size for uploads 
+FILE_UPLOAD_MAX_SIZE = 5242880
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

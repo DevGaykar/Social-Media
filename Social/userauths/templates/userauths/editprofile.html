@@ -1,28 +1,20 @@
+{%extends 'layouts/d.html'%}
 {% load static %}
 
-<br><br>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
-  <link rel="stylesheet" href="{% static 'post/css/newpost.css' %}">
-  <title>Create Post</title>
-</head>
-
-<body>
-
-  <div id="wrapper">
-    <div class="container">
-      <div class="form-data">
-        <form action="" method="POST" enctype="multipart/form-data">
-			{% csrf_token %}
+{%block content%}
+        <div class="box" style="width: 450px;">
+          <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
           <div class="logo">
             <h3 style="padding: 20px; font-size: 20px;">Edit Profile</h3>
           </div>
+          <div class="profile-photo" style="width: 7rem;" >
+            <img id="avatar" src="{{request.user.profile.image.url}}"/>  
+        </div>
+        <div style="display: flex; align-items: center;">
+          <h4 id="firstname" style="margin-right: 10px;">{{ request.user.profile.first_name }}</h4>
+          <h4 id="lastname">{{ request.user.profile.last_name }}</h4>
+      </div>          
           {{form.image}} <br>
           {{form.first_name}} <br>
           {{form.last_name}} <br>
@@ -30,15 +22,40 @@
           {{form.location}} <br>
           {{form.url}} <br>
           <button class="form-btn" type="submit">Update Profile</button>
-          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
-          
         </form>
-        
-      </div>
-    </div>
 
-  </div>
+    </div> 
 
-</body>
+    <script>
+    
+      // This updates the avatar
+      const fileInput = document.querySelector('input[type="file"]');
+  
+      fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      const image = document.querySelector('#avatar');
+  
+      if (file && file.type.includes('image')) {
+          const url = URL.createObjectURL(file);
+          image.src = url;
+      }
+      });
+  
+      // This updates the name
+      const firstnameInput = document.getElementById('id_first_name');
+      const firstnameOutput = document.getElementById('firstname');
+  
+      firstnameInput.addEventListener('input', (event) => {
+        firstnameOutput.innerText = event.target.value;
+      });
 
-</html>
+      const lastnameInput = document.getElementById('id_last_name');
+      const lastnameOutput = document.getElementById('lastname');
+  
+      lastnameInput.addEventListener('input', (event) => {
+        lastnameOutput.innerText = event.target.value;
+      });
+  
+  </script>
+
+{%endblock content%}

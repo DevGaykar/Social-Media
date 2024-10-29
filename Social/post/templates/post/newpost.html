@@ -1,40 +1,36 @@
+{%extends 'layouts/d.html'%}
 {% load static %}
-<br><br>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
-  <link rel="stylesheet" href="{% static 'post/css/newpost.css' %}">
-  <title>Create Post</title>
-</head>
+{%block content%}
 
-<body>
-
-  <div id="wrapper">
-    <div class="container">
-      <div class="form-data">
-        <form action="" method="POST" enctype="multipart/form-data">
-			{% csrf_token %}
-          <div class="logo">
-            <h3 style="padding: 20px; font-size: 20px;">Create New Post</h3>
-          </div>
-          {{form.picture}} <br>
-          {{form.caption}} <br>
-          {{form.tags}} <br>
-          <button class="form-btn" type="submit">Post</button>
-          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
-          
-        </form>
-        
+<div class="box" style="width: 450px;">
+  <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="logo">
+          <h3 style="padding: 20px; font-size: 20px;">Create New Post</h3>
       </div>
-    </div>
+      {{ form.picture }} <br>
+      <img id="post" src="#" alt="Image Preview" style="display: none; width: 100px; height: 100px;" /> <br>
+      {{ form.caption }} <br>
+      {{ form.tags }} <br>
+      <button class="form-btn" type="submit">Post</button>
+  </form>
+</div>
 
-  </div>
+<script>
+  // This updates the image
+  const fileInput = document.querySelector('input[type="file"]');
+  fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      const image = document.querySelector('#post');
+      if (file && file.type.includes('image')) {
+          const url = URL.createObjectURL(file);
+          image.src = url;
+          image.style.display = 'block'; 
+      }
+  });
+</script>
 
-</body>
 
-</html>
+  {%endblock content%}
+

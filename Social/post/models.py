@@ -30,7 +30,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
-    picture = models.ImageField(upload_to=user_directory_path,verbose_name="Picture",null=True)
+    picture = models.ImageField(upload_to=user_directory_path,verbose_name="Picture",null=True,max_length=5242880)
     caption = models.CharField(max_length=10000,verbose_name="Caption")
     posted = models.DateTimeField(auto_now_add=True)
     tag = models.ManyToManyField(Tag,related_name="tags")

@@ -65,26 +65,13 @@ def follow(request,username,option):
     return HttpResponseRedirect(reverse('profile',args=[username]))
 
 def EditProfile(request):
-    user = request.user.id
-    profile = Profile.objects.get(user__id=user)
+    form = EditProfileForm(instance=request.user.profile)
 
     if request.method == "POST":
         form = EditProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
-            profile.image = form.cleaned_data.get('image')
-            profile.first_name = form.cleaned_data.get('first_name')
-            profile.last_name = form.cleaned_data.get('last_name')
-            profile.location = form.cleaned_data.get('location')
-            profile.url = form.cleaned_data.get('url')
-            profile.bio = form.cleaned_data.get('bio')
-            profile.save()
-            return redirect('profile',profile.user.username)
+            form.save()
+            return redirect('profile',request.user.username)
         else:
             print("Form errors:", form.errors)
-    else:
-        form = EditProfileForm(instance=request.user.profile)
-
-    context = {
-        'form' : form,
-    }
-    return render(request,'userauths/editprofile.html',context)
+    return render(request,'userauths/editprofile.html',{'form' : form})
