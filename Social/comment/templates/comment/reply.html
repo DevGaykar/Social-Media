@@ -2,14 +2,14 @@
     <div class="profile-photo">
         {% if reply.author %}
         <a href = "{% url 'profile' reply.author.profile.user %}">
-            <img src="{{ reply.author.profile.image.url }}" alt="{{ reply.author.profile.first_name }} {{ reply.author.profile.last_name }}" />
+            <img src="{{ reply.author.profile.avatar}}" alt="{{ reply.author.profile.name }}" />
         {% else %}
             <span class="text-gray-500">no author</span>
         {% endif %}
     </div>
 
     <div class="message-body">
-        <h5>{{ reply.author.profile.first_name }} {{ reply.author.profile.last_name }}</h5>
+        <h5>{{ reply.author.profile.name }}</h5>
     </a>
         <p class="text-muted">{{ reply.body }}</p>
           <div class="button-container">

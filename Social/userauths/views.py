@@ -8,6 +8,9 @@ from .models import Profile
 from django.contrib.auth.models import User
 from post.models import Post,Follow,Stream
 from .forms import EditProfileForm
+from django.contrib.auth import logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def UserProfile(request, username):
     # Ensure the profile exists
@@ -47,6 +50,7 @@ def UserProfile(request, username):
     
     return render(request, "userauths/profile.html", context)
 
+
 def follow(request,username,option):
     user = request.user
     following = get_object_or_404(User,username=username)
@@ -64,6 +68,7 @@ def follow(request,username,option):
         
     return HttpResponseRedirect(reverse('profile',args=[username]))
 
+@login_required
 def EditProfile(request):
     form = EditProfileForm(instance=request.user.profile)
 
@@ -75,3 +80,14 @@ def EditProfile(request):
         else:
             print("Form errors:", form.errors)
     return render(request,'userauths/editprofile.html',{'form' : form})
+
+@login_required
+def DeleteProfile(request):
+    user = request.user
+
+    if request.method == 'POST':
+        logout(request)
+        user.delete()
+        messages.success(request,'Account deleted, Hope to see you again')
+        return redirect('home')
+    return render(request,'userauths/deleteprofile.html')

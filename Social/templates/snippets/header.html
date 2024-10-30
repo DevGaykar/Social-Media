@@ -20,7 +20,7 @@
             </a>
                 <div class="profile-photo" >
                     <a href = "{% url 'profile' request.user.profile.user %}">
-                    <img src="{{request.user.profile.image.url}}"/>
+                    <img src="{{request.user.profile.avatar}}"/>
                     </a>
                 </div>
         {%endif%}

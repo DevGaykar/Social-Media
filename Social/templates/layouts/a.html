@@ -5,10 +5,10 @@
      <div class="left">
         <a  class="profile" href = "{% url 'profile' request.user.profile.user %}">
             <div class="profile-photo">
-                    <img src="{{request.user.profile.image.url}}"/>
+                    <img src="{{request.user.profile.avatar}}"/>
             </div>
             <div class="handle">
-                <h4>{{ request.user.profile.first_name }} {{ request.user.profile.last_name }}</h4>
+                <h4>{{ request.user.profile.name }}</h4>
                 <p class="text-muted">
                     @{{request.user.profile.user.username }}
                 </p>

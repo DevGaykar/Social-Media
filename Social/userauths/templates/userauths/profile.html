@@ -15,15 +15,18 @@
           <div class="img__container ">
             <!-- Display user profile image -->
             <img
-              src="{{request.user.profile.image.url}}"
+              src="{{profile.avatar}}"
               alt="{{ profile.user.username }}"
             />
             <span></span>
           </div>
-          <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+          <h2>{{ profile.name }}</h2>
           <p style="margin-bottom: 10px;"> @{{profile.user.username }}</p>
-         <p> {{ profile.location }} </p><br>
-          
+          {%if profile.location%}
+           <p> {{ profile.location }} </p><br>
+          {%else%}
+          <p>Planet Earth</p><br>
+          {%endif%}
           <!-- <p>{{ profile.user.email }}</p> -->
 
           {% if profile.user != request.user %}
@@ -44,7 +47,11 @@
 
           <div class="content">
             <p>
+              {%if profile.bio%}
               <p>{{ profile.bio }} </p>
+              {%else%}
+              <p>Procrastinator</p>
+              {%endif%}
             </p>
 
             {% comment %} <ul>

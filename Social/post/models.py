@@ -34,7 +34,7 @@ class Post(models.Model):
     caption = models.CharField(max_length=10000,verbose_name="Caption")
     posted = models.DateTimeField(auto_now_add=True)
     tag = models.ManyToManyField(Tag,related_name="tags")
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='posts')
     likes = models.ManyToManyField(User,related_name="likedposts",through="LikedPost")
 
     def get_absolute_url(self):

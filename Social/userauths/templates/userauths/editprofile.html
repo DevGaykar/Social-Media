@@ -9,7 +9,7 @@
             <h3 style="padding: 20px; font-size: 20px;">Edit Profile</h3>
           </div>
           <div class="profile-photo" style="width: 7rem;" >
-            <img id="avatar" src="{{request.user.profile.image.url}}"/>  
+            <img id="avatar" src="{{request.user.profile.avatar}}"/>  
         </div>
         <div style="display: flex; align-items: center;">
           <h4 id="firstname" style="margin-right: 10px;">{{ request.user.profile.first_name }}</h4>
@@ -22,8 +22,9 @@
           {{form.location}} <br>
           {{form.url}} <br>
           <button class="form-btn" type="submit">Update Profile</button>
+          <a class="form-btn" href="{{ request.META.HTTP_REFERER }}">Cancel</a>
         </form>
-
+        <a class="form-btn" href="{% url 'deleteprofile' %}">Delete Profile</a>
     </div> 
 
     <script>
