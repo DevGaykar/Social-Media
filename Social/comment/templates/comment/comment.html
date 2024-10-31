@@ -1,7 +1,7 @@
 <div class="message">
     <div class="profile-photo">
         {% if comment.author %}
-        <a href = "{% url 'profile' comment.author.profile.user %}">
+        <a href = "{% url 'userprofile' comment.author.profile.user %}">
             <img src="{{ comment.author.profile.avatar }}" 
             alt="{{ comment.author.profile.name }}" />
         {% else %}

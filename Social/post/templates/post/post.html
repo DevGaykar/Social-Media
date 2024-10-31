@@ -3,7 +3,7 @@
         <div class="head">
             <div class="user">
                 <div class="profile-photo">
-                    <a href = "{% url 'profile' post.user.profile.user %}">
+                    <a href = "{% url 'userprofile' post.user.profile.user %}">
                      <img src="{{post.user.profile.image.url}}"/>
                 </div>
                 <div class="ingo">
@@ -66,10 +66,10 @@
 <div id="like-section-{{ post.id }}">
   {% include 'snippets/like_count.html' %}
 </div>
-  
+
         
         <div class="caption">
-            <p><b>{{post.user.username}}</b> {{post.caption}}
+            <p><b>@{{post.user.username}}</b> {{post.caption}}
                  <span class="harsh-tag">{% for tag in post.tag.all%}<a href ="{{tag.get_absolute_url}}">#{{tag}}</a>{% endfor %}</span></p>
         </div>
         <div>

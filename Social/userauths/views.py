@@ -12,42 +12,45 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-def UserProfile(request, username):
-    # Ensure the profile exists
-    Profile.objects.get_or_create(user=request.user)
-    
-    user = get_object_or_404(User, username=username)
-    profile = Profile.objects.get(user=user)
-    
-    url_name = resolve(request.path).url_name
-    
-    if url_name == 'profile':
-        # Get the user's posts
-        posts = Post.objects.filter(user=user).order_by('-posted')
+def UserProfile(request, username=None):
+    # If username is None, it’s the logged-in user's profile
+    if username is None or username == request.user.username:
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        
+        # Determine if we're showing saved posts or user's posts
+        url_name = resolve(request.path).url_name
+        if url_name == 'profile':
+            posts = Post.objects.filter(user=user).order_by('-posted')
+        else:
+            posts = profile.favourite.all()
     else:
-        # Get the user's favourite posts
-        posts = profile.favourite.all()
+        # Viewing another user's profile
+        user = get_object_or_404(User, username=username)
+        profile = Profile.objects.get(user=user)
+        posts = Post.objects.filter(user=user).order_by('-posted')
     
-    #Tracking Profile Stats
-    post_count = Post.objects.filter(user=user).count()
+    # Profile stats
+    post_count = posts.count()
     following_count = Follow.objects.filter(follower=user).count()
     followers_count = Follow.objects.filter(following=user).count()
-    follow_status = Follow.objects.filter(following=user,follower=request.user).exists()
+    follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
+
     # Pagination
     paginator = Paginator(posts, 8)
     page_number = request.GET.get('page')
     posts_paginator = paginator.get_page(page_number)
-    
+
     context = {
         'posts_paginator': posts_paginator,
-        'posts' : posts,
+        'posts': posts,
         'profile': profile,
-        'post_count' : post_count,
-        'following_count' : following_count,
-        'followers_count' : followers_count,
-        'follow_status' : follow_status,
+        'post_count': post_count,
+        'following_count': following_count,
+        'followers_count': followers_count,
+        'follow_status': follow_status,
     }
-    
+
     return render(request, "userauths/profile.html", context)
 
 

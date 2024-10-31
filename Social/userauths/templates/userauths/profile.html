@@ -75,10 +75,10 @@
         <div class="right__col">
           <div class="nav">
             <ul>
-              <li><a href="{% url 'profile' profile.user %}">Posts</a></li>
+              <li><a href="{% url 'userprofile' profile.user %}">Posts</a></li>
               {% if profile.user == request.user%}
               <li>
-                <a href="{% url 'profilefavourite' profile.user %}">Saved</a>
+                <a href="{% url 'profilefavourite'  %}">Saved</a>
               </li>
               {%endif%}
             </ul> <br>

@@ -30,9 +30,13 @@ urlpatterns = [
     path('user/',include('userauths.urls')),
 
     #profile
-    path('<username>/',UserProfile,name='profile'),
-    path('<username>/saved/',UserProfile,name='profilefavourite'),
-    path('<username>/follow/<option>/',follow,name='follow'),
+   # Logged-in user's profile and saved posts
+    path('profile/', UserProfile, name='profile'),
+    path('profile/saved/', UserProfile, name='profilefavourite'),
+    
+    # Other user's profile and follow options
+    path('<username>/', UserProfile, name='userprofile'),
+    path('<username>/follow/<option>/', follow, name='follow'),
 
     #comment
     path('commentsent/<post_id>/', comment_sent, name='comment-sent'), 
