@@ -3,6 +3,7 @@ from . import views
 from userauths.views import *
 
 urlpatterns = [
-    path('profile/edit/',EditProfile,name="editprofile"),
+    path('edit/',EditProfile,name="editprofile"),
     path('profile/delete/',DeleteProfile,name="deleteprofile"),
+    path('profile/onboarding/',DeleteProfile,name="profile-onboarding"),
 ]

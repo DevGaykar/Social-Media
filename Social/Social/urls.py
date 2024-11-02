@@ -19,20 +19,24 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from userauths.views import UserProfile,follow
+from userauths.views import *
 from comment.views import *
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
     path('',include('post.urls')),
-    path('user/',include('userauths.urls')),
+    # path('profile/',include('userauths.urls')),
 
     #profile
    # Logged-in user's profile and saved posts
     path('profile/', UserProfile, name='profile'),
+    path('profile/edit/',EditProfile,name="editprofile"),
+    path('profile/onboarding/',EditProfile,name="profile-onboarding"),
+    path('profile/delete/',DeleteProfile,name="deleteprofile"),
     path('profile/saved/', UserProfile, name='profilefavourite'),
+    
     
     # Other user's profile and follow options
     path('<username>/', UserProfile, name='userprofile'),

@@ -19,10 +19,17 @@
                 Log Out 
             </a>
                 <div class="profile-photo" >
-                    <a href = "{% url 'profile'  %}">
-                    <img src="{{request.user.profile.avatar}}"/>
-                    </a>
+                    {%if request.user.profile.avatar%}
+                        <a href = "{% url 'profile'  %}">
+                        <img src="{{request.user.profile.avatar}}"/>
+                        </a>
+                    {%else%}
+                        <a href = "{% url 'profile'  %}">
+                        <img src="{% static '/images/avatar_default.png' %}"/>
+                        </a>
+                    {%endif%}
                 </div>
+
         {%endif%}
         </div>
     </div>

@@ -12,6 +12,8 @@ class Profile(models.Model):
     location = models.CharField(max_length=200, null=True, blank=True)
     url = models.URLField(max_length=200, null=True, blank=True)
     favourite = models.ManyToManyField(Post,blank=True)
+    email = models.EmailField(unique=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) :
         return f'{self.user.username} - Profile'
@@ -21,7 +23,7 @@ class Profile(models.Model):
         try:
             avatar = self.image.url
         except:
-            avatar = static('/profile_picture/avatar_default.png') 
+            avatar = static('/images/avatar_default.png') 
             print(f"Using default avatar: {avatar}")
         return avatar
     

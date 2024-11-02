@@ -79,10 +79,15 @@ def EditProfile(request):
         form = EditProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
             form.save()
-            return redirect('profile',request.user.username)
+            return redirect('profile')
         else:
             print("Form errors:", form.errors)
-    return render(request,'userauths/editprofile.html',{'form' : form})
+
+    if request.path == reverse('profile-onboarding'):
+        template = 'userauths/profile_onboarding.html'
+    else:
+        template = 'userauths/editprofile.html'
+    return render(request,template,{'form' : form})
 
 @login_required
 def DeleteProfile(request):

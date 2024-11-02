@@ -20,5 +20,10 @@ class EditProfileForm(forms.ModelForm):
         }
         widgets = {
             'image': forms.FileInput(),
-            'bio' : forms.Textarea(attrs={'rows':3})
+            'bio' : forms.Textarea(attrs={'rows':3, 'placeholder': 'Tell us about yourself...'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'Enter your first name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Enter your last name'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Enter your location'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Enter your email'}),
+            'url': forms.TextInput(attrs={'placeholder': 'Url'})
         }
