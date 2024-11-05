@@ -35,6 +35,12 @@
 
       <span><i class="uil uil-share-alt"></i></span>
 
+      {%if post.user.profile.user == request.user%}
+      <a href="{%url 'delete-post' post.id%} ">
+      <span><i class="uil uil-trash-alt"></i></span> 
+      </a>
+      {%endif%}
+
     </div>
     <div class="bookmark">
       <a
@@ -44,9 +50,7 @@
         bookmark-id="{{ post.id }}"
       >
         <span>
-          <i
-            class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"
-          ></i>
+          <i class="uil uil-bookmark{% if post in user.profile.favourite.all %} saved{% endif %}"></i>
         </span>
       </a>
     </div>

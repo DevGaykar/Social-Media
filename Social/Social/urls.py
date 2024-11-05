@@ -37,7 +37,6 @@ urlpatterns = [
     path('profile/delete/',DeleteProfile,name="deleteprofile"),
     path('profile/saved/', UserProfile, name='profilefavourite'),
     
-    
     # Other user's profile and follow options
     path('<username>/', UserProfile, name='userprofile'),
     path('<username>/follow/<option>/', follow, name='follow'),

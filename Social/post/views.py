@@ -61,6 +61,14 @@ def PostDetail(request,post_id):
     }
     return render(request,'post/post-details.html',context)
     
+def PostDelete(request,post_id):
+    post = get_object_or_404(Post,id=post_id)
+
+    if request.method == "POST":
+        post.delete()
+        return redirect('home')
+    
+    return render(request,'post/post-delete.html',{'post':post})
 
 def Tags(request,tag_slug):
     tag=get_object_or_404(Tag,slug=tag_slug)
