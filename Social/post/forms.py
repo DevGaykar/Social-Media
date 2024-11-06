@@ -9,3 +9,16 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['picture','caption','tags']
+
+class PostEditForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['caption']
+        labels = {
+            'body':'',
+            # 'tags':'Tags'
+        }
+        widgets ={
+            'caption' : forms.TextInput(attrs={'class':'input','placeholder':'Caption'}),
+            # 'tags' : forms.CharField(widget=forms.TextInput(attrs={'class':'input','placeholder':'Tags | Seprate with comma'})),
+        }

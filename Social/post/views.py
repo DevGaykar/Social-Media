@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from post.models import Tag,Stream,Follow,Post,Likes
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from post.forms import NewPostForm
+from post.forms import NewPostForm,PostEditForm
 from comment.forms import CommentCreateForm,ReplyCreateForm
 from comment.models import Comment
 
@@ -49,6 +49,21 @@ def NewPost(request):
         'form': form
     }
     return render(request, 'post/newpost.html', context)
+
+def PostEdit(request,post_id):
+    post = get_object_or_404(Post,id=post_id)
+    form = PostEditForm(instance = post)
+
+    if request.method == "POST":
+        form = PostEditForm(request.POST,instance=post)
+        if form.is_valid:
+            form.save()
+            return redirect('home')
+    context = {
+        'post' : post,
+        'form' : form
+    }
+    return render(request,'post/post-edit.html',context)
 
 def PostDetail(request,post_id):
     post = get_object_or_404(Post,id=post_id)
