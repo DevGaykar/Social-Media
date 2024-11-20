@@ -1,0 +1,13 @@
+# Ignore virtual environment
+venv/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+__pycache__/
+
+# Ignore SQLite database file
+*.sqlite3
+
+# Ignore other system files or folders
+.DS_Store
+Thumbs.db
