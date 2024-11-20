@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-7-$h8%m&d_tp5$h0a!dm#t-j8b)nz%0^+@!7(*pf0!dzb85=)m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app','localhost']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 ]
 
 MIDDLEWARE = [
@@ -65,16 +66,29 @@ MIDDLEWARE = [
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
+    # 'google': {
+    #     'APP': {
+    #         'client_id': '621737418496-5iandbtbgilvtr53tfm37joh7qa1v2kh.apps.googleusercontent.com',
+    #         'secret': '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',
+          
+    #     },
+    #     'SCOPE': ['profile','email',],
+    #      'AUTH_PARAMS': {'access_type': 'online'},
+    #     'METHOD': 'oauth2',
+    #     'VERIFIED_EMAIL': True,
+    # },
+    'github': {
         'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
+            'client_id': 'Ov23liaLwWY7mviA2auI',
+            'secret': 'f0413dfd4d0eca12400f8c0b6ee3673613be62a2',
+           
+        },
+        'SCOPE': ['user:email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'METHOD': 'oauth2',
+        'VERIFIED_EMAIL': True,
     }
+   
 }
 
 ROOT_URLCONF = 'Social.urls'
@@ -96,7 +110,7 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 

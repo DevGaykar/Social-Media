@@ -1,0 +1,43 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% load socialaccount %}
+{%block content%}
+        <h1>Sign In</h1>
+            <p style="margin-top:20px">Continue with </p>
+                <div class="social-icons" style="margin:5px">
+                    <a href="#"class="icon">
+                        <i class="uil uil-facebook"></i></a>
+                    <a href="{% provider_login_url 'github' %}" class="icon">
+                        <i class="uil uil-github" style="color:#181819"></i></a>
+                    <a href="{% provider_login_url 'google' %}" class="icon">
+                        <i class="uil uil-google"></i></i></a>
+                </div>
+                
+        {% if not SOCIALACCOUNT_ONLY %}
+        {% setvar link %}
+            <a href="{{ signup_url }}">
+            {% endsetvar %}
+            {% setvar end_link %}
+            </a>
+        {% endsetvar %}
+        {% element p %}
+            {% blocktranslate %}NewUser?, then please {{ link }}Sign up{{ end_link }} first.{% endblocktranslate %}
+        {% endelement %}
+        <p>or use your email </p>
+        {% url 'account_login' as login_url %}
+        {% element form form=form method="post" action=login_url tags="entrance,login" %}
+            {% slot body %}
+                {% csrf_token %}
+                {% element fields form=form unlabeled=True %}
+                {% endelement %}
+                {{ redirect_field }}
+            {% endslot %}
+            {% slot actions %}
+                {% element button type="submit" tags="prominent,login" %}
+                    {% trans "Sign In" %}
+                {% endelement %}
+            {% endslot %}
+        {% endelement %}
+    {% endif %}
+{%endblock content%}
