@@ -3,7 +3,7 @@
 {% load allauth account %}
 {% load socialaccount %}
 {%block content%}
-        <h1>Sign In</h1>
+        <h1>Login In</h1>
             <p style="margin-top:20px">Continue with </p>
                 <div class="social-icons" style="margin:5px">
                     <a href="#"class="icon">
@@ -11,7 +11,7 @@
                     <a href="{% provider_login_url 'github' %}" class="icon">
                         <i class="uil uil-github" style="color:#181819"></i></a>
                     <a href="{% provider_login_url 'google' %}" class="icon">
-                        <i class="uil uil-google"></i></i></a>
+                        <i class="uil uil-google"></i></a>
                 </div>
                 
         {% if not SOCIALACCOUNT_ONLY %}
@@ -25,19 +25,53 @@
             {% blocktranslate %}NewUser?, then please {{ link }}Sign up{{ end_link }} first.{% endblocktranslate %}
         {% endelement %}
         <p>or use your email </p>
-        {% url 'account_login' as login_url %}
-        {% element form form=form method="post" action=login_url tags="entrance,login" %}
-            {% slot body %}
-                {% csrf_token %}
-                {% element fields form=form unlabeled=True %}
-                {% endelement %}
-                {{ redirect_field }}
-            {% endslot %}
-            {% slot actions %}
-                {% element button type="submit" tags="prominent,login" %}
-                    {% trans "Sign In" %}
-                {% endelement %}
-            {% endslot %}
-        {% endelement %}
+        {% if form.errors %}
+            <ul class="error">
+            {% for field in form %}
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            {% endfor %}
+
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form class="login" id="login_form" method="post" action="{%url 'account_login'%}">
+            {%csrf_token%}
+
+        <!-- Email or Username Field -->
+        <div class="form-field">
+            <label for="{{ form.login.id_for_label }}">{{ form.login.label }}</label>
+            {{ form.login }}
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-field">
+            <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+            {{ form.password }}
+            {% if form.password.help_text %}
+            <div class="help-text">
+                {{ form.password.help_text|safe }}
+            </div>
+        {% endif %}
+        </div>
+
+        <!-- Remember Me Field -->
+        {% if form.remember %}
+            <div class="form-field">
+                {{ form.remember }}
+                {% if form.remember.errors %}
+                    <div class="error">
+                        {% for error in form.remember.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+        <input type="hidden" name="{{redirect_field_name}}" value="{%url 'home' %}"/>
+        <button type="submit">{%trans "Login"%} &raquo;</button>
     {% endif %}
 {%endblock content%}

@@ -1,5 +1,6 @@
 {% extends "account/base_entrance.html" %}
 {% load allauth i18n %}
+{% load socialaccount %}
 {% block head_title %}
     {% trans "Signup" %}
 {% endblock head_title %}
@@ -9,10 +10,50 @@
     {% endelement %}
 
     <p>{%blocktrans%}Already have an account? Then please <a href = "{{login_url}}">Sign In</a>.{%endblocktrans%}</p>
+    <p style="margin-top:20px">Sign Up with </p>
+    <div class="social-icons" style="margin:5px">
+        <a href="#"class="icon">
+            <i class="uil uil-facebook"></i></a>
+        <a href="{% provider_login_url 'github' %}" class="icon">
+            <i class="uil uil-github" style="color:#181819"></i></a>
+        <a href="{% provider_login_url 'google' %}" class="icon">
+            <i class="uil uil-google"></i></a>
+    </div>
 
+    <p>or use your email </p>
     <form class="signup" id="signup_form" method="post" action="{%url 'account_signup'%}">
         {%csrf_token%}
-        {{form.as_p}}
+        <div class="form-field">
+            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="error">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-field">
+            <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-field">
+            <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="error">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="error">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
         <input type="hidden" name="{{redirect_field_name}}" value="{%url 'profile-onboarding' %}"/>
         <button type="submit">{%trans "Sign Up"%} &raquo;</button>
     </form>

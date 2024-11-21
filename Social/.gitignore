@@ -7,6 +7,8 @@ __pycache__/
 
 # Ignore SQLite database file
 *.sqlite3
+db.sqlite3
+
 
 # Ignore other system files or folders
 .DS_Store

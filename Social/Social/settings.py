@@ -65,32 +65,6 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    # 'google': {
-    #     'APP': {
-    #         'client_id': '621737418496-5iandbtbgilvtr53tfm37joh7qa1v2kh.apps.googleusercontent.com',
-    #         'secret': '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',
-          
-    #     },
-    #     'SCOPE': ['profile','email',],
-    #      'AUTH_PARAMS': {'access_type': 'online'},
-    #     'METHOD': 'oauth2',
-    #     'VERIFIED_EMAIL': True,
-    # },
-    'github': {
-        'APP': {
-            'client_id': 'Ov23liaLwWY7mviA2auI',
-            'secret': 'f0413dfd4d0eca12400f8c0b6ee3673613be62a2',
-           
-        },
-        'SCOPE': ['user:email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'METHOD': 'oauth2',
-        'VERIFIED_EMAIL': True,
-    }
-   
-}
-
 ROOT_URLCONF = 'Social.urls'
 
 TEMPLATES = [
