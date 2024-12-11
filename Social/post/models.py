@@ -74,4 +74,20 @@ class Likes(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name="post_likes")
 
+class ReportPost(models.Model):
+    reported_by = models.ForeignKey(User, on_delete=models.SET_NULL,null=True,related_name='post_report')
+    parent_post = models.ForeignKey(Post,on_delete=models.CASCADE,related_name='post_report')
+    body = models.CharField(max_length=150)
+    created = models.DateTimeField(auto_now_add=True)
+    id = models.CharField(max_length=100, default=uuid.uuid4, unique=True,primary_key = True,editable=False)
+    def __str__(self):
+        try :
+            return f'{self.reported_by.username} : {self.body[:30]}'
+        except:
+            return f'no author : {self.body[:30]}'
+    
+    class Meta:
+        ordering = ['-created']  
+
+
 post_save.connect(Stream.add_post , sender=Post)  

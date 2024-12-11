@@ -10,4 +10,5 @@ urlpatterns = [
     path('tag/<slug:tag_slug>',views.Tags,name='tags'),
     path('<uuid:post_id>/like',views.like_post,name='like-post'),
     path('<uuid:post_id>/favourite',views.favourite,name='favourite'),
+    path('<uuid:post_id>/report/',views.PostReport,name='report-post'),
 ]

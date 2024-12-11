@@ -1,5 +1,5 @@
 from django import forms
-from post.models import Post
+from post.models import Post,ReportPost
 
 class NewPostForm(forms.ModelForm):
     picture = forms.ImageField(required=True)
@@ -22,3 +22,16 @@ class PostEditForm(forms.ModelForm):
             'caption' : forms.TextInput(attrs={'class':'input','placeholder':'Caption'}),
             # 'tags' : forms.CharField(widget=forms.TextInput(attrs={'class':'input','placeholder':'Tags | Seprate with comma'})),
         }
+
+class PostReportForm(forms.ModelForm):
+    class Meta:
+        model = ReportPost
+        fields = ['body']
+        labels = {
+            'body':'Why are you reporting this post? ',
+        # 'body':'',
+        }
+        widgets ={
+            'body' : forms.TextInput(attrs={'class':'input','placeholder':'Reason '}),
+        }
+        

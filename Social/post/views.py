@@ -4,12 +4,14 @@ from django.contrib.auth.decorators import  login_required
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 
-from post.models import Tag,Stream,Follow,Post,Likes
+from post.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from post.forms import NewPostForm,PostEditForm
+from post.forms import NewPostForm,PostEditForm,PostReportForm
 from comment.forms import CommentCreateForm,ReplyCreateForm
 from comment.models import Comment
+
+import json
 
 @login_required(login_url='account_login')
 def home(request):
@@ -95,29 +97,6 @@ def Tags(request,tag_slug):
     }   
     return render(request,'post/tag.html',context)
 
-# def like(request, post_id):
-#     user = request.user
-#     post = get_object_or_404(Post, id=post_id)
-
-#     liked = Likes.objects.filter(user=user, post=post).first()
-
-#     if liked:
-#         liked.delete()
-#         # post.likes -= 1
-#         liked_status = False
-#     else:
-#         Likes.objects.create(user=user, post=post)
-#         # post.likes += 1
-#         liked_status = True
-
-#     post.likes = post.post_likes.count()
-#     post.save()
-
-#     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#         return JsonResponse({'likes_count': post.likes, 'liked_status': liked_status})
-
-#     return redirect('post_detail', post_id=post_id)
-
 def like_toggle(model):
     def inner_func(func):
         def wrapper(request,*args,**kwargs):
@@ -160,4 +139,29 @@ def favourite(request, post_id):
 
     return redirect('post-details', post_id=post_id)
         
-  
+
+    return render(request,'post/post-report.html')
+
+def PostReport(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        form = PostReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.reported_by = request.user
+            report.parent_post = post
+            report.save()
+            # Redirect to the same post detail page after saving the comment
+            return redirect('home') 
+
+    else:
+        form = PostReportForm()  # Initialize an empty form for GET requests
+
+   
+    context = {
+        'post': post,
+        'form': form,  # Use the correct variable name for comments
+    }
+
+    return render(request, 'post/post-report.html', context)

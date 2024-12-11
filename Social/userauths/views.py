@@ -53,7 +53,7 @@ def UserProfile(request, username=None):
 
     return render(request, "userauths/profile.html", context)
 
-
+@login_required
 def follow(request,username,option):
     user = request.user
     following = get_object_or_404(User,username=username)
@@ -69,7 +69,7 @@ def follow(request,username,option):
             for post in posts:
                 Stream.objects.create(post=post,user=request.user,date=post.posted,following=following)
         
-    return HttpResponseRedirect(reverse('profile',args=[username]))
+    return HttpResponseRedirect(reverse('userprofile',args=[username]))
 
 @login_required
 def EditProfile(request):

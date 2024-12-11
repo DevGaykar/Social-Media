@@ -95,6 +95,46 @@ themeModel.addEventListener('click',closeThemeModel);
 
 theme.addEventListener('click',openThemeModel);
 
+//edit pop up 
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to close all popups
+    function closeAllPopups() {
+        document.querySelectorAll('.control-popup').forEach(popup => {
+            popup.style.display = 'none';
+        });
+    }
+
+    // Function to handle popup toggle
+    function togglePopup(button) {
+        const popup = button.nextElementSibling;
+        const isVisible = popup.style.display === 'grid';
+        
+        // Close all popups first
+        closeAllPopups();
+        
+        // If this popup wasn't visible, show it
+        if (!isVisible) {
+            popup.style.display = 'grid';
+        }
+    }
+
+    // Delegate click events to handle dynamically loaded content
+    document.body.addEventListener('click', function(e) {
+        // Handle popup trigger clicks
+        if (e.target.closest('.popup-trigger')) {
+            e.preventDefault();
+            e.stopPropagation();
+            const button = e.target.closest('.popup-trigger');
+            togglePopup(button);
+        }
+        // Handle clicks outside popups
+        else if (!e.target.closest('.control-popup .card'))  {
+            closeAllPopups();
+                 }
+    });
+});
+
+
 
 
  // ==============FONTS=========================

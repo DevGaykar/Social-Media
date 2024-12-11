@@ -1,0 +1,52 @@
+<div class="control-popup">
+    <div class="card">
+    {%if request.user == post.user%}
+    <div>
+      <a href="{%url 'delete-post' post.id%} ">
+      <span style="color:red;"> Delete Post</span> 
+      </a>
+    </div>
+    <div>
+      <a href="{%url 'edit-post' post.id%} ">
+        <span> Edit Post</span> 
+        </a>
+    </div>
+      {%elif post.user.profile.user != request.user%}
+      
+      <div class="report-trigger">
+        <a href="{%url 'report-post' post.id%}" >
+          <span style="color:red;">Report</span> 
+        </a> 
+      </div>
+      <div>
+         {%if request.user.follower and post.user.following %}
+          <a href = "{%url 'follow' post.user.username 0 %}">
+            <span style="color:red;"> UnFollow </span></a>       
+         {%else%}
+        <a href = "{%url 'follow' post.user.username 1 %}"> 
+          <span> Follow </span></a> 
+        {%endif%} 
+        </div> 
+        <div>
+          <a href="{% url 'userprofile' post.user.profile.user %}">
+            <span>Go to account  </span> 
+          </a> 
+        </div>
+      {%endif%}
+      <div>
+        <a href="{%url 'post-details' post.id%}">
+          <span>Go to post </span> 
+        </a> 
+      </div>
+      <div>
+        <a href="#">
+          <span>Share </span> 
+        </a> 
+      </div>
+      <div>
+        <a href="#">
+          <span>Copy link </span> 
+        </a> 
+      </div>
+      </div>
+  </div>
