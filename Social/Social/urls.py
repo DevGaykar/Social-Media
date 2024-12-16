@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 from userauths.views import *
 from comment.views import *
+from inbox.views import inbox_view
 
 
 urlpatterns = [
@@ -29,6 +30,9 @@ urlpatterns = [
     path('',include('post.urls')),
     # path('profile/',include('userauths.urls')),
 
+    #inbox
+    path('inbox/',include('inbox.urls')),
+   
     #profile
    # Logged-in user's profile and saved posts
     path('profile/', UserProfile, name='profile'),
@@ -48,6 +52,9 @@ urlpatterns = [
     path('reply-sent/<post_id>/' , reply_sent, name='reply-sent'),
     path('reply/delete/<pk>/',reply_delete_view,name="reply-delete"),
     path('reply/like/<post_id>/',like_reply,name="like-reply"),
+
+    
+    
 ]
 
 if settings.DEBUG:

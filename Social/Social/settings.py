@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'post.apps.PostConfig',
     'userauths.apps.UserauthsConfig',
     'comment.apps.CommentConfig',
+    'inbox',
 
     #django-cleanup
     'django_cleanup.apps.CleanupConfig',
@@ -163,4 +164,4 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_REDIRECT_URL = '/profile/onboarding/' 
 
-ACCOUNT_USERNAME_BLACKLIST = ['admin','accounts','profile','category','post']
+ACCOUNT_USERNAME_BLACKLIST = ['admin','accounts','profile','category','post','inbox']
