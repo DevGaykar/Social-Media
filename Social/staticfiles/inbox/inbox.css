@@ -1,0 +1,129 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body, html {
+    font-family: Arial, sans-serif;
+    height: 100%;
+    overflow: auto;
+}
+
+/* Layout */
+.container {
+    display: flex;
+    height: 100%;
+}
+
+/* Conversation List Styles */
+.conversation-list {
+    height: calc(100% - 5.4rem);
+    position: relative;
+    width: 300px;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+    border-right: 1px solid #ccc;
+    top : 5.4rem;
+}
+.conversation-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.conversation-item:hover {
+    background-color: #e0e0e0;
+}
+.conversation-item.active {
+    background-color: #d0d0d0;
+}
+.conversation-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+.conversation-item p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Conversation View Styles */
+.conversation-view {
+    height: calc(100% - 5.4rem);
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fff;
+    top : 5.4rem;
+}
+.conversation-header {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+}
+.conversation-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+.message-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 15px;
+    
+}
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+    clear: both;
+}
+.message.sent {
+    background-color: #dcf8c6;
+    float: right;
+}
+.message.received {
+    background-color: #f0f0f0;
+    float: left;
+}
+.message-input {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #ccc;
+    flex-shrink: 0;
+}
+.message-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.message-input button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.message-input button:hover {
+    background-color: #45a049;
+}
+.no-conversation-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: #666;
+    font-size: 16px;
+    background-color: #fff;
+}

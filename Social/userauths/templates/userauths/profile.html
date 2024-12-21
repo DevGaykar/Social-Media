@@ -1,4 +1,4 @@
-{%extends 'layouts/b.html'%} {% load static %} {% block content %}
+{%extends 'layouts/e.html'%} {% load static %} {% block content %}
 <!DOCTYPE html>
     <!-- Font Awesome -->
     <link
@@ -6,7 +6,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
     <link rel="stylesheet" href="{% static 'userauths/style.css' %}" />
-  </div>
+  
+  <div class="middle">
     <div class="header__wrapper">
       <header></header>
       <div class="cols__container">
@@ -43,8 +44,6 @@
             <li><span>{{ following_count}}</span> Following</li>
           </ul>
 
-          
-
           <div class="content">
             <p>
               {%if profile.bio%}
@@ -53,23 +52,8 @@
               <p>Procrastinator</p>
               {%endif%}
             </p>
-
-            {% comment %} <ul>
-              <!-- Replace with actual social media links if available -->
-              <li>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-pinterest"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-              </li>
-              <li>
-                <a href="#"><i class="fab fa-dribbble"></i></a>
-              </li>
-            </ul> {% endcomment %}
           </div>
+
         </div>
         <!-- Right Column: Photos/Content -->
         <div class="right__col">
@@ -83,7 +67,10 @@
               {%endif%}
             </ul> <br>
           {% if profile.user != request.user %}
-          <label class = "btn btn-primary" > Message </label>
+            <label class = "btn btn-primary" style="font-size:1.2rem;" > 
+              <a href="{% url 'start_conversation' profile.user.username  %}">
+                 <i class="uil uil-edit" style="color:white;">
+                 </i> </a> </label>
           {% endif %}
           {% if profile.user == request.user%}
          <a href="{%url 'editprofile'%}"> <label class = "btn btn-primary"> Edit Profile </label></a>

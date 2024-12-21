@@ -1,0 +1,9 @@
+    {%for user in users%}
+        <div class="user-card" >
+                <img src="{{user.profile.avatar}}" alt="{{user.profile.name}}" class="user-avatar">
+                <h2>{{user.profile.name}}</h2>
+                <p class="user-info">@{{user.profile.user.username}}</p>
+                <p class="user-location"><i class="fas fa-map-marker-alt"></i> {{user.profile.location}}</p>
+        </div>
+    {%endfor%}
+

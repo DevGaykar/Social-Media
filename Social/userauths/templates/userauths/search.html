@@ -1,0 +1,44 @@
+{%extends 'layouts/e.html'%}
+{%load static%}
+{%block content%}
+
+<head>
+    <title>Social - User Search</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'userauths/search_user.css' %}">
+    <link rel="stylesheet" href="{% static '/style.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+ 
+    <div class="middle">
+        <form class="create-post">
+            <input type="text" placeholder="Search users... " type="search-user" name="search_user"
+            hx-get={%url 'searchusers'%}
+            hx-trigger = "keyup changed"
+            hx-target = "#search-results"
+            hx-swap = "innerHTML">
+        </form>
+
+        <h4 style = "margin-top:10px">Search Results</h4>
+
+        <section class="search-results" style = "margin-top:10px">  
+            <div class="user-grid" id="search-results">
+            {% include "userauths/list_search.html" %}
+            </div>
+        </section>
+
+    </div>
+
+
+    <div class="right" style="display: none;"> <!-- Right content --> </div>
+
+    {% comment %} <footer>
+        <p>&copy; 2023 SocialConnect. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </footer>  {% endcomment %}
+
+{%endblock%}
+

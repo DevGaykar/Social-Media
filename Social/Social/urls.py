@@ -33,7 +33,15 @@ urlpatterns = [
     #inbox
     path('inbox/',include('inbox.urls')),
    
-    #profile
+
+    #start new conversation or redirect to conversation
+    path('start_conversation/<str:username>/', start_conversation, name='start_conversation'),
+
+    #search user
+    path('search/',search,name="search"),
+    path('search_users/',search_users,name="searchusers"),
+
+   #profile
    # Logged-in user's profile and saved posts
     path('profile/', UserProfile, name='profile'),
     path('profile/edit/',EditProfile,name="editprofile"),
@@ -52,6 +60,8 @@ urlpatterns = [
     path('reply-sent/<post_id>/' , reply_sent, name='reply-sent'),
     path('reply/delete/<pk>/',reply_delete_view,name="reply-delete"),
     path('reply/like/<post_id>/',like_reply,name="like-reply"),
+
+   
 
     
     

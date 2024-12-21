@@ -1,12 +1,14 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import resolve,reverse
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.db import transaction
+from django.db.models import Q
 
 from .models import Profile
 from django.contrib.auth.models import User
 from post.models import Post,Follow,Stream
+from inbox.models import *
 from .forms import EditProfileForm
 from django.contrib.auth import logout
 from django.contrib import messages
@@ -99,3 +101,62 @@ def DeleteProfile(request):
         messages.success(request,'Account deleted, Hope to see you again')
         return redirect('home')
     return render(request,'userauths/deleteprofile.html')
+
+def start_conversation(request, username):
+    other_user = get_object_or_404(User, username=username)
+    
+    # Find existing conversation or create new one
+    conversation = Conversation.objects.filter(
+        participants=request.user
+    ).filter(
+        participants=other_user
+    ).first()
+    
+    if conversation is None:
+        conversation = Conversation.objects.create()
+        conversation.participants.add(request.user, other_user)
+        conversation.save()
+    
+    # Redirect to inbox with the conversation ID
+    return redirect('inbox:inbox', conversation_id=conversation.id)
+
+def search(request):
+    return render(request,"userauths/search.html")
+
+@login_required
+def search_users(request):
+    try:
+        letters = request.GET.get('search_user', '').strip()
+        
+        if request.htmx:
+            if len(letters) > 0:
+                # Search in Profile fields
+                profiles = Profile.objects.filter(
+                    Q(first_name__icontains=letters) |
+                    Q(last_name__icontains=letters) |
+                    Q(email__icontains=letters)
+                ).exclude(
+                    user=request.user
+                )
+                
+                # Get user IDs from matching profiles
+                profile_user_ids = profiles.values_list('user', flat=True)
+                
+                # Search in User model and combine with profile results
+                users = User.objects.filter(
+                    Q(username__icontains=letters) |
+                    Q(id__in=profile_user_ids)
+                ).exclude(
+                    id=request.user.id
+                ).select_related('profile').distinct()
+                
+                return render(
+                    request,
+                    'userauths/list_search.html',
+                    {'users': users}
+                )
+            return HttpResponse(' ')
+        raise Http404()
+    except Exception as e:
+        print(f"Search error: {str(e)}")  # For debugging
+        return HttpResponse('An error occurred during search', status=500)

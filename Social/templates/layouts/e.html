@@ -1,0 +1,39 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block layout %}
+<div class="container" style="display: grid; grid-template-columns: 18vw auto;">
+     <!--*****************Left*************************-->
+     <div class="left">
+        <a  class="profile" href = "{% url 'profile'  %}">
+            <div class="profile-photo">
+                    <img src="{{request.user.profile.avatar}}"/>
+            </div>
+            <div class="handle">
+                <h4>{{ request.user.profile.name }}</h4>
+                <p class="text-muted">
+                    @{{request.user.profile.user.username }}
+                </p>
+            </div>
+        </a>
+
+        <!--*****************Sidebar*************************-->
+
+        {%include 'snippets/sidebar.html'%}
+
+        <!-------------------Button---------------->
+        <a href="{% url 'newpost' %}" class="btn btn-primary" role="button">
+            Create Post
+        </a>
+    </div>
+    <!-- ====================End of left=============================-->
+           
+    {% block content%}
+
+    {%endblock content%}
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src= "{% static './index.js' %}" ></script>
+{% endblock %}
