@@ -10,6 +10,41 @@
     <link rel="stylesheet" href="{% static '/style.css' %}" />
 </head>
 
+<script>
+    document.getElementById('message-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formData = new FormData(form);
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Add the new message to the message list
+                const messageList = document.querySelector('.message-list');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.textContent = data.message.body;
+                messageList.appendChild(messageDiv);
+                
+                // Clear the input
+                form.reset();
+                
+                // Scroll to bottom
+                messageList.scrollTop = messageList.scrollHeight;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
+
 <navbar>
     {%include "snippets/header.html"%}
 </navbar>
@@ -77,8 +112,11 @@
                 {%endfor%}
             </section>
             <footer class="message-input">
-                <input type="text" placeholder="Type a message...">
-                <button>Send</button>
+                <form method="POST" action="{% url 'inbox:send_message' conversation.id %}" id="message-form">
+                    {% csrf_token %}
+                    <input type="text" name="body" placeholder="Type a message..." required>
+                    <button type="submit">Send</button>
+                </form>
             </footer>
             {% else %}
                 <div class="no-conversation-selected">

@@ -68,9 +68,10 @@
             </ul> <br>
           {% if profile.user != request.user %}
             <label class = "btn btn-primary" style="font-size:1.2rem;" > 
-              <a href="{% url 'start_conversation' profile.user.username  %}">
+              <a href="{% url 'inbox:start_conversation' profile.user.username  %}">
                  <i class="uil uil-edit" style="color:white;">
-                 </i> </a> </label>
+                </i> </a> 
+            </label>
           {% endif %}
           {% if profile.user == request.user%}
          <a href="{%url 'editprofile'%}"> <label class = "btn btn-primary"> Edit Profile </label></a>

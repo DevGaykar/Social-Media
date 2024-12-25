@@ -35,7 +35,7 @@ urlpatterns = [
    
 
     #start new conversation or redirect to conversation
-    path('start_conversation/<str:username>/', start_conversation, name='start_conversation'),
+    # path('start_conversation/<str:username>/', start_conversation, name='start_conversation'),
 
     #search user
     path('search/',search,name="search"),

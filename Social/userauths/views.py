@@ -102,23 +102,24 @@ def DeleteProfile(request):
         return redirect('home')
     return render(request,'userauths/deleteprofile.html')
 
-def start_conversation(request, username):
-    other_user = get_object_or_404(User, username=username)
+# def start_conversation(request, username):
+#     other_user = get_object_or_404(User, username=username)
     
-    # Find existing conversation or create new one
-    conversation = Conversation.objects.filter(
-        participants=request.user
-    ).filter(
-        participants=other_user
-    ).first()
+#     # Find existing conversation or create new one
+#     conversation = Conversation.objects.filter(
+
+#         participants=request.user
+#     ).filter(
+#         participants=other_user
+#     ).first()
     
-    if conversation is None:
-        conversation = Conversation.objects.create()
-        conversation.participants.add(request.user, other_user)
-        conversation.save()
+#     if conversation is None:
+#         conversation = Conversation.objects.create()
+#         conversation.participants.add(request.user, other_user)
+#         conversation.save()
     
-    # Redirect to inbox with the conversation ID
-    return redirect('inbox:inbox', conversation_id=conversation.id)
+#     # Redirect to inbox with the conversation ID
+#     return redirect('inbox:inbox', conversation_id=conversation.id)
 
 def search(request):
     return render(request,"userauths/search.html")

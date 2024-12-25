@@ -6,5 +6,5 @@ urlpatterns = [
     path('edit/',EditProfile,name="editprofile"),
     path('profile/delete/',DeleteProfile,name="deleteprofile"),
     path('profile/onboarding/',DeleteProfile,name="profile-onboarding"),
-    path('start_conversation/<str:username>/', views.start_conversation, name='start_conversation'),
+    # path('start_conversation/<str:username>/', views.start_conversation, name='start_conversation'),
 ]
