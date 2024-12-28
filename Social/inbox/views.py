@@ -1,8 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render,get_object_or_404
+from cryptography.fernet import Fernet
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
+
+f = Fernet(settings.ENCRYPT_KEY)
 
 @login_required
 def inbox_view(request,conversation_id=None):
@@ -46,8 +50,13 @@ def send_message(request, conversation_id):
         return JsonResponse({'error': 'Unauthorized'}, status=403)
     
     if request.method == 'POST':
-        message_body = request.POST.get('body')
+        # message encryption
+        message_original = request.POST.get('body')
+        message_bytes = message_original.encode('utf-8')
+        message_encrypted = f.encrypt(message_bytes)
+        message_decode = message_encrypted.decode('utf-8')
         
+        message_body = message_decode
         if message_body:
             # Create new message
             message = InboxMesssage.objects.create(

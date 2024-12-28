@@ -107,17 +107,18 @@
             <section class="message-list">
             {%for message in conversation.messages.all reversed%}
                 <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
-                    {{message.body}}
+                   <pre> {{message.body_decrypted}} </pre>
+                   <div class="message-time">{{message.created}}</div>
                 </div>
                 {%endfor%}
             </section>
-            <footer class="message-input">
+            <div class="message-input-container">
                 <form method="POST" action="{% url 'inbox:send_message' conversation.id %}" id="message-form">
                     {% csrf_token %}
-                    <input type="text" name="body" placeholder="Type a message..." required>
-                    <button type="submit">Send</button>
+                    <textarea class="message-input" type="text" name="body" placeholder="Type a message..." ></textarea>
+                    <button class="send-button" type="submit">Send</button>
                 </form>
-            </footer>
+            </div>
             {% else %}
                 <div class="no-conversation-selected">
                     <p>Select a conversation to start messaging</p>
