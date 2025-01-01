@@ -4,7 +4,7 @@
     padding: 0;
     box-sizing: border-box;
 }
-body, html {
+body, html , pre {
     font-family: Arial, sans-serif;
     height: 100%;
     overflow: auto;
@@ -92,30 +92,63 @@ body, html {
     background-color: #f0f0f0;
     float: left;
 }
+
+.message-time {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.received .message-time {
+    margin-left: 4px;
+}
+
+.sent .message-time {
+    margin-right: 4px;
+    text-align: right;
+}
+
+.message-input-container {
+    /* display: flex; */
+    gap: 12px;
+    padding: 16px;
+    background-color: white;
+    border-top: 1px solid #eaeaea;
+    width: 100%; /* Ensure container takes full width */
+}
+
 .message-input {
-    display: flex;
-    padding: 15px;
-    border-top: 1px solid #ccc;
-    flex-shrink: 0;
-}
-.message-input input {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    flex: 1;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #e2e2e2;
+    border-radius: 6px;
+    font-family: inherit;
     font-size: 14px;
+    resize: none;
+    outline: none;
+    width: 100%; /* Ensure input takes full width */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
-.message-input button {
-    padding: 10px 20px;
-    margin-left: 10px;
+
+.message-input:focus {
+    border-color: #9333ea;
+}
+
+.send-button {
+    padding: 8px 24px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 6px;
     font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent button text from wrapping */
+    min-width: 80px; /* Ensure minimum button width */
 }
-.message-input button:hover {
+
+.send-button:hover {
     background-color: #45a049;
 }
 .no-conversation-selected {

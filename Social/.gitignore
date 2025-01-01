@@ -1,5 +1,8 @@
-# Ignore virtual environment
 venv/
+env/
+static/
+.env
+profile_picture/
 
 # Byte-compiled / optimized / DLL files
 *.py[cod]

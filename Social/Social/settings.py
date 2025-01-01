@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
+
+from environ import Env
+env = Env()
+Env.read_env()
+ENVIRONMENT = env('ENVIRONMENT',default='production')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,14 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7-$h8%m&d_tp5$h0a!dm#t-j8b)nz%0^+@!7(*pf0!dzb85=)m'
+SECRET_KEY = env('SECRET_KEY')
 
-ENCRYPT_KEY = b'kDvs5BFNVZZVgsFnQZu1IZlGx0u19gOmuxmK5eJwayk='
+ENCRYPT_KEY = env('ENCRYPT_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if ENVIRONMENT == 'development':
+    DEBUG = True
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,6 +56,9 @@ INSTALLED_APPS = [
     'comment.apps.CommentConfig',
     'inbox',
 
+    #hotpot
+    'admin_honeypot',
+    
     #django-cleanup
     'django_cleanup.apps.CleanupConfig',
 
@@ -60,6 +72,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,6 +119,9 @@ DATABASES = {
     }
 }
 
+POSTGRES_LOCALLY = False
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+    DATABASES['default'] = dj_database_url.parse(env('DATABASE_URL'))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -149,7 +165,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'post/static'),
     os.path.join(BASE_DIR, 'userauths/static'),
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # Increase the maximum allowed file size
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5 MB 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880 # 5 MB 
@@ -168,4 +184,4 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_REDIRECT_URL = '/profile/onboarding/' 
 
-ACCOUNT_USERNAME_BLACKLIST = ['admin','accounts','profile','category','post','inbox']
+ACCOUNT_USERNAME_BLACKLIST = ['admin','accounts','profile','category','post','inbox','thematrix']

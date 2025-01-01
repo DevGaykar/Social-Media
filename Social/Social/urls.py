@@ -25,18 +25,14 @@ from inbox.views import inbox_view
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('thematrix/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('',include('post.urls')),
-    # path('profile/',include('userauths.urls')),
 
     #inbox
     path('inbox/',include('inbox.urls')),
    
-
-    #start new conversation or redirect to conversation
-    # path('start_conversation/<str:username>/', start_conversation, name='start_conversation'),
-
     #search user
     path('search/',search,name="search"),
     path('search_users/',search_users,name="searchusers"),
@@ -60,11 +56,7 @@ urlpatterns = [
     path('reply-sent/<post_id>/' , reply_sent, name='reply-sent'),
     path('reply/delete/<pk>/',reply_delete_view,name="reply-delete"),
     path('reply/like/<post_id>/',like_reply,name="like-reply"),
-
-   
-
-    
-    
+ 
 ]
 
 if settings.DEBUG:
