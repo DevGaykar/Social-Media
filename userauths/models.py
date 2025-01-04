@@ -2,10 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from post.models import Post
 from django.templatetags.static import static
+from cloudinary_storage.storage import MediaCloudinaryStorage
+from django_resized import ResizedImageField
+
+def profile_picture_path(instance, filename):
+    # Creates path like: media/user_1/profile_pictures/filename
+    return f'media/user_{instance.user.id}/profile_pictures/{filename}'
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="profile_picture", null=True)
+    image = ResizedImageField(size=[600,600],quality=85,upload_to=profile_picture_path, storage=MediaCloudinaryStorage(),null=True,blank=True)
     first_name = models.CharField(max_length=200, null=True, blank=True)
     last_name = models.CharField(max_length=200, null=True, blank=True)
     bio = models.CharField(max_length=200, null=True, blank=True)

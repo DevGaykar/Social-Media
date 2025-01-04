@@ -1,7 +1,6 @@
-venv/
 env/
 .env
-profile_picture/
+media/
 
 # Byte-compiled / optimized / DLL files
 *.py[cod]

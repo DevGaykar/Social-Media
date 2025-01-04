@@ -4,10 +4,12 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save,post_delete
 from django.utils.text import slugify
 from django.urls import reverse
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 #Uploading user files to a secific directory
 def user_directory_path(instance,filename):
-    return 'user_{0}/{1}'.format(instance.user.id,filename)
+     # Creates path like: media/user_1/posts/filename
+    return f'media/user_{instance.user.id}/posts/{filename}'
 
 class Tag(models.Model):
     title = models.CharField(max_length=100,verbose_name="Tag")
@@ -30,7 +32,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
-    picture = models.ImageField(upload_to=user_directory_path,verbose_name="Picture",null=True,max_length=5242880)
+    picture = models.ImageField(upload_to=user_directory_path,storage=MediaCloudinaryStorage(),verbose_name="Picture",null=True,max_length=5242880)
     caption = models.CharField(max_length=10000,verbose_name="Caption")
     posted = models.DateTimeField(auto_now_add=True)
     tag = models.ManyToManyField(Tag,related_name="tags")
