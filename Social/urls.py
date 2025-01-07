@@ -44,6 +44,7 @@ urlpatterns = [
     path('profile/onboarding/',EditProfile,name="profile-onboarding"),
     path('profile/delete/',DeleteProfile,name="deleteprofile"),
     path('profile/saved/', UserProfile, name='profilefavourite'),
+    path('profile/verify-email/',profile_verify_email,name='profile-verify-email'),
     
     # Other user's profile and follow options
     path('<username>/', UserProfile, name='userprofile'),

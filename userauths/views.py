@@ -7,6 +7,7 @@ from django.db.models import Q
 
 from .models import Profile
 from django.contrib.auth.models import User
+from allauth.account.utils import send_email_confirmation
 from post.models import Post,Follow,Stream
 from inbox.models import *
 from .forms import EditProfileForm
@@ -14,6 +15,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+@login_required
 def UserProfile(request, username=None):
     # If username is None, it’s the logged-in user's profile
     if username is None or username == request.user.username:
@@ -81,7 +83,11 @@ def EditProfile(request):
         form = EditProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
             form.save()
-            return redirect('profile')
+
+            if request.user.emailaddress_set.get(primary=True).verified:
+                return redirect('profile')
+            else:
+                return redirect('profile-verify-email')
         else:
             print("Form errors:", form.errors)
 
@@ -101,25 +107,6 @@ def DeleteProfile(request):
         messages.success(request,'Account deleted, Hope to see you again')
         return redirect('home')
     return render(request,'userauths/deleteprofile.html')
-
-# def start_conversation(request, username):
-#     other_user = get_object_or_404(User, username=username)
-    
-#     # Find existing conversation or create new one
-#     conversation = Conversation.objects.filter(
-
-#         participants=request.user
-#     ).filter(
-#         participants=other_user
-#     ).first()
-    
-#     if conversation is None:
-#         conversation = Conversation.objects.create()
-#         conversation.participants.add(request.user, other_user)
-#         conversation.save()
-    
-#     # Redirect to inbox with the conversation ID
-#     return redirect('inbox:inbox', conversation_id=conversation.id)
 
 def search(request):
     return render(request,"userauths/search.html")
@@ -161,3 +148,7 @@ def search_users(request):
     except Exception as e:
         print(f"Search error: {str(e)}")  # For debugging
         return HttpResponse('An error occurred during search', status=500)
+
+def profile_verify_email(request):
+    send_email_confirmation(request,request.user)
+    return redirect('profile')
