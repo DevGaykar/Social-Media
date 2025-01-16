@@ -39,17 +39,17 @@
           {% endif %}
 
           <ul class="about">
-            <li style="margin-right: 10px;" ><span>{{post_count}}</span> Posts</li>
-            <li style="margin-right: 10px;"><span>{{ followers_count}}</span> Followers</li>
-            <li><span>{{ following_count}}</span> Following</li>
+            <li style="margin-right: 10px;" ><span><p>{{profile.user.posts.count}}</p></span> Posts</li>
+            <li style="margin-right: 10px;"><span><p>{{ followers_count}}</p></span> Followers</li>
+            <li><span><p>{{ following_count}}</p></span> Following</li>
           </ul>
 
           <div class="content">
             <p>
               {%if profile.bio%}
-              <p>{{ profile.bio }} </p>
+              <p style="color: #818181;">{{ profile.bio }} </p>
               {%else%}
-              <p>Procrastinator</p>
+              <p style="color: #818181;">Procrastinator</p>
               {%endif%}
             </p>
           </div>
@@ -59,7 +59,7 @@
         <div class="right__col">
           <div class="nav">
             <ul>
-              <li><a href="{% url 'userprofile' profile.user %}">Posts</a></li>
+              <li><a style="color: #818181;" href="{% url 'userprofile' profile.user %}">Posts</a></li>
               {% if profile.user == request.user%}
               <li>
                 <a href="{% url 'profilefavourite'  %}">Saved</a>
@@ -90,5 +90,6 @@
         </div>
       </div>
     </div>
+    {%include 'snippets/customize-theme.html' %}
  
 {% endblock content %}

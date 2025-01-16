@@ -21,7 +21,7 @@ body, html , pre {
     height: calc(100% - 5.4rem);
     position: relative;
     width: 300px;
-    background-color: #f0f0f0;
+    background-color: var(--color-white);
     overflow-y: auto;
     border-right: 1px solid #ccc;
     top : 5.4rem;
@@ -59,12 +59,12 @@ body, html , pre {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #fff;
+    background-color: var(--color-white);
     top : 5.4rem;
 }
 .conversation-header {
     padding: 15px;
-    background-color: #f9f9f9;
+    background-color: var(--color-white);
     border-bottom: 1px solid #ccc;
 }
 .conversation-header h2 {
@@ -85,12 +85,32 @@ body, html , pre {
     clear: both;
 }
 .message.sent {
-    background-color: #dcf8c6;
+    background-color: #dcfce7; /* light green background */
+    color: #166534;
     float: right;
 }
 .message.received {
-    background-color: #f0f0f0;
+    background-color: #f3f4f6; /* light gray background */
+    color: #1f2937;
     float: left;
+}
+/* For dark theme */
+[data-theme="dark"] .message-received {
+    background-color: #374151; /* darker background */
+    color: #f9fafb; /* light text */
+}
+  
+[data-theme="dark"] .message-sent {
+    background-color: #065f46; /* darker green */
+    color: #ecfdf5; /* light green text */
+}
+
+.message-sent, .message-received {
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 4px 0;
+    max-width: 70%;
+    word-wrap: break-word;
 }
 
 .message-time {
@@ -112,29 +132,48 @@ body, html , pre {
     /* display: flex; */
     gap: 12px;
     padding: 16px;
-    background-color: white;
+    background-color: var(--color-white);
     border-top: 1px solid #eaeaea;
     width: 100%; /* Ensure container takes full width */
 }
 
+/* Base styles for the message input */
 .message-input {
-    flex: 1;
-    min-height: 40px;
     padding: 8px 12px;
-    border: 1px solid #e2e2e2;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 14px;
+    border-radius: 4px;
+    width: 100%;
     resize: none;
-    outline: none;
-    width: 100%; /* Ensure input takes full width */
-    box-sizing: border-box; /* Include padding in width calculation */
+}
+  
+/* Light theme styles (default) */
+.message-input {
+    color: #1f2937; /* Dark gray text */
+    background-color: #f9fafb; /* Very light gray background */
+    border: 1px solid #e5e7eb;
 }
 
+.message-input::placeholder {
+    color: #9ca3af; /* Medium gray for placeholder */
+  }
+
+/* Dark theme styles */
+[data-theme="dark"] .message-input {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+  
+[data-theme="dark"] .message-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+  
+  /* Focus states for both themes */
 .message-input:focus {
-    border-color: #9333ea;
+    outline: none;
+    border-color: #6366f1; /* Indigo color for focus */
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
-
+  
 .send-button {
     padding: 8px 24px;
     background-color: #4CAF50;
@@ -158,5 +197,5 @@ body, html , pre {
     height: 100%;
     color: #666;
     font-size: 16px;
-    background-color: #fff;
+    background-color: var(--color-white);
 }

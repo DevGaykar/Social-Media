@@ -3,12 +3,22 @@
 
  {% block extra_css %}
 <link rel="stylesheet" href= "{% static '/signup.css' %}" >
+<link rel="stylesheet" href= "{% static '/style.css' %}" >
 {% endblock %} 
 
 {% block layout %}
+<div style="display:none">
+{%include 'snippets/sidebar.html'%}
+</div>
+{%include 'snippets/customize-theme.html' %}
+
 <div class='container' id='form'>
         {% block content%}
             
         {%endblock content%}
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src= "{% static './index.js' %}" ></script>
 {% endblock %}

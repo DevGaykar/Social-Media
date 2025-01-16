@@ -140,8 +140,6 @@ def favourite(request, post_id):
     return redirect('post-details', post_id=post_id)
         
 
-    return render(request,'post/post-report.html')
-
 def PostReport(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
