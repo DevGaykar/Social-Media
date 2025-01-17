@@ -24,7 +24,7 @@ body{
 .box{
     margin-top: 10%;
     /* margin-left: 40%; */
-    background-color: #fff;
+    background-color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,7 +76,7 @@ body{
 }
 
 .container  form{
-    background-color: #fff;
+    background-color: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,7 +86,7 @@ body{
 }
 
 .container  input{
-    background-color: #eee;
+    background-color: var(--color-light);
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -95,6 +95,11 @@ body{
     width: 100%;
     outline: none;
 }
+
+input, textarea {
+    background-color: var(--color-light);
+    color: var(--color-dark); /* or #ffffff, or any light color that matches your design */
+  }
 
 .form-container {
     position: absolute;

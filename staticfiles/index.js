@@ -16,6 +16,11 @@ const colorPlatte = document.querySelectorAll('.choose-color span');
 const Bg1 = document.querySelector('.bg-1');
 const Bg2 = document.querySelector('.bg-2');
 const Bg3 = document.querySelector('.bg-3');
+let primaryHue = 252;
+//theme background values
+let lightColorLightness;
+let whiteColorLightness;
+let darkColorLightness;
 
 // ===============SIDEBAR =================//
 
@@ -76,6 +81,29 @@ menuItems.forEach(item =>{
 // })
 
 
+// Function to save settings to localStorage
+const saveSettings = (fontSize, primaryHue, background) => {
+    const settings = {
+        fontSize,
+        primaryHue,
+        background: {
+            lightColorLightness,
+            whiteColorLightness,
+            darkColorLightness
+        }
+    };
+    localStorage.setItem('themeSettings', JSON.stringify(settings));
+};
+
+// Function to load settings from localStorage
+const loadSettings = () => {
+    const settings = localStorage.getItem('themeSettings');
+    if (settings) {
+        return JSON.parse(settings);
+    }
+    return null;
+};
+
 
 //THEME CUSTOMIZATION
 
@@ -135,8 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
-
  // ==============FONTS=========================
 
   //remove active class from spans or font size selectors
@@ -176,6 +202,11 @@ fontSizes.forEach(size =>{
 
     //change font size of the root html element
     document.querySelector('html').style.fontSize = fontSize;
+    saveSettings(fontSize, primaryHue, {
+        lightColorLightness,
+        whiteColorLightness,
+        darkColorLightness
+    });
    })
 })
 
@@ -207,15 +238,14 @@ colorPlatte.forEach(color =>{
         color.classList.add('active');
 
         root.style.setProperty('--primary-color-hue',primaryHue);
+        saveSettings(document.querySelector('html').style.fontSize, primaryHue, {
+            lightColorLightness,
+            whiteColorLightness,
+            darkColorLightness
+        });
     })
 })
 
-
-//theme background values
-
-let lightColorLightness;
-let whiteColorLightness;
-let darkColorLightness;
 
 //change background color
 const changeBG = () =>{
@@ -230,8 +260,17 @@ Bg1.addEventListener('click',() =>{
     //remove active class from the others
     Bg2.classList.remove('active');
     Bg3.classList.remove('active');
-    //remove customized changes from local storage
-    window.location.reload();
+
+    lightColorLightness = '95%';
+    whiteColorLightness = '100%';
+    darkColorLightness = '17%';
+    
+    changeBG();
+    saveSettings(document.querySelector('html').style.fontSize, primaryHue, {
+        lightColorLightness,
+        whiteColorLightness,
+        darkColorLightness
+    });
 })
 
 Bg2.addEventListener('click',() =>{
@@ -245,6 +284,11 @@ Bg2.addEventListener('click',() =>{
     Bg1.classList.remove('active');
     Bg3.classList.remove('active');
     changeBG();
+    saveSettings(document.querySelector('html').style.fontSize, primaryHue, {
+        lightColorLightness,
+        whiteColorLightness,
+        darkColorLightness
+    });
 })
 
 Bg3.addEventListener('click',() =>{
@@ -258,6 +302,52 @@ Bg3.addEventListener('click',() =>{
     Bg1.classList.remove('active');
     Bg2.classList.remove('active');
     changeBG();
-})
+    saveSettings(document.querySelector('html').style.fontSize, primaryHue, {
+        lightColorLightness,
+        whiteColorLightness,
+        darkColorLightness
+    });
+});
 
 
+// Apply saved settings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedSettings = loadSettings();
+    if (savedSettings) {
+        // Apply font size
+        document.querySelector('html').style.fontSize = savedSettings.fontSize;
+        
+        // Apply color
+        root.style.setProperty('--primary-color-hue', savedSettings.primaryHue);
+        
+        // Apply background
+        lightColorLightness = savedSettings.background.lightColorLightness;
+        whiteColorLightness = savedSettings.background.whiteColorLightness;
+        darkColorLightness = savedSettings.background.darkColorLightness;
+        changeBG();
+        
+        // Set active classes
+        fontSizes.forEach(size => {
+            if (size.dataset.size === savedSettings.fontSize) {
+                removeSizeSelector();
+                size.classList.add('active');
+            }
+        });
+        
+        colorPlatte.forEach(color => {
+            if (color.dataset.hue === savedSettings.primaryHue.toString()) {
+                changeActiveColorClass();
+                color.classList.add('active');
+            }
+        });
+        
+        // Set active background
+        if (lightColorLightness === '95%') {
+            Bg1.classList.add('active');
+        } else if (whiteColorLightness === '20%') {
+            Bg2.classList.add('active');
+        } else {
+            Bg3.classList.add('active');
+        }
+    }
+});

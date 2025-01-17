@@ -582,8 +582,13 @@ main .container .right{
 }
 
 .right .messages .search-bar{
+    
     display: flex;
     margin-left: 1rem;
+}
+
+.right .messages .search-bar input{
+    color: var(--color-dark);
 }
 
 .right .messages .category{
@@ -613,6 +618,11 @@ main .container .right{
     gap: 1rem;
     margin-bottom: 1rem;
     align-items: start;
+}
+
+.right .messages .message .button-container .reply-button,form button{
+    color : var(--color-dark) ;
+    background: var(--color-white);
 }
 
 .right .message .profile-photo{
