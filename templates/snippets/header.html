@@ -1,16 +1,16 @@
-{%load static%}
+{% load static %}
 <nav>
     <div class="container">
         <h2 class="log">
-            <a href = "{% url 'home' %}">
-            Social
+            <a href="{% url 'home' %}">
+                Buddy
             </a>
         </h2>
         <!-- <div class="search-bar">
             <i class="uil uil-search"></i>
             <input type="search" placeholder="Search for user">
         </div> -->
-        {%if user.is_authenticated%}
+        {% if user.is_authenticated %}
         <div class="create">
             <a href="{% url 'newpost' %}" class="btn btn-primary" role="button">
                 Create 
@@ -18,19 +18,18 @@
             <a href="{% url 'account_logout' %}" class="btn btn-primary" role="button">
                 Log Out 
             </a>
-                <div class="profile-photo" >
-                    {%if request.user.profile.avatar%}
-                        <a href = "{% url 'profile'  %}">
-                        <img src="{{request.user.profile.avatar}}"/>
-                        </a>
-                    {%else%}
-                        <a href = "{% url 'profile'  %}">
-                        <img src="{% static '/images/avatar_default.png' %}"/>
-                        </a>
-                    {%endif%}
-                </div>
-
-        {%endif%}
+            <div class="profile-photo">
+                {% if request.user.profile.avatar %}
+                    <a href="{% url 'profile' %}">
+                        <img src="{{ request.user.profile.avatar }}" />
+                    </a>
+                {% else %}
+                    <a href="{% url 'profile' %}">
+                        <img src="{% static '/images/avatar_default.png' %}" />
+                    </a>
+                {% endif %}
+            </div>
         </div>
+        {% endif %}
     </div>
 </nav>

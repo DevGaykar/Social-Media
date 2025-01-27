@@ -1,0 +1,82 @@
+{% load static %}
+<div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Group Details</h3>
+    <div class="group-info">
+        <div class="group-image-container">
+            {% if conversation.group_image %}
+                <img src="{{ conversation.group_image.url }}" class="group-image" id="group-image-preview">
+            {% else %}
+                <img src="{% static '/images/group.png' %}" class="group-image" id="group-image-preview">
+            {% endif %}
+        </div>
+        <div class="group-details-container">
+            <h4>{{ conversation.group_name }}</h4>
+            <p class="text-muted">Group conversation</p>
+            <p class="admin">Admin: {{ conversation.admin.username }}</p>
+            <p class="created-date">Created on: {{ conversation.created_at|date:"F j, Y" }}</p>
+        </div>
+    </div>
+    <h5>Participants:</h5>
+    <ul class="participants-list">
+        {% for participant in conversation.participants.all %}
+            <li class="participant-item">
+                <img src="{{ participant.profile.avatar }}" class="profile-photo">
+                <span class="participant-name">{{ participant.username }}</span>
+                {% if request.user == conversation.admin and participant != conversation.admin %}
+                    <button class="make-admin-btn btn btn-small" data-userid="{{ participant.id }}">Make Admin</button>
+                    <button class="remove-participant-btn btn btn-danger btn-small" data-userid="{{ participant.id }}">Remove</button>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="admin-controls">
+        {% if request.user == conversation.admin %}
+            <button id="add-participants-btn" class="btn btn-primary">Add Participants</button>
+            <button id="delete-group-btn" class="btn btn-danger">Delete Group</button>
+        {% endif %}
+        <button class="edit-group-btn btn btn-secondary">Edit Group</button>
+    </div>
+    <div id="edit-group-form" class="edit-group-form" style="display: none;">
+        {% if conversation and conversation.id %}
+            <form method="POST" action="{% url 'inbox:edit-group' conversation.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="group_name">Group Name</label>
+                    <input type="text" name="group_name" value="{{ conversation.group_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="group_image">Group Image</label>
+                    <input type="file" name="group_image" id="group-image-input">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal for adding participants -->
+<div id="add-participants-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Add Participants</h3>
+        {% if conversation and conversation.id %}
+        <form method="POST" action="{% url 'inbox:add_participants' conversation.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="new_participants">Select Participants</label>
+                <div class="participants-grid">
+                    {% for user in available_users %}
+                        <div class="participant-item">
+                            <input type="checkbox" name="new_participants" value="{{ user.id }}">
+                            <img src="{{ user.profile.avatar }}" class="participant-avatar">
+                            <span class="participant-name">{{ user.username }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
