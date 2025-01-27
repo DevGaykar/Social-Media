@@ -1,0 +1,37 @@
+{%load static%}
+<div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Create New Group</h3>
+    <form method="POST" action="{% url 'inbox:start_group_conversation' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.group_name }}
+        </div>
+        <div class="form-group image-upload">
+            <label for="{{ form.group_image.id_for_label }}">Group Image</label>
+            <div class="image-preview-container">
+                <img id="image-preview" src="{% static '/images/group.png' %}" alt="Group Image Preview">
+                {{ form.group_image }}
+                <label for="{{ form.group_image.auto_id }}" class="upload-label">
+                    <i class="uil uil-camera-plus"></i>
+                    Choose Image
+                </label>
+            </div>
+        </div>
+        <div class="form-group participants-list">
+            <label>Select Participants</label>
+            <div class="participants-grid">
+                {% for participant in form.participants %}
+                    <div class="participant-item">
+                        {{ participant }}
+                        <img src="{% if participant.choice_label.profile.avatar %}{{ participant.choice_label.profile.avatar.url }}{% else %}{% static '/images/avatar_default.png' %}{% endif %}" 
+                             alt="{{ participant.choice_label }}"
+                             class="participant-avatar">
+                        <span class="participant-name">{{ participant.choice_label }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Group</button>
+    </form>
+</div>

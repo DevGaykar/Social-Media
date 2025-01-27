@@ -1,136 +1,84 @@
-{% comment %} {%extends 'layouts/e.html'%} {% load static %} {% block content %} {% endcomment %}
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message Inbox</title>
-    <link rel="stylesheet" href="{% static 'inbox/inbox.css' %}" />
+    <link rel="stylesheet" href="{% static '/inbox.css' %}" />
     <link rel="stylesheet" href="{% static '/style.css' %}" />
 </head>
 
 <navbar>
-    {%include "snippets/header.html"%}
+    {% include "snippets/header.html" %}
 </navbar>
 
 <div style="display:none">
-    {%include 'snippets/sidebar.html'%}
+    {% include 'snippets/sidebar.html' %}
 </div>
-    {%include 'snippets/customize-theme.html' %}
+{% include 'snippets/customize-theme.html' %}
 
 <body>
-{% comment %} <div class="middle"> {% endcomment %}
-    <div class="container" >
-        <aside class="conversation-list">
-        {% if my_conversations %}
-            {% for convo in my_conversations %}
-                {% for participant in convo.participants.all %}
-                    {% if participant != request.user %}
-                    <div class="conversation-item {% if forloop.first %} active {%endif%}">
-                        {% comment %} <a href="{% url 'inbox:inbox' convo.id %}">
-                            <div class="profile-photo">
-                                <img src={{ participant.profile.avatar}}>
-                            </div>
-                            <h3><img src={{ participant.profile.avatar}}>}</h3>
-                        </a> {% endcomment %}
-                        <a href="{% url 'inbox:inbox' convo.id %}">
-                            <div class="profile-photo">
-                                <img src={{ participant.profile.avatar}}>
-                            </div>
-                            <div class="handle">
-                                <h4>{{ participant.profile.name }}</h4>
-                                <p class="text-muted">
-                                    @{{participant.username }}
-                                </p>
-                            </div>
-                        </a>
-                        {% comment %} <p>Hey, how are you?</p> {% endcomment %}
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-        {% else %}
-            <p>No conversations found.</p>
-        {% endif %}
-        </aside>
- 
+    <div class="container">
+        {%include 'inbox/convo-list.html'%}
+
         <main class="conversation-view">
-            {% if conversation %}
-             <header class="conversation-header">
-                {% for participant in conversation.participants.all %}
-                    {% if participant != request.user %}
-                    <a href="{% url 'userprofile' participant.profile.user %}">
-                        <div class="profile-photo">
-                            <img src={{ participant.profile.avatar}}>
-                        </div>
-                        <div class="handle">
-                            <h4>{{participant.profile.name}} </h4>
-                            <p class="text-muted">
-                                @{{participant.username }}
-                            </p>
-                        </div>
-                    </a>
-                    {% endif %}
-                {% endfor %}
-            </header> 
-            <section class="message-list">
-            {%for message in conversation.messages.all reversed%}
-                <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
-                   <pre> {{message.body_decrypted}} </pre>
-                   <div class="message-time">{{message.created}}</div>
-                </div>
-                {%endfor%}
-            </section>
-            <div class="message-input-container">
-                <form method="POST" action="{% url 'inbox:send_message' conversation.id %}" id="message-form">
-                    {% csrf_token %}
-                    <textarea class="message-input" type="text" name="body" placeholder="Type a message..." ></textarea>
-                    <button class="send-button" type="submit">Send</button>
-                </form>
-            </div>
-            {% else %}
-                <div class="no-conversation-selected">
-                    <p>Select a conversation to start messaging</p>
-                </div>
-            {% endif %}
+            {%include 'inbox/convo-view.html'%}
         </main>
+
+        <!-- Modal for displaying participants list -->
+        <div id="participants-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Participants</h3>
+                <ul class="participants-list">
+                    {% for participant in conversation.participants.all %}
+                        <li class="participant-item">
+                            <img src="{{ participant.profile.avatar }}" class="profile-photo">
+                            <span class="participant-name">{{ participant.username }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Modal for displaying group details -->
+        <div id="group-details-modal" class="modal">
+            {% include 'inbox/group-details.html' %}
+        </div>
+
+        <!-- Modal for adding participants -->
+        <div id="add-participants-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Add Participants</h3>
+                {% if conversation and conversation.id %}
+                    <form method="POST" action="{% url 'inbox:add_participants' conversation.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="new_participants">Select Participants</label>
+                            <div class="participants-grid">
+                                {% for user in available_users %}
+                                    <div class="participant-item">
+                                        <input type="checkbox" name="new_participants" value="{{ user.id }}">
+                                        <img src="{{ user.profile.avatar }}" class="participant-avatar">
+                                        <span class="participant-name">{{ user.username }}</span>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Move modal outside of the main container but keep it in the body -->
+        <div id="create-group-modal" class="modal">
+            {% include 'inbox/create-group.html' %}
+        </div>
     </div>
-{% comment %} </div> {% endcomment %}
-<script>
-    document.getElementById('message-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const form = e.target;
-        const formData = new FormData(form);
-        
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Add the new message to the message list
-                const messageList = document.querySelector('.message-list');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message sent';
-                messageDiv.textContent = data.message.body;
-                messageList.appendChild(messageDiv);
-                
-                // Clear the input
-                form.reset();
-                
-                // Scroll to bottom
-                messageList.scrollTop = messageList.scrollHeight;
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
-    </script>
-    <script src= "{% static './index.js' %}" ></script>
-<body>
-{% comment %} {%endblock%} {% endcomment %}
+    <script src="{% static './inbox.js' %}"></script>
+    <script src="{% static '/index.js' %}"></script>
+</body>
+</html>
