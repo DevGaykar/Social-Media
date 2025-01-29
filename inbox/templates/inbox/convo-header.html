@@ -1,0 +1,40 @@
+{%load static%}
+<header class="conversation-header">
+    <div class="conversation-info">
+        {% if conversation.type == 'world' %}
+            <div class="profile-photo world-header" style="cursor: pointer;">
+                <img src="{% static '/images/world_chat.png' %}">
+            </div>
+            <div class="handle world-header" style="cursor: pointer;">
+                <h4>World Chat</h4>
+                <p class="text-muted">Global conversation</p>
+            </div>
+        {% elif conversation.type == 'group' %}
+            <div class="profile-photo group-header" style="cursor: pointer;">
+                {% if conversation.group_image %}
+                    <img src="{{ conversation.group_image.url }}">
+                {% else %}
+                    <img src="{% static '/images/group.png' %}">
+                {% endif %}
+            </div>
+            <div class="handle group-header" style="cursor: pointer;">
+                <h4>{{ conversation.group_name }}</h4>
+                <p class="text-muted">Group conversation</p>
+            </div>
+        {% else %}
+            {% for participant in conversation.participants.all %}
+                {% if participant != request.user %}
+                    <a href="{% url 'userprofile' participant.profile.user %}" class="private-chat-header">
+                        <div class="profile-photo">
+                            <img src="{{ participant.profile.avatar }}" alt="{{ participant.username }}">
+                        </div>
+                        <div class="handle">
+                            <h4>{{ participant.profile.name }}</h4>
+                            <p class="text-muted">@{{ participant.username }}</p>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</header>

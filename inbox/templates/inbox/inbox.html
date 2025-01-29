@@ -23,7 +23,14 @@
         {%include 'inbox/convo-list.html'%}
 
         <main class="conversation-view">
-            {%include 'inbox/convo-view.html'%}
+            {% if conversation %}
+                {%include 'inbox/convo-header.html'%}
+                {%include 'inbox/message.html'%}
+            {% else %}
+                <div class="no-conversation-selected">
+                    <p>Select a conversation to start messaging</p>
+                </div>
+            {% endif %}
         </main>
 
         <!-- Modal for displaying participants list -->

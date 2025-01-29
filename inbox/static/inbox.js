@@ -127,22 +127,29 @@ if (addParticipantsBtn) {
             addParticipantsModal.style.display = 'block';
         }
     });
-}
+};
 
 document.querySelectorAll('.make-admin-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const userId = this.dataset.userid;
+        const conversationId = this.dataset.conversationid;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
         if (confirm('Make this user the new admin?')) {
-            fetch(`/inbox/make-admin/{{ conversation.id }}/${userId}/`, {
+            fetch(`/inbox/make-admin/${conversationId}/${userId}/`, {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             }).then(response => {
                 if (response.ok) {
                     window.location.reload();
+                } else {
+                    console.error('Failed to make admin');
                 }
-            });
+            }).catch(error => console.error('Error:', error));
         }
     });
 });
@@ -150,17 +157,24 @@ document.querySelectorAll('.make-admin-btn').forEach(btn => {
 document.querySelectorAll('.remove-participant-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         const userId = this.dataset.userid;
+        const conversationId = this.dataset.conversationid;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
         if (confirm('Remove this participant?')) {
-            fetch(`/inbox/remove-participant/{{ conversation.id }}/${userId}/`, {
+            fetch(`/inbox/remove-participant/${conversationId}/${userId}/`, {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             }).then(response => {
                 if (response.ok) {
                     window.location.reload();
+                } else {
+                    console.error('Failed to remove participant');
                 }
-            });
+            }).catch(error => console.error('Error:', error));
         }
     });
 });
@@ -168,20 +182,27 @@ document.querySelectorAll('.remove-participant-btn').forEach(btn => {
 const deleteGroupBtn = document.getElementById('delete-group-btn');
 if (deleteGroupBtn) {
     deleteGroupBtn.addEventListener('click', function() {
+        const conversationId = this.dataset.conversationid;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
         if (confirm('Are you sure you want to delete this group? This action cannot be undone.')) {
-            fetch(`/inbox/delete-group/{{ conversation.id }}/`, {
+            fetch(`/inbox/delete-group/${conversationId}/`, {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             }).then(response => {
                 if (response.ok) {
                     window.location.href = '/inbox/';
+                } else {
+                    console.error('Failed to delete group');
                 }
-            });
+            }).catch(error => console.error('Error:', error));
         }
     });
-}
+};
 
 // Add edit group functionality
 document.addEventListener('DOMContentLoaded', function() {
