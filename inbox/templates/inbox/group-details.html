@@ -24,8 +24,8 @@
                 <img src="{{ participant.profile.avatar }}" class="profile-photo">
                 <span class="participant-name">{{ participant.username }}</span>
                 {% if request.user == conversation.admin and participant != conversation.admin %}
-                    <button class="make-admin-btn btn btn-small" data-userid="{{ participant.id }}">Make Admin</button>
-                    <button class="remove-participant-btn btn btn-danger btn-small" data-userid="{{ participant.id }}">Remove</button>
+                    <button class="make-admin-btn btn btn-small" data-userid="{{ participant.id }}" data-conversationid="{{ conversation.id }}">Make Admin</button>
+                    <button class="remove-participant-btn btn btn-danger btn-small" data-userid="{{ participant.id }}"data-conversationid="{{ conversation.id }}">Remove</button>
                 {% endif %}
             </li>
         {% endfor %}
@@ -33,7 +33,7 @@
     <div class="admin-controls">
         {% if request.user == conversation.admin %}
             <button id="add-participants-btn" class="btn btn-primary">Add Participants</button>
-            <button id="delete-group-btn" class="btn btn-danger">Delete Group</button>
+            <button id="delete-group-btn" class="btn btn-danger" data-conversationid="{{ conversation.id }}">Delete Group</button>
         {% endif %}
         <button class="edit-group-btn btn btn-secondary">Edit Group</button>
     </div>

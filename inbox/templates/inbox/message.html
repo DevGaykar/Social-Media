@@ -1,0 +1,22 @@
+{%load static%}    
+<section class="message-list">
+    {% for message in conversation.messages.all reversed %}
+        <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+            {% if conversation.type != 'one_to_one' %}
+                <div class="message-sender">
+                    <img src="{{ message.sender.profile.avatar }}" class="profile-photo">
+                    <span class="username">{{ message.sender.username }}</span>
+                </div>
+            {% endif %}
+            <pre>{{ message.body_decrypted }}</pre>
+            <div class="message-time">{{ message.created|time:"H:i" }}</div>
+        </div>
+    {% endfor %}
+</section>
+<div class="message-input-container">
+    <form method="POST" action="{% url 'inbox:send_message' conversation.id %}" id="message-form">
+        {% csrf_token %}
+        <textarea class="message-input" type="text" name="body" placeholder="Type a message..."></textarea>
+        <button class="send-button" type="submit">Send</button>
+    </form>
+</div>
