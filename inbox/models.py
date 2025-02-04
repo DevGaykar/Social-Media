@@ -28,12 +28,20 @@ class InboxMesssage(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.body.startswith('gAAAAA'):
+            f = Fernet(settings.ENCRYPT_KEY)
+            self.body = f.encrypt(self.body.encode('utf-8')).decode('utf-8')
+            super().save(*args, **kwargs)
+
     @property
     def body_decrypted(self):
-        f = Fernet(settings.ENCRYPT_KEY)
-        message_decrypted = f.decrypt(self.body)
-        message_decode = message_decrypted.decode('utf-8')
-        return message_decode
+        try:
+            f = Fernet(settings.ENCRYPT_KEY)
+            decrypted_data = f.decrypt(self.body.encode('utf-8')).decode('utf-8')
+            return decrypted_data
+        except Exception as e:
+            return "[Error Decrypting Message]"
 
     @classmethod
     def create_message(cls, sender, conversation, body):

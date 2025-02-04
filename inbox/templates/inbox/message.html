@@ -1,22 +1,74 @@
-{%load static%}    
-<section class="message-list">
+{%load static%} 
+<section class="message-list" id="message-list">
     {% for message in conversation.messages.all reversed %}
-        <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
-            {% if conversation.type != 'one_to_one' %}
-                <div class="message-sender">
-                    <img src="{{ message.sender.profile.avatar }}" class="profile-photo">
-                    <span class="username">{{ message.sender.username }}</span>
-                </div>
-            {% endif %}
-            <pre>{{ message.body_decrypted }}</pre>
-            <div class="message-time">{{ message.created|time:"H:i" }}</div>
-        </div>
+        {%include "inbox/partials/chat_message.html"%}
     {% endfor %}
 </section>
+
 <div class="message-input-container">
-    <form method="POST" action="{% url 'inbox:send_message' conversation.id %}" id="message-form">
+    <form  id="message-form"
+        hx-post="{% url 'inbox:send_message' conversation.id %}"
+        hx-target="#message-list"
+        hx-swap="beforeend"
+        _= "on htmx:afterRequest reset() me">
         {% csrf_token %}
-        <textarea class="message-input" type="text" name="body" placeholder="Type a message..."></textarea>
+        <textarea class="message-input"  name="body" placeholder="Type a message..."
+        required
+        _="on keydown 
+            if event.keyCode is 13 and not event.shiftKey 
+            then trigger submit"></textarea>
         <button class="send-button" type="submit">Send</button>
     </form>
 </div>
+
+<script>
+    // WebSocket setup
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/inbox/{{ conversation.id }}/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messageList = document.getElementById('message-list');
+        messageList.insertAdjacentHTML('beforeend', data.html);
+        messageList.scrollTop = messageList.scrollHeight;
+    };
+
+    // Form handling
+    document.getElementById('message-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const messageInput = this.querySelector('textarea[name="body"]');
+        const message = messageInput.value.trim();
+        
+        if (message) {
+            chatSocket.send(JSON.stringify({
+                'body': message
+            }));
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+        }
+    });
+
+    // HTMX error handling
+    document.body.addEventListener('htmx:responseError', function(evt) {
+        console.error('Message submission failed:', evt.detail.xhr.response);
+        alert('Failed to send message. Please try again.');
+    });
+
+    document.getElementById('message-form').addEventListener('submit', function(e) {
+        const messageInput = this.querySelector('textarea[name="body"]');
+        messageInput.style.height = 'auto'; // Reset textarea height
+    });
+
+    // Handle successful message submission
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        const messageList = document.getElementById('message-list');
+        messageList.scrollTop = messageList.scrollHeight;
+    });
+
+    // Handle errors
+    document.body.addEventListener('htmx:responseError', function(evt) {
+        console.error('Message submission failed:', evt.detail.xhr.response);
+        alert('Failed to send message. Please try again.');
+    });     
+</script>

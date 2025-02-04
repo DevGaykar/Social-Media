@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message Inbox</title>
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
     <link rel="stylesheet" href="{% static '/inbox.css' %}" />
     <link rel="stylesheet" href="{% static '/style.css' %}" />
 </head>
@@ -25,6 +27,7 @@
         <main class="conversation-view">
             {% if conversation %}
                 {%include 'inbox/convo-header.html'%}
+                {% comment %} {%include 'inbox/partials/chat_message.html'%} {% endcomment %}
                 {%include 'inbox/message.html'%}
             {% else %}
                 <div class="no-conversation-selected">

@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.shortcuts import redirect, render,get_object_or_404
 from cryptography.fernet import Fernet
 from django.conf import settings
@@ -85,7 +85,6 @@ def world_chat_view(request):
 
 @login_required
 def send_message(request, conversation_id):
-    """Handle sending new messages in a conversation"""
     conversation = get_object_or_404(Conversation, id=conversation_id)
     
     # Verify user is a participant in the conversation
@@ -93,37 +92,16 @@ def send_message(request, conversation_id):
         return JsonResponse({'error': 'Unauthorized'}, status=403)
     
     if request.method == 'POST':
-        # message encryption
-        message_original = request.POST.get('body')
-        message_bytes = message_original.encode('utf-8')
-        message_encrypted = f.encrypt(message_bytes)
-        message_decode = message_encrypted.decode('utf-8')
-        
-        message_body = message_decode
+        message_body =  request.POST.get('body')
         if message_body:
-            InboxMesssage.create_message(
+            message = InboxMesssage.objects.create(
                 sender=request.user,
                 conversation=conversation,
                 body=message_body
             )
-            
-            # Update conversation last message time
             conversation.lastmessage_created = timezone.now()
-            conversation.is_seen = False
             conversation.save()
-            
-            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                # Return JSON response for AJAX requests
-                return JsonResponse({
-                    'status': 'success',
-                    'message': {
-                        'body': message_body,
-                        'sender': request.user.username,
-                        'created': timezone.now().isoformat(),
-                    }
-                })
-            
-            return redirect('inbox:inbox', conversation_id=conversation_id)
+            return render(request,'inbox/partials/chat_message.html',context={'message':message,'request':request})
             
     return JsonResponse({'error': 'Invalid request'}, status=400)
 

@@ -1,50 +1,50 @@
-// Get the message form element
-const messageForm = document.getElementById('message-form');
+// // Get the message form element
+// const messageForm = document.getElementById('message-form');
 
-// Only add event listener if the form exists
-if (messageForm) {
-    messageForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+// // Only add event listener if the form exists
+// if (messageForm) {
+//     messageForm.addEventListener('submit', function(e) {
+//         e.preventDefault();
         
-        const form = e.target;
-        const formData = new FormData(form);
+//         const form = e.target;
+//         const formData = new FormData(form);
         
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // Add the new message to the message list
-                const messageList = document.querySelector('.message-list');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message sent';
+//         fetch(form.action, {
+//             method: 'POST',
+//             body: formData,
+//             headers: {
+//                 'X-Requested-With': 'XMLHttpRequest'
+//             }
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.status === 'success') {
+//                 // Add the new message to the message list
+//                 const messageList = document.querySelector('.message-list');
+//                 const messageDiv = document.createElement('div');
+//                 messageDiv.className = 'message sent';
                 
-                const pre = document.createElement('pre');
-                pre.textContent = data.message.body;
-                messageDiv.appendChild(pre);
+//                 const pre = document.createElement('pre');
+//                 pre.textContent = data.message.body;
+//                 messageDiv.appendChild(pre);
                 
-                const messageTime = document.createElement('div');
-                messageTime.className = 'message-time';
-                messageTime.textContent = new Date(data.message.created).toLocaleString();
-                messageDiv.appendChild(messageTime);
+//                 const messageTime = document.createElement('div');
+//                 messageTime.className = 'message-time';
+//                 messageTime.textContent = new Date(data.message.created).toLocaleString();
+//                 messageDiv.appendChild(messageTime);
                 
-                messageList.appendChild(messageDiv);
+//                 messageList.appendChild(messageDiv);
                 
-                // Clear the input
-                form.reset();
+//                 // Clear the input
+//                 form.reset();
                 
-                // Scroll to bottom
-                messageList.scrollTop = messageList.scrollHeight;
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
-}
+//                 // Scroll to bottom
+//                 messageList.scrollTop = messageList.scrollHeight;
+//             }
+//         })
+//         .catch(error => console.error('Error:', error));
+//     });
+// }
 
 // Scroll to the bottom of the message list when the page loads
 window.addEventListener('load', function() {
