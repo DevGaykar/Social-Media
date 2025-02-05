@@ -1,0 +1,17 @@
+{% if conversation.type == 'one_to_one' %}
+    {% for participant in conversation.participants.all %}
+        {% if participant != user %}
+            <span class="{% if participant in conversation.users_online.all %}text-success{% else %}text-muted{% endif %}">
+                {% if participant in conversation.users_online.all %}
+                    online
+                {% else %}
+                    offline
+                {% endif %}
+            </span>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <span class="{% if online_count > 1 %}text-success{% else %}text-muted{% endif %}">
+        <span id="online">{{ online_count|add:"-1" }}</span> online
+    </span>
+{% endif %}

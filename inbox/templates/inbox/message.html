@@ -29,9 +29,17 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        const messageList = document.getElementById('message-list');
-        messageList.insertAdjacentHTML('beforeend', data.html);
-        messageList.scrollTop = messageList.scrollHeight;
+        
+        if (data.type === 'online_count') {
+            const onlineContainer = document.getElementById('online').parentElement;
+            if (onlineContainer) {
+                onlineContainer.outerHTML = data.html;
+            }
+        } else {
+            const messageList = document.getElementById('message-list');
+            messageList.insertAdjacentHTML('beforeend', data.html);
+            messageList.scrollTop = messageList.scrollHeight;
+        }
     };
 
     // Form handling

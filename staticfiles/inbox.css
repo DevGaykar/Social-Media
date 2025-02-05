@@ -726,3 +726,24 @@ input[type="file"] {
     font-size: 0.9rem;
     color: var(--color-dark);
 }
+
+.private-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.private-chat-header:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.text-success {
+    color: #28a745;
+}
+
+.text-muted {
+    color: #6c757d;
+}

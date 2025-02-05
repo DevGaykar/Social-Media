@@ -7,7 +7,11 @@
             </div>
             <div class="handle world-header" style="cursor: pointer;">
                 <h4>World Chat</h4>
-                <p class="text-muted">Global conversation</p>
+                <p>
+                    <span class="{% if conversation.users_online.count > 1 %}text-success{% else %}text-muted{% endif %}">
+                        <span id="online">{{ conversation.users_online.count|add:"-1" }}</span> online
+                    </span>
+                </p>
             </div>
         {% elif conversation.type == 'group' %}
             <div class="profile-photo group-header" style="cursor: pointer;">
@@ -19,7 +23,11 @@
             </div>
             <div class="handle group-header" style="cursor: pointer;">
                 <h4>{{ conversation.group_name }}</h4>
-                <p class="text-muted">Group conversation</p>
+                <p>
+                    <span class="{% if conversation.users_online.count > 1 %}text-success{% else %}text-muted{% endif %}">
+                        <span id="online">{{ conversation.users_online.count|add:"-1" }}</span> online
+                    </span>
+                </p>
             </div>
         {% else %}
             {% for participant in conversation.participants.all %}
@@ -30,7 +38,12 @@
                         </div>
                         <div class="handle">
                             <h4>{{ participant.profile.name }}</h4>
-                            <p class="text-muted">@{{ participant.username }}</p>
+                            <p>
+                                <span class="username text-muted">@{{ participant.username }}</span>
+                                <span class="{% if participant in conversation.users_online.all %}text-success{% else %}text-muted{% endif %}">
+                                    {% if participant in conversation.users_online.all %}online{% else %}offline{% endif %}
+                                </span>
+                            </p>
                         </div>
                     </a>
                 {% endif %}

@@ -41,6 +41,9 @@
                             <p class="text-muted">
                                 {% if convo.type == 'world' %}
                                     Global conversation
+                                {% elif convo.type == 'group' %}
+                                    {% comment %} Group conversation {% endcomment %}
+                                    {{convo.group_name}}
                                 {% else %}
                                     {% for participant in convo.participants.all %}
                                         {% if participant != request.user %}

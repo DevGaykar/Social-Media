@@ -70,6 +70,7 @@ class Conversation(models.Model):
     ]
     id = models.CharField(max_length=100, default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     participants = models.ManyToManyField(User, related_name='conversations')
+    users_online = models.ManyToManyField(User, related_name='online_in_groups', blank=True)
     lastmessage_created = models.DateTimeField(default=timezone.now)
     is_seen = models.BooleanField(default=False)
     type = models.CharField(max_length=20, choices=CONVERSATION_TYPE_CHOICES, default='one_to_one')
