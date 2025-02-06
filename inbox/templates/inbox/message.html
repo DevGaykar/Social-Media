@@ -22,9 +22,10 @@
 </div>
 
 <script>
-    // WebSocket setup
+    // WebSocket setup with protocol detection
+    const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/inbox/{{ conversation.id }}/'
+        protocol + window.location.host + '/ws/inbox/{{ conversation.id }}/'
     );
 
     chatSocket.onmessage = function(e) {
