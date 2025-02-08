@@ -6,7 +6,7 @@
     </div>
     {% if my_conversations %}
         {% for convo in my_conversations %}
-            <div class="conversation-item {% if forloop.first %} active {% endif %}">
+            <div class="conversation-item {% if conversation.id == convo.id %} active {% endif %}">
                 <a href="{% url 'inbox:inbox' convo.id %}">
                     <div class="conversation-info">
                         <div class="profile-photo">
@@ -61,3 +61,10 @@
         <p>No conversations found.</p>
     {% endif %}
 </aside>
+
+<style>
+    .conversation-item.active {
+        background: var(--color-light);
+        border-left: 3px solid var(--color-primary);
+    }
+</style>

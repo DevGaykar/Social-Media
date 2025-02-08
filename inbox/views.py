@@ -1,5 +1,7 @@
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render,get_object_or_404
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -104,6 +106,34 @@ def send_message(request, conversation_id):
             return render(request,'inbox/partials/chat_message.html',context={'message':message,'request':request})
             
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def send_file(request, conversation_id):
+    conversation = get_object_or_404(Conversation, id=conversation_id)
+    
+    # Verify user is a participant in the conversation
+    if request.user not in conversation.participants.all():
+        return JsonResponse({'error': 'Unauthorized'}, status=403)
+    
+    if request.htmx and request.FILES:
+        file = request.FILES['file']
+        message = InboxMesssage.objects.create(
+            sender=request.user,
+            conversation=conversation,
+            file=file
+        )
+        conversation.lastmessage_created = timezone.now()
+        conversation.save()
+
+        channel_layer = get_channel_layer()
+        event = {
+            'type': 'message_handler',
+            'message_id': message.id,
+        }
+        async_to_sync(channel_layer.group_send)(
+            conversation_id, event
+        )
+    return HttpResponse()
 
 @login_required
 def add_participants(request, conversation_id):

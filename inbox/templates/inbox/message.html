@@ -19,6 +19,32 @@
             then trigger submit"></textarea>
         <button class="send-button" type="submit">Send</button>
     </form>
+    {% comment %} <form id="file" enctype="multipart/form-data"
+        hx-post="{% url 'inbox:send_file' conversation.id %}"
+        hx-target="#message-list"
+        hx-swap="beforeend"
+        _="on htmx:beforeSend reset() me">
+        {%csrf_token%}
+        <input type="file" name="file" id="id_file">
+        <button type="submit">Submit File</button>
+    </form> {% endcomment %}
+    <form id="file" class="file-upload-form" enctype="multipart/form-data"
+    hx-post="{% url 'inbox:send_file' conversation.id %}"
+    hx-target="#message-list"
+    hx-swap="beforeend"
+    _="on htmx:beforeSend reset() me">
+    {% csrf_token %}
+    <div class="file-input-wrapper">
+        <input type="file" name="file" id="id_file" class="file-input">
+        <label for="id_file" class="file-label">
+            <i class="uil uil-file-upload"></i>
+            <span>Choose a file</span>
+        </label>
+        <button type="submit" class="send-button">
+            Send
+        </button>
+    </div>
+</form>
 </div>
 
 <script>

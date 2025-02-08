@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from django_resized import ResizedImageField
+from PIL import Image
 
 def group_profile_path(instance, filename):
     """
@@ -22,17 +23,43 @@ def group_profile_path(instance, filename):
     # Return the complete path
     return f'group_images/{instance.id}/{clean_filename}'
 
+def inbox_file_path(instance, filename):
+    """
+    Generate the upload path for inbox files.
+    Format: inbox_files/world/{filename} for world chat
+    Format: inbox_files/{group_name}/{filename} for group chat
+    Format: inbox_files/private/{filename} for private chat
+    """
+    # Get the conversation type and generate appropriate folder name
+    if instance.conversation.type == 'world':
+        folder_name = 'world'
+    elif instance.conversation.type == 'group':
+        # Clean group name for path
+        folder_name = "".join(c for c in instance.conversation.group_name if c.isalnum() or c in (' ', '-')).strip()
+        folder_name = folder_name.replace(' ', '_').lower()
+    else:
+        folder_name = 'private'
+    
+    # Generate unique filename
+    unique_id = str(uuid.uuid4())
+    ext = filename.split('.')[-1]
+    clean_filename = f"{unique_id}.{ext}"
+    
+    # Return the complete path
+    return f'inbox_files/{folder_name}/{clean_filename}'
+
 class InboxMesssage(models.Model):
     sender = models.ForeignKey(User,on_delete=models.CASCADE,related_name="sent_messages")
     conversation = models.ForeignKey('Conversation',on_delete=models.CASCADE,related_name="messages")
-    body = models.TextField()
+    body = models.TextField(blank=True, null=True)
+    file = models.FileField(upload_to=inbox_file_path, storage=MediaCloudinaryStorage(),blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if not self.body.startswith('gAAAAA'):
+        if self.body and not (self.body.startswith('gAAAAA')):
             f = Fernet(settings.ENCRYPT_KEY)
             self.body = f.encrypt(self.body.encode('utf-8')).decode('utf-8')
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @property
     def body_decrypted(self):
@@ -61,6 +88,14 @@ class InboxMesssage(models.Model):
     def __str__(self):
         time_since = timesince(self.created, timezone.now())
         return f'[{self.sender.username} : {time_since} ago]'
+    
+    def is_image(self):
+        try:
+            image = Image.open(self.file)
+            image.verify()
+            return True
+        except:
+            return False
 
 class Conversation(models.Model):
     CONVERSATION_TYPE_CHOICES = [
