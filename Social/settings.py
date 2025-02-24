@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'userauths.apps.UserauthsConfig',
     'comment.apps.CommentConfig',
     'inbox',
+    'story',
 
     #hotpot
     'admin_honeypot',

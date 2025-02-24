@@ -1,0 +1,57 @@
+{%load static%}
+
+{% block extra_css %}
+    <link rel="stylesheet" href= "{% static '/story.css' %}" />
+{% endblock %}
+
+<div id="storyModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Add New Story</h2>
+        <form id="storyForm" method="POST" action="{% url 'story:add_story' %}" 
+         data-url="{% url 'story:add_story' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="content">Choose Image or Video</label>
+                <input type="file" name="content" id="content" accept="image/*,video/*" required>
+                <div id="preview-container" style="display: none; margin-top: 15px;">
+                    <img id="image-preview" style="max-width: 100%; display: none;">
+                    <video id="video-preview" controls style="max-width: 100%; display: none;">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Add Story</button>
+        </form>
+    </div>
+</div>
+<h4>Stories</h4>
+<div class="stories-container">
+    <div class="stories-wrapper"> 
+        <div class="story-item your-story">
+            <div class="story-avatar" >
+                <img src={{request.user.profile.avatar}} alt="Your Story" class="avatar-img">
+                    <div class="add-story-icon">+</div>
+            </div>
+            <span class="story-username">Add Story</span>
+        </div>   
+        
+        <div  id="stories">
+        </div>
+
+    </div>   
+</div>
+
+
+ {% comment %} <script type="text/javascript">
+    if (typeof storiesData === 'undefined') {
+        const storiesData = {{ stories|safe }};
+        console.log('Stories data loaded:', storiesData);
+    }
+</script>  {% endcomment %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zuck.js/1.0.0/zuck.min.js"></script>
+<script src= "{% static '/story.js' %}" ></script>
+ 
+
+ 

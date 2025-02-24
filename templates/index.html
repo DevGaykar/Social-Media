@@ -4,7 +4,10 @@
             <!--*****************Middle*************************-->
             <div class="middle">
                 <!-------------------Stories---------------->
-                 {%include 'snippets/stories.html'%}
+                <script type="text/javascript">
+                    const storiesData = {{ stories|safe }};
+                </script> 
+                 {%include 'story/story.html'%}
                 <!------------------End of Stories---------------------->
                 <form class="create-post">
                     <div class="profile-photo">

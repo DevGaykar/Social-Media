@@ -32,6 +32,8 @@ urlpatterns = [
 
     #inbox
     path('inbox/',include('inbox.urls')),
+
+    path('story/',include('story.urls')),
    
     #search user
     path('search/',search,name="search"),

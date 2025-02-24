@@ -274,7 +274,7 @@ main .container .left .profile{
 }
 
 /* ====================Middle=============================*/
-.middle .stories{
+/* .middle .stories{
     display: flex;
     justify-content: space-between;
     height: 12rem;
@@ -338,7 +338,7 @@ main .container .left .profile{
     height: 2rem;
     align-self: start;
     border: 3px solid var(--color-primary);
-}
+} */
 
 /* ------------- Edit Popup --------------------------*/
 .control-popup {
