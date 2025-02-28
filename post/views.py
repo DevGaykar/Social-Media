@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import  login_required
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.serializers.json import DjangoJSONEncoder
+from notifications.signals import notify
 
 from post.models import *
 from django.contrib.auth.models import User
@@ -197,18 +198,21 @@ def like_toggle(model):
                 liked = False
             else:
                 post.likes.add(request.user)
-                liked = False
+                liked = True
                 
             return func(request,post,liked)
         return wrapper
     return inner_func
 
-# @like_toggle(Post)
-# def like_post(request,post):
-#     return render(request,'snippets/like_count.html', {'post': post})
-
 @like_toggle(Post)
 def like_post(request, post, liked):
+    if liked and request.user != post.user:
+        notify.send(
+            request.user,
+            recipient=post.user,
+            verb="liked your post",
+            target=post
+        )
     return render(request, 'snippets/like_count.html', {'post': post})
 
 def favourite(request, post_id):

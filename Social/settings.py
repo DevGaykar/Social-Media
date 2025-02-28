@@ -57,6 +57,9 @@ INSTALLED_APPS = [
     'cloudinary',
     'django_htmx',
 
+    #django-notifications-hq
+    'notifications',
+
     #added apps
     'post.apps.PostConfig',
     'userauths.apps.UserauthsConfig',

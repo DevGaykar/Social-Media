@@ -11,56 +11,22 @@
     </a>
     <a  class="menu-item" id="notifications">
         <span><i class="uil uil-bell"><small class="notification-count">9+</small></i></span><h3>Notifications</h3>
-        <!-----Notification Popup-->
+        <!---Notification Popup-->
         <div class="notification-popup">
             <div>
-                <div class="profile-photo">
-                    <img src="{% static '/images/profile-2.jpg'%}" >
-                </div>
-                <div class="notification-body">
-                    <b>Keke Ben</b> accepted your friend request
-                    <small class="text-muted">2 DAYS AGO</small>
-                </div>
-
-                <div class="profile-photo">
-                    <img src="{% static 'images/profile-3.jpg'%}" >
-                </div>
-                <div class="notification-body">
-                    <b>Keke Ben</b> commented on your post
-                    <small class="text-muted">2 DAYS AGO</small>
-                </div>
-
-                <div class="profile-photo">
-                    <img src="{% static 'images/profile-4.jpg'%}" >
-                </div>
-                <div class="notification-body">
-                    <b>Keke Ben</b> accepted your friend request
-                    <small class="text-muted">2 DAYS AGO</small>
-                </div>
-
-                <div class="profile-photo">
-                    <img src="{% static 'images/profile-5.jpg'%}" >
-                </div>
-                <div class="notification-body">
-                    <b>Keke Ben</b> accepted your friend request
-                    <small class="text-muted">2 DAYS AGO</small>
-                </div>
-
-                <div class="profile-photo">
-                    <img src="{% static 'images/profile-2.jpg'%}" >
-                </div>
-                <div class="notification-body">
-                    <b>Keke Ben</b> accepted your friend request
-                    <small class="text-muted">2 DAYS AGO</small>
-                </div>
-
-                <div class="profile-photo">
-                    <img src="{% static 'images/profile-6.jpg'%}" >
-                </div>
-                <div class="notification-body">
-                    <b>Keke Ben</b> accepted your friend request
-                    <small class="text-muted">2 DAYS AGO</small>
-                </div>
+                {%for notification in request.user.notifications.unread%}
+                {% comment %} <a href="{{ notification.action_object.get_absolute_url }}"> {% endcomment %}
+                    <div class="profile-photo">
+                        <img src="{{notification.actor.profile.avatar}}" >
+                    </div> 
+                    <div class="notification-body">
+                            <b>@{{ notification.actor.profile.user.username }}</b> {{ notification.verb }}
+                            <small class="text-muted">{{ notification.timestamp|timesince }} ago</small>
+                    </div>
+                {% comment %} </a> {% endcomment %}
+                {%empty%}
+                <p>No new notifications</p>
+                {%endfor%}
             </div>
         </div>
     </a>

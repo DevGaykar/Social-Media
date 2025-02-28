@@ -5,6 +5,7 @@ from asgiref.sync import async_to_sync
 from cryptography.fernet import Fernet
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from notifications.signals import notify
 from .models import *
 from .forms import *
 
@@ -67,6 +68,16 @@ def start_group_conversation(request):
             conversation.save()
             conversation.participants.add(request.user)  # Add creator to participants
             conversation.participants.add(*form.cleaned_data['participants'])
+
+            for user in form.cleaned_data['participants']:
+                if user != request.user:
+                    notify.send(
+                        sender=request.user,
+                        recipient=user,
+                        verb="added you to group",
+                        target=conversation,
+                        description=f"Group: {conversation.group_name}"
+                    )
             return redirect('inbox:inbox', conversation_id=conversation.id)
     return redirect('inbox:inbox')
 
@@ -103,6 +114,17 @@ def send_message(request, conversation_id):
             )
             conversation.lastmessage_created = timezone.now()
             conversation.save()
+            if conversation.type != 'world':
+                recipients = conversation.participants.exclude(id=request.user.id)
+                for recipient in recipients:
+                    notify.send(
+                        sender=request.user,
+                        recipient=recipient,
+                        verb = f"sent a message in {conversation.get_type_display()} chat",
+                        target=conversation,
+                        action_object=message,
+                        description = message.body_decrypted[:50]
+                    )
             return render(request,'inbox/partials/chat_message.html',context={'message':message,'request':request})
             
     return JsonResponse({'error': 'Invalid request'}, status=400)
@@ -145,6 +167,15 @@ def add_participants(request, conversation_id):
         new_participant_ids = request.POST.getlist('new_participants')
         new_participants = User.objects.filter(id__in=new_participant_ids)
         conversation.participants.add(*new_participants)
+
+        for user in new_participants:
+            notify.send(
+                sender=request.user,
+                recipient=user,
+                verb="added you to group",
+                target=conversation,
+                description=f"Group: {conversation.group_name}"
+            )
         return redirect('inbox:inbox', conversation_id=conversation_id)
     return redirect('inbox:inbox')
 
@@ -158,6 +189,15 @@ def make_admin(request, conversation_id, user_id):
     if new_admin in conversation.participants.all():
         conversation.admin = new_admin
         conversation.save()
+
+        if new_admin != request.user:
+            notify.send(
+                sender=request.user,
+                recipient=new_admin,
+                verb="made you admin of",
+                target=conversation,
+                description=f"Group: {conversation.group_name}"
+            )
     return JsonResponse({'status': 'success'})
 
 @login_required
@@ -169,6 +209,14 @@ def remove_participant(request, conversation_id, user_id):
     participant = get_object_or_404(User, id=user_id)
     if participant != conversation.admin:
         conversation.participants.remove(participant)
+
+        notify.send(
+            sender=request.user,
+            recipient=participant,
+            verb="removed you from group",
+            target=conversation,
+            description=f"Group: {conversation.group_name}"
+        )
     return JsonResponse({'status': 'success'})
 
 @login_required

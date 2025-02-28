@@ -14,6 +14,7 @@ from .forms import EditProfileForm
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from notifications.signals import notify
 
 @login_required
 def UserProfile(request, username=None):
@@ -62,16 +63,28 @@ def follow(request,username,option):
     user = request.user
     following = get_object_or_404(User,username=username)
 
-    f,created = Follow.objects.get_or_create(following=following,follower=request.user)
+    f,created = Follow.objects.get_or_create(following=following,follower=user)
 
     if int(option) == 0:
         f.delete()
-        Stream.objects.filter(following=following, user=request.user).all().delete()
+        Stream.objects.filter(following=following, user=user).all().delete()
     else:
         posts = Post.objects.filter(user=following)[:25]
         with transaction.atomic():
             for post in posts:
-                Stream.objects.create(post=post,user=request.user,date=post.posted,following=following)
+                Stream.objects.create(
+                    post=post,
+                    user=user,
+                    date=post.posted,
+                    following=following
+                )
+        if created:
+            notify.send(
+                sender = user,
+                recipient = following,
+                verb = 'started following you',
+                description=f"New follower: {user.username}"
+            )
         
     return HttpResponseRedirect(reverse('userprofile',args=[username]))
 

@@ -18,6 +18,25 @@ body {
     gap: 16px;
     padding: 0 20px;
   }
+
+.stories.carousel {
+  white-space: nowrap;
+  overflow: auto;
+}
+
+.stories.snapgram .story.seem {
+  opacity: .75;
+}
+.stories.carousel .story:first-child {
+  margin-left: 0;
+}
+
+.stories.carousel .story {
+  display: inline-block;
+  width: 18vw;
+  max-width: 90px;
+  margin: 0 6px;
+}
   
   .story-item {
     display: flex;
