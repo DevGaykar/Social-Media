@@ -23,6 +23,8 @@ def home(request):
     user = request.user
     posts = Stream.objects.filter(user=user)
     group_ids = []
+    followed_users = Follow.objects.filter(follower=request.user).values_list('following', flat=True)
+    suggested_users = User.objects.exclude(id__in=followed_users).exclude(id=request.user.id)
     for post in posts:
         group_ids.append(post.post_id)
     post_items = Post.objects.filter(id__in=group_ids).all().order_by('-posted')
@@ -112,7 +114,8 @@ def home(request):
         stories_json = '[]'
     context = {
         'post_items' : post_items,
-        'stories' : stories_json
+        'stories' : stories_json,
+        'suggested_users' : suggested_users
     }
     return render(request,"index.html",context)
 

@@ -1,5 +1,6 @@
 {%extends 'layouts/a.html'%}
 {% load static %}
+{%load custom_filters%}
         {% block content %}
             <!--*****************Middle*************************-->
             <div class="middle">
@@ -121,70 +122,31 @@
 
                 <!----------------FRIEND REQUESTS------------------>
                 <div class="friend-requests">
-                    <h4>Requests</h4>
-                    <div class="request">
-                        <div class="info">
-                            <div class="profile-photo">
-                                <img src="{% static 'images/profile-13.jpg'%}">
+                    <h4>Suggested Users</h4>
+                        {% for user in suggested_users%}
+                            <div class="request">
+                                <div class="info">
+                                    <div class="profile-photo">
+                                        <a href="{% url 'userprofile' user.username %}">
+                                            <img src="{{user.profile.avatar}}">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <h5>{{user.username}}</h5>
+                                        <p class="text-muted">
+                                            {% with mutual_friends=request.user|mutual_friends_count:user %}
+                                                {{ mutual_friends }} mutual {% if mutual_friends == 1 %}friend{% else %}friends{% endif %}
+                                            {% endwith %}                                       
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="action">
+                                    <a href = "{%url 'follow' user.username 1 %}">
+                                        <label class = "btn btn-primary" > Follow </label>
+                                    </a>
+                                </div>
                             </div>
-                            <div>
-                                <h5>Lina Rose</h5>
-                                <p class="text-muted">
-                                    8 mutual friends
-                                </p>
-                            </div>
-                        </div>
-                        <div class="action">
-                            <button class="btn btn-primary">
-                                Accept
-                            </button>
-                            <button class="btn">
-                                Decline
-                            </button>
-                        </div>
-                    </div>
-                    <div class="request">
-                        <div class="info">
-                            <div class="profile-photo">
-                                <img src="{% static 'images/profile-15.jpg'%}">
-                            </div>
-                            <div>
-                                <h5>Marry Jane</h5>
-                                <p class="text-muted">
-                                    2 mutual friends
-                                </p>
-                            </div>
-                        </div>
-                        <div class="action">
-                            <button class="btn btn-primary">
-                                Accept
-                            </button>
-                            <button class="btn">
-                                Decline
-                            </button>
-                        </div>
-                    </div>
-                    <div class="request">
-                        <div class="info">
-                            <div class="profile-photo">
-                                <img src="{% static 'images/profile-14.jpg'%}">
-                            </div>
-                            <div>
-                                <h5>James Bond</h5>
-                                <p class="text-muted">
-                                    3 mutual friends
-                                </p>
-                            </div>
-                        </div>
-                        <div class="action">
-                            <button class="btn btn-primary">
-                                Accept
-                            </button>
-                            <button class="btn">
-                                Decline
-                            </button>
-                        </div>
-                    </div>
+                        {% endfor %}
                 </div>
             </div>   
             <!--===========================END OF RIGHT====================-->

@@ -5,6 +5,9 @@ from django.db.models.signals import post_save,post_delete
 from django.utils.text import slugify
 from django.urls import reverse
 from cloudinary_storage.storage import MediaCloudinaryStorage
+from django import template
+
+register = template.Library()
 
 #Uploading user files to a secific directory
 def user_directory_path(instance,filename):
@@ -57,6 +60,12 @@ class LikedPost(models.Model):
 class Follow(models.Model):
     follower = models.ForeignKey(User,on_delete=models.CASCADE,related_name="follower")
     following = models.ForeignKey(User,on_delete=models.CASCADE,related_name="following")
+
+    def mutual_friends_count(self, other_user):
+        current_user_following = Follow.objects.filter(follower=self.follower).values_list('following', flat=True)
+        other_user_following = Follow.objects.filter(follower=other_user).values_list('following', flat=True)
+        mutual_friends = set(current_user_following).intersection(set(other_user_following))
+        return len(mutual_friends)
 
 class Stream(models.Model):
     following = models.ForeignKey(User,on_delete=models.CASCADE,related_name="stream_following")
