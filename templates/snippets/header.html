@@ -15,9 +15,6 @@
             <a href="{% url 'newpost' %}" class="btn btn-primary" role="button">
                 Create 
             </a>
-            <a href="{% url 'account_logout' %}" class="btn btn-primary" role="button">
-                Log Out 
-            </a>
             <div class="profile-photo">
                 {% if request.user.profile.avatar %}
                     <a href="{% url 'profile' %}">

@@ -39,6 +39,9 @@ urlpatterns = [
     path('search/',search,name="search"),
     path('search_users/',search_users,name="searchusers"),
 
+    #settings
+    path('settings/',Settings,name="settings"),
+
    #profile
    # Logged-in user's profile and saved posts
     path('profile/', UserProfile, name='profile'),

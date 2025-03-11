@@ -1,0 +1,96 @@
+.settings-content {
+    flex: 1;
+    background: var(--color-light);
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.setting-card {
+    background: var(--color-white);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.setting-item {
+    margin-bottom: 1rem;
+}
+
+.setting-item:last-child {
+    margin-bottom: 0;
+}
+
+.setting-item label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="email"] {
+    background-color: var(--color-light);
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-danger{
+    background: var(--color-danger);
+    color: white;
+}
+
+.unverified {
+    color: var(--danger);
+}
+
+.verified {
+    color: green;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: var(--background);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+}

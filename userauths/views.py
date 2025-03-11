@@ -8,6 +8,7 @@ from django.db.models import Q
 from .models import Profile
 from django.contrib.auth.models import User
 from allauth.account.utils import send_email_confirmation
+from allauth.account.models import EmailAddress
 from post.models import Post,Follow,Stream
 from inbox.models import *
 from .forms import EditProfileForm
@@ -96,11 +97,16 @@ def EditProfile(request):
         form = EditProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
             form.save()
-
-            if request.user.emailaddress_set.get(primary=True).verified:
-                return redirect('profile')
-            else:
-                return redirect('profile-verify-email')
+            try:
+                if request.user.emailaddress_set.get(primary=True).verified:
+                    return redirect('profile')
+                else:
+                    send_email_confirmation(request, request.user)
+                    return redirect('account_email_verification_sent')
+            except EmailAddress.DoesNotExist:
+                messages.error(request, "Primary email address not found. Please verify your email.")
+                send_email_confirmation(request, request.user)
+                return redirect('account_email_verification_sent')
         else:
             print("Form errors:", form.errors)
 
@@ -121,6 +127,7 @@ def DeleteProfile(request):
         return redirect('home')
     return render(request,'userauths/deleteprofile.html')
 
+@login_required
 def search(request):
     return render(request,"userauths/search.html")
 
@@ -164,4 +171,14 @@ def search_users(request):
 
 def profile_verify_email(request):
     send_email_confirmation(request,request.user)
-    return redirect('profile')
+    return redirect('account_email_verification_sent')
+
+@login_required
+def Settings(request,username=None):
+    if username is None or username == request.user.username:
+        user = request.user
+        profile = Profile.objects.get(user=user)
+    comtext = {
+        'profile': profile,
+    }
+    return render(request,"userauths/settings.html",comtext)    

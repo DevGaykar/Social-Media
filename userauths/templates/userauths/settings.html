@@ -1,0 +1,88 @@
+{%extends 'layouts/e.html'%} {% load static %}
+{% block content %}
+
+    {% block extra_css %}
+    <link rel="stylesheet" href= "{% static 'userauths/settings.css' %}">
+    {%endblock%}
+
+    <div class="middle">
+    <main class="settings-content">
+        <h1>Account Settings</h1>
+        
+        <div class="settings-section">
+            <h2>Profile</h2>
+            <div class="setting-card">
+                <div class="setting-item">
+                    <label for="display-name">Display Name</label>
+                    <input type="text" id="display-name" value={{profile.name}} disabled>
+                </div>
+                <div class="setting-item">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" value=@{{profile.user}} disabled>
+                </div>
+                <div class="setting-item">
+                    <label for="email">Bio</label>
+                    <input type="email" id="email" value={{profile.bio}} disabled> 
+                </div>
+                <div class="setting-item">
+                    <label for="email">Location</label>
+                    <input type="email" id="email" value={{profile.location}} disabled> 
+                </div>
+                <div class="setting-item">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value={{profile.user.email}} disabled> 
+                </div>
+                <a href="{%url 'editprofile'%}"> 
+                    <button id="editProfileBtn" class="btn btn-primary">Edit Profile</button>
+                </a>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>Email Verification</h2>
+            <div class="setting-card">
+                <div class="setting-item">
+                    <p id="verificationStatus">Email status:
+                        {% if profile.user.emailaddress_set.first.verified %}
+                            <span class="verified"> Verified</span>
+                        {% else %}
+                            <span class="unverified" style="color: var(--color-danger);"> Unverified</span>
+                        {% endif %}
+                    {% if not profile.user.emailaddress_set.first.verified %}  
+                    <a href="{% url 'account_email_verification_sent' %}">
+                        <button id="verifyEmailBtn" class="btn btn-primary">Verify Email</button>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2>Account Actions</h2>
+            
+            <div class="setting-card">
+                <div class="setting-item">
+                    <a href="{% url 'account_logout' %}">
+                        <button id="deleteAccountBtn" class="btn btn-danger">Log Out</button>
+                    </a>
+                </div>
+                <div class="setting-item">
+                    <a href="{% url 'account_change_password' %}">
+                        <button class="btn btn-primary">Change Password</button>
+                    </a>
+                </div>
+                <div class="setting-item">
+                    <a href="{% url 'deleteprofile' %}">
+                        <button id="deleteAccountBtn" class="btn btn-danger">Delete Account</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+
+    <div class="right" style="display: none;"> </div>
+    {%include 'snippets/customize-theme.html' %}
+  
+
+{% endblock %}
