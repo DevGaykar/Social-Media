@@ -19,17 +19,17 @@ from notifications.signals import notify
 
 @login_required
 def UserProfile(request, username=None):
-    # If username is None, it’s the logged-in user's profile
+    # If username is None, it's the logged-in user's profile
     if username is None or username == request.user.username:
         user = request.user
         profile = Profile.objects.get(user=user)
         
         # Determine if we're showing saved posts or user's posts
         url_name = resolve(request.path).url_name
-        if url_name == 'profile':
-            posts = Post.objects.filter(user=user).order_by('-posted')
-        else:
+        if url_name == 'profilefavourite':
             posts = profile.favourite.all()
+        else:
+            posts = Post.objects.filter(user=user).order_by('-posted')
     else:
         # Viewing another user's profile
         user = get_object_or_404(User, username=username)
@@ -41,6 +41,10 @@ def UserProfile(request, username=None):
     following_count = Follow.objects.filter(follower=user).count()
     followers_count = Follow.objects.filter(following=user).count()
     follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
+
+    # Get followers and following lists
+    followers = Profile.objects.filter(user__in=Follow.objects.filter(following=user).values_list('follower', flat=True))
+    following = Profile.objects.filter(user__in=Follow.objects.filter(follower=user).values_list('following', flat=True))
 
     # Pagination
     paginator = Paginator(posts, 8)
@@ -55,6 +59,8 @@ def UserProfile(request, username=None):
         'following_count': following_count,
         'followers_count': followers_count,
         'follow_status': follow_status,
+        'followers': followers,
+        'following': following,
     }
 
     return render(request, "userauths/profile.html", context)

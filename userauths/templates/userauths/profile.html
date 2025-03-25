@@ -19,7 +19,6 @@
               src="{{profile.avatar}}"
               alt="{{ profile.user.username }}"
             />
-            {% comment %} <span></span> {% endcomment %}
           </div>
           <h2>{{ profile.name }}</h2>
           <p style="margin-bottom: 10px;"> @{{profile.user.username }}</p>
@@ -28,7 +27,6 @@
           {%else%}
           <p>Planet Earth</p><br>
           {%endif%}
-          <!-- <p>{{ profile.user.email }}</p> -->
 
           {% if profile.user != request.user %}
             {%if follow_status == True%}
@@ -39,19 +37,57 @@
           {% endif %}
 
           <ul class="about">
-            <li style="margin-right: 10px;" ><span><p>{{profile.user.posts.count}}</p></span> Posts</li>
-            <li style="margin-right: 10px;"><span><p>{{ followers_count}}</p></span> Followers</li>
-            <li><span><p>{{ following_count}}</p></span> Following</li>
+            <li><span><p>{{profile.user.posts.count}}</p></span> Posts</li>
+            <li class="hover-container">
+              <span><p>{{ followers_count}}</p></span> Followers
+              {% if followers_count > 0 %}
+              <div class="hover-content">
+                <div class="list-header">Followers</div>
+                <ul class="user-list">
+                  {% for follower in followers %}
+                  <li>
+                    <a href="{% url 'userprofile' follower.user.username %}">
+                      <img src="{{ follower.avatar }}" alt="{{ follower.user.username }}">
+                      <div class="user-info">
+                        <span class="user-name">{{ follower.name }}</span>
+                        <span class="user-username">@{{ follower.user.username }}</span>
+                      </div>
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+            </li>
+            <li class="hover-container">
+              <span><p>{{ following_count}}</p></span> Following
+              {% if following_count > 0 %}
+              <div class="hover-content">
+                <div class="list-header">Following</div>
+                <ul class="user-list">
+                  {% for following in following %}
+                  <li>
+                    <a href="{% url 'userprofile' following.user.username %}">
+                      <img src="{{ following.avatar }}" alt="{{ following.user.username }}">
+                      <div class="user-info">
+                        <span class="user-name">{{ following.name }}</span>
+                        <span class="user-username">@{{ following.user.username }}</span>
+                      </div>
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              {% endif %}
+            </li>
           </ul>
 
           <div class="content">
-            <p>
               {%if profile.bio%}
               <p style="color: #818181;">{{ profile.bio }} </p>
               {%else%}
               <p style="color: #818181;">Procrastinator</p>
               {%endif%}
-            </p>
           </div>
 
         </div>
@@ -59,23 +95,33 @@
         <div class="right__col">
           <div class="nav">
             <ul>
-              <li><a style="color: #818181;" href="{% url 'userprofile' profile.user %}">Posts</a></li>
-              {% if profile.user == request.user%}
               <li>
-                <a href="{% url 'profilefavourite'  %}">Saved</a>
+                <a href="{% url 'userprofile' profile.user %}" 
+                   class="{% if request.resolver_match.url_name == 'userprofile' %}active{% endif %}">
+                   Posts
+                </a>
               </li>
-              {%endif%}
+              {% if profile.user == request.user %}
+              <li>
+                <a href="{% url 'profilefavourite' %}" 
+                   class="{% if request.resolver_match.url_name == 'profilefavourite' %}active{% endif %}">
+                   Saved
+                </a>
+              </li>
+              {% endif %}
             </ul> <br>
           {% if profile.user != request.user %}
-            <label class = "btn btn-primary" style="font-size:1.2rem;" > 
-              <a href="{% url 'inbox:start_conversation' profile.user.username  %}">
-                 <i class="uil uil-edit" style="color:white;">
-                </i> </a> 
+            <label class="btn btn-primary" style="font-size:1.2rem;"> 
+              <a href="{% url 'inbox:start_conversation' profile.user.username %}">
+                 <i class="uil uil-edit" style="color:white;"></i>
+              </a> 
             </label>
           {% endif %}
-          {% if profile.user == request.user%}
-         <a href="{%url 'editprofile'%}"> <label class = "btn btn-primary"> Edit Profile </label></a>
-          {%endif%}
+          {% if profile.user == request.user %}
+            <a href="{% url 'editprofile' %}">
+              <label class="btn btn-primary">Edit Profile</label>
+            </a>
+          {% endif %}
           </div>
 
           <div class="photos">
