@@ -42,6 +42,9 @@ urlpatterns = [
     #settings
     path('settings/',Settings,name="settings"),
 
+    #update header image
+    path('update-header-image/', update_header_image, name='update_header_image'),
+
    #profile
    # Logged-in user's profile and saved posts
     path('profile/', UserProfile, name='profile'),

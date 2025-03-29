@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import resolve,reverse
 from django.core.paginator import Paginator
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import transaction
 from django.db.models import Q
+from django.views.decorators.http import require_POST
 
 from .models import Profile
 from django.contrib.auth.models import User
@@ -187,4 +188,17 @@ def Settings(request,username=None):
     comtext = {
         'profile': profile,
     }
-    return render(request,"userauths/settings.html",comtext)    
+    return render(request,"userauths/settings.html",comtext)
+
+@login_required
+@require_POST
+def update_header_image(request):
+    if 'header_image' in request.FILES:
+        profile = request.user.profile
+        profile.header_image = request.FILES['header_image']
+        profile.save()
+        return JsonResponse({
+            'success': True,
+            'image_url': profile.header_image.url
+        })
+    return JsonResponse({'success': False}, status=400)    

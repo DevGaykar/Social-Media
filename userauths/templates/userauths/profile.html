@@ -6,10 +6,68 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
     <link rel="stylesheet" href="{% static 'userauths/style.css' %}" />
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const headerImageInput = document.getElementById('header-image-input');
+        
+        if (headerImageInput) {
+          headerImageInput.addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+              const formData = new FormData();
+              formData.append('header_image', file);
+              formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+              
+              try {
+                const response = await fetch('{% url "update_header_image" %}', {
+                  method: 'POST',
+                  body: formData,
+                });
+                
+                if (response.ok) {
+                  const data = await response.json();
+                  if (data.success) {
+                    // Update the header image immediately
+                    const headerImage = document.querySelector('.header-image');
+                    if (headerImage) {
+                      headerImage.src = data.image_url;
+                    } else {
+                      // If there was a placeholder, replace it with the new image
+                      const placeholder = document.querySelector('.header-image-placeholder');
+                      if (placeholder) {
+                        placeholder.outerHTML = `<img src="${data.image_url}" alt="Header Image" class="header-image">`;
+                      }
+                    }
+                  }
+                }
+              } catch (error) {
+                console.error('Error uploading header image:', error);
+              }
+            }
+          });
+        }
+      });
+    </script>
   
   <div class="middle">
     <div class="header__wrapper">
-      <header></header>
+      <header>
+        <div class="header-image-container">
+          {% if profile.header_image %}
+            <img src="{{ profile.header_image.url }}" alt="Header Image" class="header-image">
+          {% else %}
+            <div class="header-image-placeholder"></div>
+          {% endif %}
+          {% if profile.user == request.user %}
+          <label for="header-image-input" class="header-edit-btn">
+            <i class="fas fa-camera"></i>
+            <span>Edit header</span>
+          </label>
+          <input type="file" id="header-image-input" style="display: none;" accept="image/*">
+          {% endif %}
+        </div>
+      </header>
       <div class="cols__container">
         <!-- Left Column: User Information -->
         <div class="left__col">
