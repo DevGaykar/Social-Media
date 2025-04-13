@@ -12,29 +12,39 @@
         <div class="right">
             <div class="messages">
                 <div class="heading">
-                    <h4>Comments</h4> 
+                    <h4>Comments</h4>
+                    <span class="comment-count">{{ post.comments.count }} Comments</span>
                 </div>
 
-                <div class="card !pb-0 -mt-3">
-                    <form method="POST" action="{%url 'comment-sent' post.id %}" >
+                <div class="comment-form">
+                    <form method="POST" action="{% url 'comment-sent' post.id %}" class="comment-input-form">
+                        {% csrf_token %}
                         <div class="search-bar">
-                            {% csrf_token %}
-                            {% comment %} <input type="search" placeholder="Add comment" id="message-search" > {% endcomment %}
                             {{ commentform }}
                         </div>
-                        <button @click="open = false" class="btn btn-primary" type="submit">Submit</button>
+                        <button class="btn btn-primary comment-submit" type="submit">
+                            <i class="uil uil-message"></i> Comment
+                        </button>
                     </form>
                 </div>
-               <!--- --------------Comment Category---------------------->
-                <div class="category">
-                    <h6 class="active">Newest First</h6>
-                    <h6 >Top Comment</h6>
+
+                <div class="comment-filters">
+                    <h6 class="active" data-filter="all">All Comments</h6>
+                    {% if user.is_authenticated %}
+                    <h6 data-filter="mine">My Comments</h6>
+                    {% endif %}
                 </div>
 
-                <!----------------Comment -------------------------->
-                {% for comment in post.comments.all %}
-                {% include 'comment/comment.html' %}
-                {% endfor %}
+                <div class="comments-container">
+                    {% for comment in post.comments.all %}
+                        {% include 'comment/comment.html' %}
+                    {% empty %}
+                        <div class="no-comments">
+                            <i class="uil uil-comment-alt"></i>
+                            <p>No comments yet. Be the first to comment!</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <!--------------------End of Messages-------------->
             <!--===========================END OF RIGHT====================-->
@@ -42,4 +52,34 @@
             {%include 'snippets/customize-theme.html' %}
         </div>  
         
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Comment filter functionality
+        const filterButtons = document.querySelectorAll('.comment-filters h6');
+        const comments = document.querySelectorAll('.message');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filter = button.dataset.filter;
+                
+                comments.forEach(comment => {
+                    switch(filter) {
+                        case 'all':
+                            comment.style.display = 'flex';
+                            break;
+                        case 'mine':
+                            const isMine = comment.dataset.author === '{{ user.username }}';
+                            comment.style.display = isMine ? 'flex' : 'none';
+                            break;
+                    }
+                });
+            });
+        });
+    });
+    </script>
     {% endblock content %}
