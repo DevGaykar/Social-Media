@@ -1,38 +1,41 @@
-
-<div class="message {% if message.sender == user %}sent{% else %}received{% endif %} fade-in-and-up">
-    {% if conversation.type != 'one_to_one' %}
-        <div class="message-sender">
-            <img src="{{ message.sender.profile.avatar }}" class="profile-photo">
-            <span class="username">{{ message.sender.username }}</span>
-        </div>
-    {% endif %}
-    {%if message.body%}
-        <pre>{{ message.body_decrypted }}</pre>
-    {%endif%}
-
-    {%if message.file%}
-    <div class="file-attachment">
-        {% if message.is_image %}
-            <div class="image-container">
-                <a href="{{ message.file.url }}" target="_blank">
-                    <img src="{{ message.file.url }}" alt="Shared image" class="shared-image">
-                </a>
-            </div>
-        {% else %}
-            <div class="file-container">
-                <i class="uil uil-file-alt file-icon"></i>
-                <div class="file-info">
-                    <span class="file-name">{{ message.file.name }}</span>
-                    <a href="{{ message.file.url }}" target="_blank" class="download-link">
-                        <i class="uil uil-download-alt"></i>
-                        Download
-                    </a>
-                </div>
+<div class="message-container {% if message.sender == user %}sent{% else %}received{% endif %} fade-in-and-up">
+    <div class="message-content">
+        {% if conversation.type != 'one_to_one' %}
+            <div class="message-sender">
+                <img src="{{ message.sender.profile.avatar }}" class="profile-photo">
+                <span class="username">{{ message.sender.username }}</span>
             </div>
         {% endif %}
+        {% if message.body %}
+            <div class="message">
+                <pre>{{ message.body_decrypted }}</pre>
+            </div>
+        {% endif %}
+
+        {% if message.file %}
+            <div class="file-attachment">
+                {% if message.is_image %}
+                    <div class="image-container">
+                        <a href="{{ message.file.url }}" target="_blank">
+                            <img src="{{ message.file.url }}" alt="Shared image" class="shared-image">
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="file-container">
+                        <i class="uil uil-file-alt file-icon"></i>
+                        <div class="file-info">
+                            <span class="file-name">{{ message.file.name }}</span>
+                            <a href="{{ message.file.url }}" target="_blank" class="download-link">
+                                <i class="uil uil-download-alt"></i>
+                                Download
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="message-time">{{ message.created|time:"H:i" }}</div>
     </div>
-    {%endif%}
-    <div class="message-time">{{ message.created|time:"H:i" }}</div>
 </div>
 
 <style>
@@ -134,5 +137,4 @@
             font-size: 0.8rem;
         }
     }
-    
 </style>

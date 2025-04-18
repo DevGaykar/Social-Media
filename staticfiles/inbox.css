@@ -75,24 +75,44 @@ body, html , pre {
     flex-grow: 1;
     overflow-y: auto;
     padding: 15px;
-    
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: calc(100% - 140px); /* Account for header and input container */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-light) transparent;
+}
+.message-list::-webkit-scrollbar {
+    width: 6px;
+}
+.message-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+.message-list::-webkit-scrollbar-thumb {
+    background-color: var(--color-light);
+    border-radius: 3px;
 }
 .message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    max-width: 70%;
-    clear: both;
+    padding: 1rem;
+    border-radius: 15px;
+    word-wrap: break-word;
+    margin: 0;
+    width: fit-content;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.message pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    font-family: inherit;
 }
 .message.sent {
-    background-color: #dcfce7; /* light green background */
-    color: #166534;
-    float: right;
+    background: var(--color-primary);
+    color: white;
 }
 .message.received {
-    background-color: #f3f4f6; /* light gray background */
-    color: #1f2937;
-    float: left;
+    background: var(--color-light);
+    color: var(--color-dark);
 }
 /* For dark theme */
 [data-theme="dark"] .message-received {
@@ -129,32 +149,50 @@ body, html , pre {
 }
 
 .message-input-container {
-    /* display: flex; */
+    display: flex;
+    flex-direction: column;
     gap: 12px;
     padding: 16px;
     background-color: var(--color-white);
-    border-top: 1px solid #eaeaea;
-    width: 100%; /* Ensure container takes full width */
+    border-top: 1px solid var(--color-light);
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.message-input-container form {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
 }
 
 /* Base styles for the message input */
 .message-input {
-    padding: 8px 12px;
-    border-radius: 4px;
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 24px;
     width: 100%;
     resize: none;
+    min-height: 48px;
+    max-height: 120px;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    overflow-y: auto;
 }
   
 /* Light theme styles (default) */
 .message-input {
-    color: #1f2937; /* Dark gray text */
-    background-color: #f9fafb; /* Very light gray background */
-    border: 1px solid #e5e7eb;
+    color: var(--color-dark);
+    background-color: var(--color-light);
+    border: 1px solid var(--color-light);
 }
 
 .message-input::placeholder {
-    color: #9ca3af; /* Medium gray for placeholder */
-  }
+    color: var(--color-dark);
+    opacity: 0.6;
+}
 
 /* Dark theme styles */
 [data-theme="dark"] .message-input {
@@ -164,32 +202,99 @@ body, html , pre {
 }
   
 [data-theme="dark"] .message-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
 }
   
-  /* Focus states for both themes */
+/* Focus states for both themes */
 .message-input:focus {
     outline: none;
-    border-color: #6366f1; /* Indigo color for focus */
+    border-color: var(--color-primary);
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    background-color: var(--color-white);
+}
+
+[data-theme="dark"] .message-input:focus {
+    background-color: rgba(255, 255, 255, 0.15);
 }
   
 .send-button {
-    padding: 8px 24px;
-    background-color: #4CAF50;
+    padding: 12px 24px;
+    background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 24px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    white-space: nowrap; /* Prevent button text from wrapping */
-    min-width: 80px; /* Ensure minimum button width */
+    white-space: nowrap;
+    min-width: 80px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .send-button:hover {
-    background-color: #45a049;
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
 }
+
+.send-button:active {
+    transform: translateY(0);
+}
+
+/* File upload form styles */
+.file-upload-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--color-light);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--color-dark);
+}
+
+.file-label:hover {
+    background-color: var(--color-light-dark);
+}
+
+[data-theme="dark"] .file-label {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+[data-theme="dark"] .file-label:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.file-label i {
+    font-size: 18px;
+}
+
+.file-label span {
+    font-size: 14px;
+}
+
 .no-conversation-selected {
     display: flex;
     justify-content: center;
@@ -572,95 +677,64 @@ input[type="file"] {
     text-align: right;
 }
 
-.message-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
 .message-container {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
 }
 
 .message-container.sent {
     flex-direction: row-reverse;
 }
 
-.profile-photo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 .message-content {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.message {
-    padding: 1rem;
-    border-radius: 10px;
     max-width: 70%;
-    margin: 5px 0;
-}
-
-.message-sender {
-    font-weight: bold;
-}
-
-.message-time {
-    font-size: 0.8rem;
-    color: var (--color-dark);
-    margin-top: 0.5rem;
-    text-align: right;
-}
-
-.message-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.message {
-    background: var(--color-light);
-    padding: 1rem;
-    border-radius: 10px;
-    max-width: 70%;
-}
-
-.message.sent {
-    background: var(--color-primary);
-    color: white;
-    align-self: flex-end;
-}
-
-.message.received {
-    align-self: flex-start;
 }
 
 .message-sender {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    order: -1;  /* Ensure sender info appears first */
+    margin-bottom: 4px;
 }
 
 .message-sender .profile-photo {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.message-time {
-    font-size: 0.8rem;
+.message-sender .username {
+    font-size: 0.9rem;
+    font-weight: 500;
     color: var(--color-dark);
-    margin-top: 0.5rem;
-    text-align: right;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    color: var(--color-dark);
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+[data-theme="dark"] .message.received {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+[data-theme="dark"] .message-sender .username {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .message-time {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .group-image {
@@ -746,4 +820,57 @@ input[type="file"] {
 
 .text-muted {
     color: #6c757d;
+}
+
+/* Sent message styling */
+.message-container.sent .message {
+    background: #0084ff; /* Facebook Messenger blue */
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.message-container.sent .message-time {
+    color: #666;
+    text-align: right;
+}
+
+/* Received message styling */
+.message-container.received .message {
+    background: #f0f0f0; /* Light gray */
+    color: #1a1a1a;
+    border-bottom-left-radius: 4px;
+}
+
+.message-container.received .message-time {
+    color: #666;
+    text-align: left;
+}
+
+/* Dark theme message styling */
+[data-theme="dark"] .message-container.received .message {
+    background: #303030;
+    color: #fff;
+}
+
+[data-theme="dark"] .message-container.sent .message {
+    background: #0084ff; /* Keep the same blue for sent messages */
+    color: white;
+}
+
+[data-theme="dark"] .message-container .message-time {
+    color: #999;
+}
+
+/* Message hover effects */
+.message-container.sent .message:hover,
+.message-container.received .message:hover {
+    filter: brightness(95%);
+}
+
+[data-theme="dark"] .message-container.sent .message:hover {
+    filter: brightness(90%);
+}
+
+[data-theme="dark"] .message-container.received .message:hover {
+    filter: brightness(110%);
 }

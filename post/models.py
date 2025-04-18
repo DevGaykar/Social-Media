@@ -76,6 +76,11 @@ class Stream(models.Model):
     def add_post(sender,instance,*args,**kwargs):
         post = instance
         user = post.user
+        # Add post to user's own stream
+        stream = Stream(post=post, user=user, date=post.posted, following=user)
+        stream.save()
+        
+        # Add post to followers' streams
         followers = Follow.objects.all().filter(following=user)
         for follower in followers:
             stream = Stream(post=post,user=follower.follower,date=post.posted,following=user)

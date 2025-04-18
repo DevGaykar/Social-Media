@@ -36,6 +36,14 @@ body {
   width: 18vw;
   max-width: 90px;
   margin: 0 6px;
+  aspect-ratio: 1/1;
+}
+
+.stories.carousel .story img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
   
   .story-item {
@@ -260,11 +268,11 @@ body {
 }
 
 #image-preview, #video-preview {
-  max-height: 300px;
-  width: auto;
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
   margin: 0 auto;
   display: block;
-  border-radius: 4px;
 }
 
 .form-group input[type="file"] {
@@ -316,4 +324,10 @@ body {
 .viewer-item small {
   margin-left: auto;
   color: #ccc;
+}
+
+.story-viewer .media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }

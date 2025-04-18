@@ -10,7 +10,13 @@
         <span><i class="uil uil-compass"></i></span><h3>Explore</h3>
     </a>
     <a  class="menu-item" id="notifications">
-        <span><i class="uil uil-bell"><small class="notification-count">9+</small></i></span><h3>Notifications</h3>
+        <span><i class="uil uil-bell">
+            {% with unread_notifications=request.user.notifications.unread %}
+                {% if unread_notifications.count > 0 %}
+                    <small class="notification-count">{{ unread_notifications.count }}</small>
+                {% endif %}
+            {% endwith %}
+        </i></span><h3>Notifications</h3>
         <!---Notification Popup-->
         <div class="notification-popup">
             <div>
@@ -31,7 +37,15 @@
         </div>
     </a>
     <a  class="menu-item " id="messages-notification" href="{% url 'inbox:inbox' %}">
-        <span><i class="uil uil-envelope"><small class="notification-count">6</small></i></span><h3>Messages</h3>
+        <span><i class="uil uil-envelope">
+            {% with unread_conversations=request.user.conversations.filter|dictsort:"-lastmessage_created" %}
+                {% with unread_count=unread_conversations|length %}
+                    {% if unread_count > 0 %}
+                        <small class="notification-count">{{ unread_count }}</small>
+                    {% endif %}
+                {% endwith %}
+            {% endwith %}
+        </i></span><h3>Messages</h3>
     </a>
     <a  class="menu-item " href="{% url 'profilefavourite'  %}">
         <span><i class="uil uil-bookmark"></i></span><h3>Bookmarks</h3>

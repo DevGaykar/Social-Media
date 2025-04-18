@@ -48,10 +48,12 @@ def start_conversation(request, username=None, conversation_type='one_to_one'):
             participants=request.user
         ).filter(
             participants=other_user
+        ).filter(
+            type='one_to_one'
         ).first()
         
         if conversation is None:
-            conversation = Conversation.objects.create(type=conversation_type)
+            conversation = Conversation.objects.create(type='one_to_one')
             conversation.participants.add(request.user, other_user)
             conversation.save()
     
