@@ -18,7 +18,12 @@ from comment.models import Comment
 
 import json
 
-@login_required(login_url='account_login')
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    return render(request, 'landing.html')
+
+@login_required(login_url='landing_page')
 def home(request):
     user = request.user
     posts = Stream.objects.filter(user=user)

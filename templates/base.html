@@ -20,7 +20,9 @@
     <!-- The javascricpt file has been loaded just before the body ends or it will give DOM error -->
 </head>
 <body>
-    {%include 'snippets/header.html'%}
+    {% if not request.resolver_match.url_name == 'landing_page' %}
+        {%include 'snippets/header.html'%}
+    {% endif %}
 
     <!------------------------Main-------------------------->
     <main> 

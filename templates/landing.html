@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'landing.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block layout %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1>Connect with friends and the world around you</h1>
+            <p>Join millions of people discovering new connections, sharing moments, and building communities.</p>
+            <div class="hero-buttons">
+                <a href="{% url 'account_login' %}" class="btn-primary">Login</a>
+                <a href="{% url 'account_signup' %}" class="btn-secondary">Sign Up</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://res.cloudinary.com/dai0wy4xb/image/upload/v1745073191/social_logo_tc47rw.jpg" alt="Social Logo">
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Choose Our Platform?</h2>
+            <p>Discover what makes us special</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Community Building</h3>
+                <p>Create and join communities based on shared interests.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Privacy Control</h3>
+                <p>Advanced privacy settings for complete content control.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-photo-video"></i>
+                </div>
+                <h3>Rich Media Sharing</h3>
+                <p>Share photos, videos, and stories in high quality.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Real-time Chat</h3>
+                <p>Connect instantly with friends through messaging.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to get started?</h2>
+            <p>Join today and start connecting with people around the world.</p>
+        </div>
+        <div class="cta-buttons">
+            <a href="{% url 'account_signup' %}" class="btn-primary">Sign Up Now</a>
+            <a href="{% url 'account_login' %}" class="btn-outline">Login</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Add smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+{% endblock %}
