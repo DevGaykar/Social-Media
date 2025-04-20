@@ -10,13 +10,13 @@
                 </script> 
                  {%include 'story/story.html'%}
                 <!------------------End of Stories---------------------->
-                <form class="create-post">
+                {% comment %} <form class="create-post">
                     <div class="profile-photo">
                         <img src="{{request.user.profile.avatar}}" >
                     </div>
                     <input type="text" placeholder="What's on your mind {{request.user.profile.user.username }}?" id="create-post">
                     <input type="submit" value="Post" class="btn btn-primary">
-                </form>
+                </form> {% endcomment %}
 
                 <!-------------------------FEEDS-------------------------->
                 <div class="feeds">

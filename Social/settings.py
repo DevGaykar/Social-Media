@@ -229,7 +229,7 @@ if  ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = f'Social {env("EMAIL_ADDRESS")}'
+    DEFAULT_FROM_EMAIL = 'noreply@social.com'
     ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -238,5 +238,11 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True  
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SIGNUP_REDIRECT_URL = '/profile/onboarding/' 
+
+# Add these settings to ensure verification emails are sent to the user's email
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 ACCOUNT_USERNAME_BLACKLIST = ['admin','accounts','profile','category','post','inbox','thematrix']

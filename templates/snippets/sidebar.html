@@ -18,18 +18,18 @@
             {% endwith %}
         </i></span><h3>Notifications</h3>
         <!---Notification Popup-->
-        <div class="notification-popup">
+        <div class="notification-popup" id="notification-popup">
             <div>
                 {%for notification in request.user.notifications.unread%}
-                {% comment %} <a href="{{ notification.action_object.get_absolute_url }}"> {% endcomment %}
-                    <div class="profile-photo">
-                        <img src="{{notification.actor.profile.avatar}}" >
-                    </div> 
-                    <div class="notification-body">
+                    <a href="{% if notification.target %}{{ notification.target.get_absolute_url }}{% else %}#{% endif %}" class="notification-link">
+                        <div class="profile-photo">
+                            <img src="{{notification.actor.profile.avatar}}" >
+                        </div> 
+                        <div class="notification-body">
                             <b>@{{ notification.actor.profile.user.username }}</b> {{ notification.verb }}
                             <small class="text-muted">{{ notification.timestamp|timesince }} ago</small>
-                    </div>
-                {% comment %} </a> {% endcomment %}
+                        </div>
+                    </a>
                 {%empty%}
                 <p>No new notifications</p>
                 {%endfor%}
@@ -57,3 +57,21 @@
         <span><i class="uil uil-setting"></i></span><h3>Settings</h3>
     </a>
 </div>
+
+<script>
+    // Close notification popup when clicking outside
+    document.addEventListener('click', function(event) {
+        const notificationPopup = document.getElementById('notification-popup');
+        const notificationButton = document.getElementById('notifications');
+        
+        // Check if the click is outside both the popup and the button
+        if (!notificationPopup.contains(event.target) && !notificationButton.contains(event.target)) {
+            notificationPopup.style.display = 'none';
+        }
+    });
+
+    // Prevent closing when clicking inside the popup
+    document.getElementById('notification-popup').addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+</script>
